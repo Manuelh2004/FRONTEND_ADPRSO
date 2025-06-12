@@ -1,31 +1,30 @@
-import React, { useState, useMemo, useCallback } from 'react';
-import PropTypes from 'prop-types';
+import React, { useState, useCallback } from 'react';
+import { useAuth } from './context/AuthContext'; // Asegúrate de que la ruta sea correcta
 import pawPrint from './Imagenes/huella.jpg'; 
 import dogSilhouette from './Imagenes/perrito-silueta.jpg'; 
+import { useNavigate } from 'react-router-dom';
 
-const Login = ({ onLoginSuccess }) => {
+const Login = () => {
+  const { login } = useAuth();
   const [credentials, setCredentials] = useState({
-    username: '',
+    email: '',
     password: ''
   });
+  const [error, setError] = useState('');
+  const navigate = useNavigate();
 
-  const validUsers = useMemo(() => ({
-    admin: 'admin123',
-    usuario: 'usuario123',
-    voluntario: 'huellitas2023',
-  }), []);
-
-  const handleSubmit = useCallback((e) => {
+  const handleSubmit = useCallback(async (e) => {
     e.preventDefault();
-    const { username, password } = credentials;
-    const correctPassword = validUsers[username];
-    
-    if (correctPassword && password === correctPassword) {
-      onLoginSuccess(username);
-    } else {
-      alert('Usuario o contraseña incorrecta');
+    setError('');
+    try {
+      await login(credentials.email, credentials.password);
+
+        navigate('/', { replace: true });
+
+    } catch (err) {
+      setError('Usuario o contraseña incorrecta');
     }
-  }, [credentials, validUsers, onLoginSuccess]);
+  }, [credentials, login]);
 
   const handleInputChange = useCallback((e) => {
     const { name, value } = e.target;
@@ -41,8 +40,7 @@ const Login = ({ onLoginSuccess }) => {
       style={{
         backgroundImage: `url(${pawPrint})`,
         backgroundSize: '200px',
-        backgroundBlendMode: 'overlay',
-        backgroundOpacity: '0.1'
+        backgroundBlendMode: 'overlay'
       }}
     >
       <form 
@@ -73,49 +71,33 @@ const Login = ({ onLoginSuccess }) => {
         </h2>
         
         <div className="mb-4">
-          <label htmlFor="username" className="sr-only">Usuario</label>
-          <div className="relative">
-            <input
-              id="username"
-              type="text"
-              name="username"
-              placeholder="Usuario"
-              value={credentials.username}
-              onChange={handleInputChange}
-              className="w-full p-3 border-2 border-amber-200 rounded-lg focus:border-amber-400 focus:ring-2 focus:ring-amber-100 pl-10"
-              required
-              autoComplete="username"
-              aria-required="true"
-            />
-            <span className="absolute left-3 top-3 text-amber-500">
-              <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
-                <path fillRule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clipRule="evenodd" />
-              </svg>
-            </span>
-          </div>
+          <input
+            id="email"
+            type="mail"
+            name="email"
+            placeholder="Usuario"
+            value={credentials.email}
+            onChange={handleInputChange}
+            className="w-full p-3 border-2 border-amber-200 rounded-lg focus:border-amber-400 focus:ring-2 focus:ring-amber-100 pl-10"
+            required
+            autoComplete="email"
+            aria-required="true"
+          />
         </div>
         
         <div className="mb-6">
-          <label htmlFor="password" className="sr-only">Contraseña</label>
-          <div className="relative">
-            <input
-              id="password"
-              type="password"
-              name="password"
-              placeholder="Contraseña"
-              value={credentials.password}
-              onChange={handleInputChange}
-              className="w-full p-3 border-2 border-amber-200 rounded-lg focus:border-amber-400 focus:ring-2 focus:ring-amber-100 pl-10"
-              required
-              autoComplete="current-password"
-              aria-required="true"
-            />
-            <span className="absolute left-3 top-3 text-amber-500">
-              <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
-                <path fillRule="evenodd" d="M5 9V7a5 5 0 0110 0v2a2 2 0 012 2v5a2 2 0 01-2 2H5a2 2 0 01-2-2v-5a2 2 0 012-2zm8-2v2H7V7a3 3 0 016 0z" clipRule="evenodd" />
-              </svg>
-            </span>
-          </div>
+          <input
+            id="password"
+            type="password"
+            name="password"
+            placeholder="Contraseña"
+            value={credentials.password}
+            onChange={handleInputChange}
+            className="w-full p-3 border-2 border-amber-200 rounded-lg focus:border-amber-400 focus:ring-2 focus:ring-amber-100 pl-10"
+            required
+            autoComplete="current-password"
+            aria-required="true"
+          />
         </div>
         
         <button 
@@ -127,6 +109,10 @@ const Login = ({ onLoginSuccess }) => {
           </svg>
           Ingresar
         </button>
+
+        {error && (
+          <div className="mt-3 text-red-500 text-sm text-center">{error}</div>
+        )}
         
         <div className="mt-4 text-center text-sm text-amber-700">
           ¿Problemas para ingresar? Contacta al administrador
@@ -134,10 +120,6 @@ const Login = ({ onLoginSuccess }) => {
       </form>
     </div>
   );
-};
-
-Login.propTypes = {
-  onLoginSuccess: PropTypes.func.isRequired
 };
 
 export default React.memo(Login);
