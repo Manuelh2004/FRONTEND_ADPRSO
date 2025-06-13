@@ -1,12 +1,13 @@
 import { Link } from "react-router-dom";
+import logoFondo from "../../Imagenes/logo.jpeg";  
 
 export default function BannerVoluntariado() {
   return (
     <>
       {/* --- Banner Hero (Imagen de fondo con overlay) --- */}
-      <section 
-        className="relative h-96 md:h-screen max-h-[600px] bg-cover bg-center flex items-center justify-center" 
-        style={{ backgroundImage: "url('https://www.instagram.com/p/CxY9TbGJJl1/?hl=es')" }}
+      <section
+        className="relative h-96 md:h-screen max-h-[600px] flex items-center justify-center"
+        style={{ backgroundImage: `url(${logoFondo})`, backgroundSize: 'cover', backgroundPosition: 'center' }}
       >
         {/* Overlay oscuro para mejorar legibilidad */}
         <div className="absolute inset-0 bg-black opacity-50"></div>
