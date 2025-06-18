@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import MascotasAdmin from './AdminSections/MascotasAdmin/MascotasAdmin';
 import EventosAdmin from './AdminSections/EventosAdmin/EventosAdmin';
-import AdopcionesAdmin from './AdminSections/AdopcionesAdmin';
-import UsuariosAdmin from './AdminSections/UsuariosAdmin';
+import AdopcionesAdmin from './AdminSections/AdopcionesAdmin/AdopcionesAdmin';
+import UsuariosAdmin from './AdminSections/UsuariosAdmin/UsuariosAdmin';
 
 
 const Administrador = () => {
