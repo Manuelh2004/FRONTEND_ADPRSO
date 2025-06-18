@@ -9,6 +9,7 @@ import Voluntario from './Pages/Voluntario/Voluntario';
 import Login from './Login';
 import ProtectedRoute from './components/ProtectedRoute';
 import { useAuth } from './context/AuthContext';
+import Dash from './Pages/Dash';
 
 export const App = () => {
   const { isAuthenticated, role, logout } = useAuth();
@@ -38,6 +39,11 @@ export const App = () => {
           {isAuthenticated ? (
             <>
               <div className="text-blue-900 font-medium">Rol: {role}</div>
+              {role === 'ROLE_ADMINISTRADOR' && (
+                <Link to="/dash" className="text-blue-900 font-medium hover:underline">
+                  Dash
+                </Link>
+              )}
               <button
                 onClick={logout}
                 className="text-red-500 font-medium hover:underline"
@@ -73,15 +79,15 @@ export const App = () => {
 
         {/* RUTAS PROTEGIDAS */}
         <Route
-          path="/admin-only"
+          path="/dash"
           element={
-            <ProtectedRoute allowedRoles={['Administrador']} element={<h2>Vista Admin</h2>} />
+            <ProtectedRoute allowedRoles={['ROLE_ADMINISTRADOR']} element={<Dash />} />
           }
         />
         <Route
           path="/usuario-only"
           element={
-            <ProtectedRoute allowedRoles={['Usuario']} element={<h2>Vista Usuario</h2>} />
+            <ProtectedRoute allowedRoles={['ROLE_USUARIO']} element={<h2>Vista Usuario</h2>} />
           }
         />
       </Routes>
