@@ -18,7 +18,6 @@ const Login = () => {
     setError('');
     try {
       await login(credentials.email, credentials.password);
-
         navigate('/', { replace: true });
 
     } catch (err) {

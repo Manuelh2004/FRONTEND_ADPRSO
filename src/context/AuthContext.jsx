@@ -24,6 +24,7 @@ export const AuthProvider = ({ children }) => {
       setToken(accessToken);
       setRole(decoded.role);
       localStorage.setItem('token', accessToken);
+      console.log('Token después de login:', accessToken);  // Imprime el token en consola
     } catch (error) {
       throw error;
     }

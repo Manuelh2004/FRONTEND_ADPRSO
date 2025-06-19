@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import itemService from '../../../../services/itemApi';
 import { registrarMascota } from '../../../../services/mascota/mascotaAdmApi';
+import axios from 'axios';
 
 
 const MascotasAdmin = () => {
@@ -64,21 +65,40 @@ const MascotasAdmin = () => {
 
 
   const handleSubmit = async (e) => {
-    e.preventDefault();
-    const mascotaDTO = {
-      mascota: formData,
-      gustosIds: gustosSeleccionados,
-      imagenUrls: imagenes
-    };
-    try {
-      const response = await registrarMascota(mascotaDTO);
-      console.log("Mascota registrada con éxito:", response);
-      // Opcional: resetear formulario
-      // resetForm();
-    } catch (error) {
-      console.error("Error al registrar mascota:", error);
-    }
+  e.preventDefault();
+
+  const mascotaDTO = {
+    mascota: formData,
+    gustosIds: gustosSeleccionados,
+    imagenUrls: imagenes
   };
+
+  const token = localStorage.getItem('token');
+  console.log("Token:", token);
+
+  try {
+    const response = await fetch('http://localhost:8080/admin/api/mascota/registrar', {
+      method: 'POST',
+      headers: {
+        'Authorization': `Bearer ${token}`,
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(mascotaDTO),
+    });
+
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+
+    const data = await response.json();
+    console.log("Mascota registrada con éxito:", data);
+  } catch (error) {
+    console.error("Error al registrar mascota:", error);
+  }
+};
+
+
+
 
   return (
     <div className="max-w-4xl mx-auto mt-10 p-6 bg-white shadow-lg rounded-xl">

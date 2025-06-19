@@ -29,7 +29,7 @@ export const App = () => {
             <li><Link to="/donaciones">Donaciones</Link></li>
             <li><Link to="/contacto">Contacto</Link></li>           
             
-           {isAuthenticated && role === 'ROLE_ADMIN' && (
+           {isAuthenticated && role === 'Administrador' && (
               <li><Link to="/admin-only">Administrador</Link></li>
             )}
 
@@ -45,6 +45,7 @@ export const App = () => {
           {isAuthenticated ? (
             <>
               <div className="text-blue-900 font-medium">Rol: {role}</div>
+              
               <button
                 onClick={logout}
                 className="text-red-500 font-medium hover:underline"
@@ -82,7 +83,7 @@ export const App = () => {
         <Route
           path="/admin-only"
           element={
-            <ProtectedRoute allowedRoles={['ROLE_ADMIN']} element={<Administrador/>} />
+            <ProtectedRoute allowedRoles={['Administrador']} element={<Administrador/>} />
           }
         />
         <Route

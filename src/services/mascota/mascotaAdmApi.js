@@ -20,16 +20,12 @@ export const listarMascotas = async () => {
 };
 
 // 🐾 2. Registrar mascota (DTO: mascota + gustos + imágenes)
-export const registrarMascota = async (mascotaDTO) => {
-  const token = localStorage.getItem('token');
-
-  return await axios.post(`${API_BASE_URL}/registrar_mascota`, mascotaDTO, {
+export const registrarMascota = (data, token) =>
+  axios.post(`http://localhost:8080/admin/api/mascota/registrar`, data, {
     headers: {
-      'Content-Type': 'application/json',
-      'Authorization': `Bearer ${token}`, // 👈 Esto es lo más importante
-    },
-  });
-};
+      Authorization: `Bearer ${token}`
+    }
+});
 
 // ✏️ 3. Actualizar mascota (por ID)
 export const actualizarMascota = async (id, mascota, gustosIds = [], imagenUrls = []) => {
