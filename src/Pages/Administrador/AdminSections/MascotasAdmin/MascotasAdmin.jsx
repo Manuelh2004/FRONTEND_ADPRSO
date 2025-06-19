@@ -1,10 +1,8 @@
 import React, { useEffect, useState } from 'react';
-import itemService from '../../../../services/itemApi';
-import { registrarMascota } from '../../../../services/mascota/mascotaAdmApi';
 import axios from 'axios';
 
-
 const MascotasAdmin = () => {
+  // Estados para almacenar las listas de opciones
   const [estadoSalud, setEstadoSalud] = useState([]);
   const [estadoVacuna, setEstadoVacuna] = useState([]);
   const [nivelEnergia, setNivelEnergia] = useState([]);
@@ -13,9 +11,9 @@ const MascotasAdmin = () => {
   const [sexos, setSexos] = useState([]);
   const [gustos, setGustos] = useState([]);
 
+  // Estados para los campos del formulario
   const [imagenes, setImagenes] = useState(['']);
   const [gustosSeleccionados, setGustosSeleccionados] = useState([]);
-
   const [formData, setFormData] = useState({
     masc_nombre: '',
     masc_fecha_nacimiento: '',
@@ -29,14 +27,54 @@ const MascotasAdmin = () => {
     sexo: ''
   });
 
+  // Obtener las listas de items desde el servidor
   useEffect(() => {
-    itemService.listarEstadoSalud().then(res => setEstadoSalud(res.data.data));
-    itemService.listarEstadoVacuna().then(res => setEstadoVacuna(res.data.data));
-    itemService.listarNivelEnergia().then(res => setNivelEnergia(res.data.data));
-    itemService.listarTamanios().then(res => setTamanios(res.data.data));
-    itemService.listarTipoMascota().then(res => setTipoMascota(res.data.data));
-    itemService.listarSexo().then(res => setSexos(res.data.data));
-    itemService.listarGustos().then(res => setGustos(res.data.data));
+    const fetchData = async () => {
+      try {
+        const token = localStorage.getItem('token');
+        
+        // Realizamos las peticiones a las API
+        const responseSalud = await axios.get('http://localhost:8080/admin/api/item/estado_salud', {
+          headers: { 'Authorization': `Bearer ${token}` }
+        });
+        setEstadoSalud(responseSalud.data.data);
+
+        const responseVacuna = await axios.get('http://localhost:8080/admin/api/item/estado_vacuna', {
+          headers: { 'Authorization': `Bearer ${token}` }
+        });
+        setEstadoVacuna(responseVacuna.data.data);
+
+        const responseEnergia = await axios.get('http://localhost:8080/admin/api/item/nivel_energia', {
+          headers: { 'Authorization': `Bearer ${token}` }
+        });
+        setNivelEnergia(responseEnergia.data.data);
+
+        const responseTamanio = await axios.get('http://localhost:8080/admin/api/item/tamanios', {
+          headers: { 'Authorization': `Bearer ${token}` }
+        });
+        setTamanios(responseTamanio.data.data);
+
+        const responseTipoMascota = await axios.get('http://localhost:8080/admin/api/item/tipo_mascota', {
+          headers: { 'Authorization': `Bearer ${token}` }
+        });
+        setTipoMascota(responseTipoMascota.data.data);
+
+        const responseSexo = await axios.get('http://localhost:8080/admin/api/item/sexo', {
+          headers: { 'Authorization': `Bearer ${token}` }
+        });
+        setSexos(responseSexo.data.data);
+
+        const responseGustos = await axios.get('http://localhost:8080/admin/api/item/gustos', {
+          headers: { 'Authorization': `Bearer ${token}` }
+        });
+        setGustos(responseGustos.data.data);
+
+      } catch (error) {
+        console.error("Error al cargar las listas de items:", error);
+      }
+    };
+
+    fetchData();
   }, []);
 
   const handleChange = e => {
@@ -63,42 +101,46 @@ const MascotasAdmin = () => {
     );
   };
 
-
   const handleSubmit = async (e) => {
-  e.preventDefault();
+    e.preventDefault();
 
-  const mascotaDTO = {
-    mascota: formData,
-    gustosIds: gustosSeleccionados,
-    imagenUrls: imagenes
-  };
-
-  const token = localStorage.getItem('token');
-  console.log("Token:", token);
-
-  try {
-    const response = await fetch('http://localhost:8080/admin/api/mascota/registrar', {
-      method: 'POST',
-      headers: {
-        'Authorization': `Bearer ${token}`,
-        'Content-Type': 'application/json',
+    // Construir el objeto para el body de la solicitud, como lo necesitas
+    const mascotaDTO = {
+      mascota: {
+        masc_nombre: formData.masc_nombre,
+        masc_fecha_nacimiento: formData.masc_fecha_nacimiento,
+        sexo: { sex_id: formData.sexo },
+        tamanio: { tam_id: formData.tamanio },
+        nivel_energia: { nien_id: formData.nivelEnergia },
+        tipo_mascota: { tipma_id: formData.tipoMascota },
+        estado_salud: { estsa_id: formData.estadoSalud },
+        estado_vacuna: { estva_id: formData.estadoVacuna },
+        masc_historia: formData.masc_historia,
+        masc_observacion: formData.masc_observacion
       },
-      body: JSON.stringify(mascotaDTO),
-    });
+      gustosIds: gustosSeleccionados,
+      imagenUrls: imagenes
+    };
 
-    if (!response.ok) {
-      throw new Error(`HTTP error! status: ${response.status}`);
+    const token = localStorage.getItem('token');
+    try {
+      const response = await axios.post('http://localhost:8080/admin/api/mascota/registrar_mascota', mascotaDTO, {
+        headers: {
+          'Authorization': `Bearer ${token}`,
+          'Content-Type': 'application/json',
+        }
+      });
+
+      if (response.status === 201) {
+        console.log("Mascota registrada con éxito:", response.data);
+        // Aquí podrías realizar una acción adicional como limpiar el formulario o actualizar una lista de mascotas
+      } else {
+        console.error('Error al registrar mascota:', response);
+      }
+    } catch (error) {
+      console.error("Error al registrar mascota:", error);
     }
-
-    const data = await response.json();
-    console.log("Mascota registrada con éxito:", data);
-  } catch (error) {
-    console.error("Error al registrar mascota:", error);
-  }
-};
-
-
-
+  };
 
   return (
     <div className="max-w-4xl mx-auto mt-10 p-6 bg-white shadow-lg rounded-xl">
@@ -212,6 +254,7 @@ const MascotasAdmin = () => {
             ))}
           </select>
         </div>
+
         {/* Campo de Gustos */}
         <div className="md:col-span-2">
           <label className="block font-medium text-gray-700 mb-2">Gustos:</label>
