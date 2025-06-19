@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import axios from 'axios';
+import { fetchEventos, registrarEvento, actualizarEvento, cambiarEstadoEvento } from '../../../../services/evento/eventoAdmApi';
 
 const EventosAdmin = () => {
   const [eventos, setEventos] = useState([]);
@@ -14,116 +14,24 @@ const EventosAdmin = () => {
 
   const [editandoId, setEditandoId] = useState(null);
 
-  // 1. Cargar eventos al iniciar
   useEffect(() => {
-    fetchEventos();
+    const token = localStorage.getItem('token');
+    fetchEventos(token).then(data => setEventos(data));
   }, []);
-
-  const fetchEventos = async () => {
-    try {
-      const token = localStorage.getItem('token');
-      const response = await axios.get('http://localhost:8080/admin/api/evento/listar_evento', {
-        headers: {
-          Authorization: `Bearer ${token}`
-        }
-      });
-
-      setEventos(response.data.data);
-    } catch (error) {
-      console.error('Error al listar eventos', error);
-    }
-  };
-
-  const registrarEvento = async (eventoData) => {
-    const token = localStorage.getItem('token');
-    try {
-      const response = await axios.post(
-        'http://localhost:8080/admin/api/evento/registrar_evento',
-        {
-          even_nombre: eventoData.nombre,
-          even_descripcion: eventoData.descripcion,
-          even_fecha_inicio: eventoData.fecha_inicio,
-          even_fecha_fin: eventoData.fecha_fin,
-          even_lugar: eventoData.lugar,
-          even_imagen: eventoData.imagen
-        },
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-            'Content-Type': 'application/json'
-          }
-        }
-      );
-      return response.data;
-    } catch (error) {
-      console.error('Error registrando evento', error);
-      throw error;
-    }
-  };
-
-  const actualizarEvento = async (id, eventoData) => {
-    const token = localStorage.getItem('token');
-    try {
-      const response = await axios.put(
-        `http://localhost:8080/admin/api/evento/${id}`,
-        {
-          even_nombre: eventoData.nombre,
-          even_descripcion: eventoData.descripcion,
-          even_fecha_inicio: eventoData.fecha_inicio,
-          even_fecha_fin: eventoData.fecha_fin,
-          even_lugar: eventoData.lugar,
-          even_imagen: eventoData.imagen
-        },
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-            'Content-Type': 'application/json'
-          }
-        }
-      );
-      return response.data;
-    } catch (error) {
-      console.error('Error actualizando evento', error);
-      throw error;
-    }
-  };
-
-  const cambiarEstadoEvento = async (id, nuevoEstado) => {
-    try {
-      const token = localStorage.getItem('token');
-      await axios.put(
-        `http://localhost:8080/admin/api/evento/${id}/estado?nuevoEstado=${nuevoEstado}`,
-        null,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`
-          }
-        }
-      );
-    } catch (error) {
-      console.error('Error cambiando estado', error);
-      throw error;
-    }
-  };
-
-  const handleChange = (e) => {
-    setFormData(prev => ({
-      ...prev,
-      [e.target.name]: e.target.value
-    }));
-  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    const token = localStorage.getItem('token');
     try {
       if (editandoId) {
-        await actualizarEvento(editandoId, formData);
+        await actualizarEvento(token, editandoId, formData);
       } else {
-        await registrarEvento(formData);
+        await registrarEvento(token, formData);
       }
       setFormData({ nombre: '', descripcion: '', fecha_inicio: '', fecha_fin: '', lugar: '', imagen: '' });
       setEditandoId(null);
-      fetchEventos();
+      const data = await fetchEventos(token);
+      setEventos(data);
     } catch (error) {
       console.error('Error al guardar evento', error);
     }
@@ -143,9 +51,11 @@ const EventosAdmin = () => {
 
   const handleCambiarEstado = async (id, estadoActual) => {
     const nuevoEstado = estadoActual === 1 ? 0 : 1;
+    const token = localStorage.getItem('token');
     try {
-      await cambiarEstadoEvento(id, nuevoEstado);
-      fetchEventos();
+      await cambiarEstadoEvento(token, id, nuevoEstado);
+      const data = await fetchEventos(token);
+      setEventos(data);
     } catch (error) {
       console.error('Error al cambiar estado', error);
     }
@@ -162,7 +72,7 @@ const EventosAdmin = () => {
           <input
             name="nombre"
             value={formData.nombre}
-            onChange={handleChange}
+            onChange={(e) => setFormData({ ...formData, nombre: e.target.value })}
             className="w-full border-2 border-gray-300 px-4 py-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
             required
           />
@@ -173,7 +83,7 @@ const EventosAdmin = () => {
           <textarea
             name="descripcion"
             value={formData.descripcion}
-            onChange={handleChange}
+            onChange={(e) => setFormData({ ...formData, descripcion: e.target.value })}
             className="w-full border-2 border-gray-300 px-4 py-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
             required
           />
@@ -186,7 +96,7 @@ const EventosAdmin = () => {
               type="date"
               name="fecha_inicio"
               value={formData.fecha_inicio}
-              onChange={handleChange}
+              onChange={(e) => setFormData({ ...formData, fecha_inicio: e.target.value })}
               className="w-full border-2 border-gray-300 px-4 py-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
               required
             />
@@ -198,7 +108,7 @@ const EventosAdmin = () => {
               type="date"
               name="fecha_fin"
               value={formData.fecha_fin}
-              onChange={handleChange}
+              onChange={(e) => setFormData({ ...formData, fecha_fin: e.target.value })}
               className="w-full border-2 border-gray-300 px-4 py-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
               required
             />
@@ -210,7 +120,7 @@ const EventosAdmin = () => {
           <input
             name="lugar"
             value={formData.lugar}
-            onChange={handleChange}
+            onChange={(e) => setFormData({ ...formData, lugar: e.target.value })}
             className="w-full border-2 border-gray-300 px-4 py-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
             required
           />
@@ -221,7 +131,7 @@ const EventosAdmin = () => {
           <input
             name="imagen"
             value={formData.imagen}
-            onChange={handleChange}
+            onChange={(e) => setFormData({ ...formData, imagen: e.target.value })}
             className="w-full border-2 border-gray-300 px-4 py-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
             required
           />

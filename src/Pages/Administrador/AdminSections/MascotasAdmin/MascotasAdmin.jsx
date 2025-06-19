@@ -102,45 +102,69 @@ const MascotasAdmin = () => {
   };
 
   const handleSubmit = async (e) => {
-    e.preventDefault();
+  e.preventDefault();
 
-    // Construir el objeto para el body de la solicitud, como lo necesitas
-    const mascotaDTO = {
-      mascota: {
-        masc_nombre: formData.masc_nombre,
-        masc_fecha_nacimiento: formData.masc_fecha_nacimiento,
-        sexo: { sex_id: formData.sexo },
-        tamanio: { tam_id: formData.tamanio },
-        nivel_energia: { nien_id: formData.nivelEnergia },
-        tipo_mascota: { tipma_id: formData.tipoMascota },
-        estado_salud: { estsa_id: formData.estadoSalud },
-        estado_vacuna: { estva_id: formData.estadoVacuna },
-        masc_historia: formData.masc_historia,
-        masc_observacion: formData.masc_observacion
-      },
-      gustosIds: gustosSeleccionados,
-      imagenUrls: imagenes
-    };
+  // Validar campos obligatorios
+  const camposObligatorios = [
+    formData.masc_nombre,
+    formData.masc_fecha_nacimiento,
+    formData.estadoSalud,
+    formData.estadoVacuna,
+    formData.nivelEnergia,
+    formData.tamanio,
+    formData.tipoMascota,
+    formData.sexo
+  ];
 
-    const token = localStorage.getItem('token');
-    try {
-      const response = await axios.post('http://localhost:8080/admin/api/mascota/registrar_mascota', mascotaDTO, {
-        headers: {
-          'Authorization': `Bearer ${token}`,
-          'Content-Type': 'application/json',
-        }
-      });
+  // Verificar si alguno de los campos obligatorios está vacío
+  if (camposObligatorios.includes('') || imagenes.includes('')) {
+    alert('Por favor, complete todos los campos obligatorios.');
+    return; // Detener el envío del formulario si hay campos vacíos
+  }
 
-      if (response.status === 201) {
-        console.log("Mascota registrada con éxito:", response.data);
-        // Aquí podrías realizar una acción adicional como limpiar el formulario o actualizar una lista de mascotas
-      } else {
-        console.error('Error al registrar mascota:', response);
-      }
-    } catch (error) {
-      console.error("Error al registrar mascota:", error);
-    }
+  // Validar si no se ha seleccionado al menos un gusto
+  if (gustosSeleccionados.length === 0) {
+    alert('Por favor, seleccione al menos un gusto.');
+    return; // Detener el envío del formulario si no se ha seleccionado ningún gusto
+  }
+
+  // Construir el objeto para el body de la solicitud, como lo necesitas
+  const mascotaDTO = {
+    mascota: {
+      masc_nombre: formData.masc_nombre,
+      masc_fecha_nacimiento: formData.masc_fecha_nacimiento,
+      sexo: { sex_id: formData.sexo },
+      tamanio: { tam_id: formData.tamanio },
+      nivel_energia: { nien_id: formData.nivelEnergia },
+      tipo_mascota: { tipma_id: formData.tipoMascota },
+      estado_salud: { estsa_id: formData.estadoSalud },
+      estado_vacuna: { estva_id: formData.estadoVacuna },
+      masc_historia: formData.masc_historia,
+      masc_observacion: formData.masc_observacion
+    },
+    gustosIds: gustosSeleccionados,
+    imagenUrls: imagenes
   };
+
+  const token = localStorage.getItem('token');
+  try {
+    const response = await axios.post('http://localhost:8080/admin/api/mascota/registrar_mascota', mascotaDTO, {
+      headers: {
+        'Authorization': `Bearer ${token}`,
+        'Content-Type': 'application/json',
+      }
+    });
+
+    if (response.status === 201) {
+      console.log("Mascota registrada con éxito:", response.data);
+      // Aquí podrías realizar una acción adicional como limpiar el formulario o actualizar una lista de mascotas
+    } else {
+      console.error('Error al registrar mascota:', response);
+    }
+  } catch (error) {
+    console.error("Error al registrar mascota:", error);
+  }
+};
 
   return (
     <div className="max-w-4xl mx-auto mt-10 p-6 bg-white shadow-lg rounded-xl">
