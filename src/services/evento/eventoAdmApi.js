@@ -83,5 +83,25 @@ export const cambiarEstadoEvento = async (token, id, nuevoEstado) => {
   } catch (error) {
     console.error('Error cambiando estado', error);
     throw error;
+  }  
+};
+
+export const obtenerEventosPorEstado = async (estadoFiltro, token) => {
+  const headers = { 'Authorization': `Bearer ${token}` };
+  let url = `${API_URL}/listar_evento`;  // URL predeterminada
+
+  if (estadoFiltro === 'activo') {
+    url = `${API_URL}/activos`;
+  } else if (estadoFiltro === 'inactivo') {
+    url = `${API_URL}/inactivos`;  
+  }
+
+  try {
+    const response = await axios.get(url, { headers });
+    return response.data.data;
+  } catch (error) {
+    throw new Error('Error al cargar los eventos');
   }
 };
+
+

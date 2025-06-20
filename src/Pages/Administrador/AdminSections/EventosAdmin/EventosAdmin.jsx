@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react';
-import { fetchEventos, registrarEvento, actualizarEvento, cambiarEstadoEvento } from '../../../../services/evento/eventoAdmApi';
+import { fetchEventos, registrarEvento, actualizarEvento, cambiarEstadoEvento, obtenerEventosPorEstado } from '../../../../services/evento/eventoAdmApi';
 
 const EventosAdmin = () => {
-  const [eventos, setEventos] = useState([]);  // Inicializamos como un arreglo vacío
-  const [eventoSeleccionado, setEventoSeleccionado] = useState(null);  // Nuevo estado para los detalles del evento
+  const [eventos, setEventos] = useState([]);
+  const [eventoSeleccionado, setEventoSeleccionado] = useState(null);
   const [formData, setFormData] = useState({
     nombre: '',
     descripcion: '',
@@ -16,33 +16,22 @@ const EventosAdmin = () => {
   const [editandoId, setEditandoId] = useState(null);
   const [paginaActual, setPaginaActual] = useState(1);
   const [registrosPorPagina] = useState(10);
-  const [filtroEstado, setFiltroEstado] = useState(""); // Usar "" en lugar de null
+  const [filtroEstado, setFiltroEstado] = useState("");
 
   useEffect(() => {
     const token = localStorage.getItem('token');
-    const url = filtroEstado === ""
-      ? 'http://localhost:8080/admin/api/evento/listar_evento'
-      : `http://localhost:8080/admin/api/evento/estado/${filtroEstado}`;
+    const obtenerEventos = async () => {
+      try {
+        const eventosFiltrados = await obtenerEventosPorEstado(filtroEstado, token);
+        setEventos(eventosFiltrados);
+      } catch (error) {
+        console.error('Error al obtener eventos filtrados', error);
+      }
+    };
 
-    fetchEventosConFiltro(url, token);
+    obtenerEventos(); // Llama a la función cuando cambia el filtro de estado
   }, [filtroEstado]);
 
-  const fetchEventosConFiltro = async (url, token) => {
-    try {
-      const response = await fetch(url, {
-        method: 'GET',
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
-      const data = await response.json();
-      setEventos(data.data || []); // Asegúrate de que siempre sea un arreglo
-    } catch (error) {
-      console.error('Error al obtener eventos', error);
-    }
-  };
-
-  // Asegúrate de que `eventos` es un arreglo antes de intentar usar slice()
   const eventosPaginados = Array.isArray(eventos) ? eventos.slice(
     (paginaActual - 1) * registrosPorPagina,
     paginaActual * registrosPorPagina
@@ -90,21 +79,9 @@ const EventosAdmin = () => {
     const nuevoEstado = estadoActual === 1 ? 0 : 1;
     const token = localStorage.getItem('token');
     try {
-      // Cambiar el estado del evento
       await cambiarEstadoEvento(token, id, nuevoEstado);
-
-      // Recargar los eventos con el filtro actual después de cambiar el estado
-      const url = filtroEstado === "" 
-        ? 'http://localhost:8080/admin/api/evento/listar_evento'
-        : `http://localhost:8080/admin/api/evento/estado/${filtroEstado}`;
-      const response = await fetch(url, {
-        method: 'GET',
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
-      const data = await response.json();
-      setEventos(data.data || []); // Actualizamos la lista de eventos
+      const eventosFiltrados = await obtenerEventosPorEstado(filtroEstado, token);
+      setEventos(eventosFiltrados);
     } catch (error) {
       console.error('Error al cambiar estado', error);
     }
@@ -113,13 +90,12 @@ const EventosAdmin = () => {
   const handleVerMas = async (evento) => {
     try {
       const response = await fetch(`http://localhost:8080/api/evento/${evento.even_id}/public`);
-      
       if (!response.ok) {
         throw new Error('Error al obtener los detalles del evento');
       }
       const result = await response.json();
-      const eventoDetails = result.data; 
-      setEventoSeleccionado(eventoDetails);  
+      const eventoDetails = result.data;
+      setEventoSeleccionado(eventoDetails);
     } catch (error) {
       console.error('Error al obtener los detalles del evento:', error);
       alert('Hubo un error al cargar los detalles del evento.');
@@ -127,28 +103,14 @@ const EventosAdmin = () => {
   };
 
   return (
-    <div className="container mx-auto p-6 bg-gray-50 min-h-screen">
+    <div className="container mx-auto p-8 bg-gray-50 min-h-screen">
       <h2 className="text-4xl font-semibold text-gray-800 mb-8">Gestión de Eventos</h2>
 
-      {/* Filtro por estado */}
-      <div className="mb-6">
-        <label className="block text-gray-700 font-semibold">Filtrar por Estado</label>
-        <select
-          value={filtroEstado}
-          onChange={(e) => setFiltroEstado(e.target.value)}
-          className="w-full border-2 border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
-        >
-          <option value="">Todos</option> {/* Cambié null por "" */}
-          <option value={1}>Activo</option>
-          <option value={0}>Inactivo</option>
-        </select>
-      </div>
-
       {/* Formulario */}
-      <form onSubmit={handleSubmit} className="bg-white p-8 rounded-lg shadow-lg space-y-6">
+      <form onSubmit={handleSubmit} className="bg-white p-8 rounded-lg shadow-lg space-y-6 mb-8">
         <h3 className="text-xl font-medium text-gray-700">{editandoId ? 'Editar Evento' : 'Registrar Nuevo Evento'}</h3>
-        
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           <div>
             <label className="block text-gray-700 font-semibold">Nombre del Evento</label>
             <input
@@ -173,7 +135,7 @@ const EventosAdmin = () => {
           </div>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           <div>
             <label className="block text-gray-700 font-semibold">Descripción</label>
             <textarea
@@ -198,7 +160,7 @@ const EventosAdmin = () => {
           </div>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           <div>
             <label className="block text-gray-700 font-semibold">Lugar</label>
             <input
@@ -230,8 +192,22 @@ const EventosAdmin = () => {
         </button>
       </form>
 
+      {/* Filtro por estado */}
+      <div className="mb-6">
+        <label className="block text-gray-700 font-semibold">Filtrar por Estado</label>
+        <select
+          value={filtroEstado}
+          onChange={(e) => setFiltroEstado(e.target.value)}
+          className="w-full border-2 border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+        >
+          <option value="">Todos</option>
+          <option value="activo">Activo</option>
+          <option value="inactivo">Inactivo</option>
+        </select>
+      </div>
+
       {/* Tabla de eventos */}
-      <div className="mt-10 overflow-x-auto bg-white rounded-lg shadow-lg">
+      <div className="overflow-x-auto bg-white rounded-lg shadow-lg">
         <table className="w-full table-auto text-sm">
           <thead className="bg-blue-600 text-white">
             <tr>
@@ -249,8 +225,9 @@ const EventosAdmin = () => {
                 <td className="px-6 py-4">{evento.even_lugar}</td>
                 <td className="px-6 py-4">{evento.even_fecha_inicio}</td>
                 <td className="px-6 py-4">
-                  <span className={`inline-block py-1 px-3 rounded-full ${evento.even_estado === 1 ? 'bg-green-200 text-green-800' : 'bg-red-200 text-red-800'}`} />
-                  {evento.even_estado === 1 ? 'Activo' : 'Inactivo'}
+                  <span className={`inline-block py-1 px-3 rounded-full ${evento.even_estado === 1 ? 'bg-green-200 text-green-800' : 'bg-red-200 text-red-800'}`}>
+                    {evento.even_estado === 1 ? 'Activo' : 'Inactivo'}
+                  </span>
                 </td>
                 <td className="px-6 py-4 space-x-4">
                   <button
