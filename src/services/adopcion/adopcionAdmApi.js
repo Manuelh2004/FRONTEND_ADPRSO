@@ -1,90 +1,39 @@
 import axios from 'axios';
 
-const API_BASE_URL = "http://localhost:8080/admin/api/adopciones"; 
+const API_URL = 'http://localhost:8080/admin/api/adopciones';
 
-const getHeaders = () => {
-  const token = localStorage.getItem('token');
-  console.log("🔐 Token desde localStorage:", token);
-  return {
-    Authorization: `Bearer ${token}`,
-    'Content-Type': 'application/json'
-  };
-};
+// Obtener las adopciones filtradas por estado
+export const obtenerAdopcionesPorEstado = async (estadoFiltro, token) => {
+  const headers = { 'Authorization': `Bearer ${token}` };
+  let url = `${API_URL}/listar_adopciones`;
 
-// 1. Listar todas las adopciones
-export const obtenerAdopciones = async () => {
-  try {
-    const response = await axios.get(`${API_BASE_URL}/listar_adopciones`, {
-      headers: getHeaders(),
-    });
-    return response.data.data;  // Ajusta según la estructura de tu respuesta
-  } catch (error) {
-    console.error("Error al obtener adopciones:", error.response || error.message);
-    throw error;
+  if (estadoFiltro === 'aceptadas') {
+    url = `${API_URL}/aceptadas`;
+  } else if (estadoFiltro === 'pendientes') {
+    url = `${API_URL}/pendientes`;
+  } else if (estadoFiltro === 'rechazadas') {
+    url = `${API_URL}/rechazadas`;
   }
-};
 
-// 2. Listar adopciones aceptadas
-export const obtenerAdopcionesAceptadas = async () => {
   try {
-    const response = await axios.get(`${API_BASE_URL}/aceptadas`, {
-      headers: getHeaders(),
-    });
+    const response = await axios.get(url, { headers });
     return response.data.data;
   } catch (error) {
-    console.error("Error al obtener adopciones aceptadas:", error.response || error.message);
-    throw error;
+    throw new Error('Error al cargar las adopciones');
   }
 };
 
-// 3. Listar adopciones pendientes
-export const obtenerAdopcionesPendientes = async () => {
+// Cambiar el estado de una adopción
+export const cambiarEstadoAdopcion = async (adop_id, nuevoEstado, token) => {
+  const headers = { 'Authorization': `Bearer ${token}` };
   try {
-    const response = await axios.get(`${API_BASE_URL}/pendientes`, {
-      headers: getHeaders(),
-    });
+    const response = await axios.put(
+      `${API_URL}/${adop_id}/estado?nuevoEstado=${nuevoEstado}`,
+      {},
+      { headers }
+    );
     return response.data.data;
   } catch (error) {
-    console.error("Error al obtener adopciones pendientes:", error.response || error.message);
-    throw error;
-  }
-};
-
-// 4. Listar adopciones rechazadas
-export const obtenerAdopcionesRechazadas = async () => {
-  try {
-    const response = await axios.get(`${API_BASE_URL}/rechazadas`, {
-      headers: getHeaders(),
-    });
-    return response.data.data;
-  } catch (error) {
-    console.error("Error al obtener adopciones rechazadas:", error.response || error.message);
-    throw error;
-  }
-};
-
-// 5. Obtener adopción por ID
-export const obtenerAdopcionPorId = async (id) => {
-  try {
-    const response = await axios.get(`${API_BASE_URL}/${id}`, {
-      headers: getHeaders(),
-    });
-    return response.data.data;  // Ajusta según la estructura de tu respuesta
-  } catch (error) {
-    console.error("Error al obtener adopción por ID:", error.response || error.message);
-    throw error;
-  }
-};
-
-// 6. Cambiar estado de la adopción
-export const cambiarEstadoAdopcion = async (id, nuevoEstado) => {
-  try {
-    const response = await axios.put(`${API_BASE_URL}/${id}/estado?nuevoEstado=${nuevoEstado}`, {
-      headers: getHeaders(),
-    });
-    return response.data.data;  // Ajusta según la estructura de tu respuesta
-  } catch (error) {
-    console.error("Error al cambiar estado de la adopción:", error.response || error.message);
-    throw error;
+    throw new Error('Error al cambiar el estado de la adopción');
   }
 };
