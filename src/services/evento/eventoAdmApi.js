@@ -119,3 +119,17 @@ export const buscarEventosPorNombre = async (token, nombre) => {
     throw error;
   }
 };
+
+export const obtenerUsuariosPorEvento = async (token, eventoId) => {
+  try {
+    const response = await axios.get(`${API_URL}/${eventoId}/usuarios`, {
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    });
+    return response.data;
+  } catch (error) {
+    console.error('Error al obtener usuarios por evento', error);
+    throw error;
+  }
+};

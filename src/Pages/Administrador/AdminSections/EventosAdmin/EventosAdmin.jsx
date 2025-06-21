@@ -1,9 +1,8 @@
-// EventosAdmin.js
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { fetchEventos, registrarEvento, actualizarEvento, cambiarEstadoEvento, obtenerEventosPorEstado, buscarEventosPorNombre } from '../../../../services/evento/eventoAdmApi';
 import FormularioEvento from './FormularioEvento';
 import FiltroEstado from './FiltroEstado';
-import TablaEvento from './TablaEvento';  // Importa el nuevo componente TablaEvento
+import TablaEvento from './TablaEvento';  
 
 const EventosAdmin = () => {
   const [eventos, setEventos] = useState([]);
@@ -20,7 +19,7 @@ const EventosAdmin = () => {
   const [paginaActual, setPaginaActual] = useState(1);
   const [registrosPorPagina] = useState(10);
   const [filtroEstado, setFiltroEstado] = useState("");
-  const [searchTerm, setSearchTerm] = useState(''); // Estado para la búsqueda
+  const [searchTerm, setSearchTerm] = useState('');
 
   useEffect(() => {
     const token = localStorage.getItem('token');
@@ -33,42 +32,34 @@ const EventosAdmin = () => {
       }
     };
 
-    obtenerEventos(); // Llama a la función cuando cambia el filtro de estado
+    obtenerEventos(); 
   }, [filtroEstado]);
 
   useEffect(() => {
-    if (searchTerm) {
-      const token = localStorage.getItem('token');
-      const obtenerEventosPorNombre = async () => {
+    const token = localStorage.getItem('token');
+    const obtenerEventosPorNombre = async () => {
+      if (searchTerm) {
         try {
           const eventosPorNombre = await buscarEventosPorNombre(token, searchTerm);
-          setEventos(eventosPorNombre);
+          setEventos(eventosPorNombre.data); 
         } catch (error) {
           console.error('Error al buscar eventos por nombre', error);
         }
-      };
-      obtenerEventosPorNombre();
-    } else {
-      // Si el campo de búsqueda está vacío, muestra todos los eventos filtrados por estado
-      const token = localStorage.getItem('token');
-      const obtenerEventos = async () => {
-        try {
-          const eventosFiltrados = await obtenerEventosPorEstado(filtroEstado, token);
-          setEventos(eventosFiltrados);
-        } catch (error) {
-          console.error('Error al obtener eventos filtrados', error);
-        }
-      };
-      obtenerEventos();
-    }
-  }, [searchTerm, filtroEstado]);
+      } else {
+        const eventosFiltrados = await obtenerEventosPorEstado(filtroEstado, token);
+        setEventos(eventosFiltrados);
+      }
+    };
 
-  const eventosPaginados = Array.isArray(eventos) ? eventos.slice(
+    obtenerEventosPorNombre(); 
+  }, [searchTerm, filtroEstado]);  
+
+  // Paginación de eventos
+  const eventosPaginados = Array.isArray(eventos) && eventos ? eventos.slice(
     (paginaActual - 1) * registrosPorPagina,
     paginaActual * registrosPorPagina
-  ) : [];
-
-  const totalPaginas = Math.ceil(eventos.length / registrosPorPagina);
+  ) : []; 
+  const totalPaginas = Math.ceil((Array.isArray(eventos) ? eventos.length : 0) / registrosPorPagina);
 
   const handleCambiarPagina = (pagina) => {
     if (pagina >= 1 && pagina <= totalPaginas) {
@@ -124,9 +115,7 @@ const EventosAdmin = () => {
         console.error('ID de evento no válido:', evento);
         return;
       }
-
       const url = `http://localhost:8080/api/evento/${evento.even_id}/public`;
-      console.log('Solicitando detalles del evento con URL:', url); // Depuración
 
       const response = await fetch(url);
       if (!response.ok) {
@@ -150,56 +139,56 @@ const EventosAdmin = () => {
   };
 
   return (
-    <div className="container mx-auto p-8 bg-gray-50 min-h-screen">
-      <h2 className="text-4xl font-semibold text-gray-800 mb-8">Gestión de Eventos</h2>
+  <div className="container mx-auto p-8 bg-gray-50 min-h-screen">
+    <h2 className="text-4xl font-semibold text-gray-800 mb-8">Gestión de Eventos</h2>
 
-      {/* Formulario */}
-      <FormularioEvento
-        formData={formData}
-        setFormData={setFormData}
-        handleSubmit={handleSubmit}
-        editandoId={editandoId}
-      />
+    {/* Formulario */}
+    <FormularioEvento
+      formData={formData}
+      setFormData={setFormData}
+      handleSubmit={handleSubmit}
+      editandoId={editandoId}
+    />
 
-      {/* Filtro por estado y búsqueda */}
-      <div className="flex space-x-4 mb-6">
-        <div className="w-1/2">
-          <FiltroEstado filtroEstado={filtroEstado} setFiltroEstado={setFiltroEstado} />
-        </div>
-        <div className="w-1/2">
-          <input
-            type="text"
-            placeholder="Buscar por nombre..."
-            value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
-            className="w-full px-4 py-2 border-2 border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-          />
-        </div>
+    {/* Filtro por estado y búsqueda */}
+    <div className="flex justify-between mb-6">
+      <div className="w-1/2 pr-2"> {/* Ajustar espacio de la derecha */}
+        <FiltroEstado filtroEstado={filtroEstado} setFiltroEstado={setFiltroEstado} />
       </div>
-
-      {/* Tabla de eventos */}
-      <TablaEvento 
-        eventosPaginados={eventosPaginados}
-        handleEditar={handleEditar}
-        handleCambiarEstado={handleCambiarEstado}
-        handleVerMas={handleVerMas}
-      />
-
-      {/* Paginación */}
-      <div className="flex justify-between items-center mt-6">
-        <button onClick={() => handleCambiarPagina(paginaActual - 1)} disabled={paginaActual === 1} className="bg-blue-600 text-white px-6 py-2 rounded-lg disabled:opacity-50">
-          Anterior
-        </button>
-        <span className="text-gray-700">
-          Página {paginaActual} de {totalPaginas}
-        </span>
-        <button onClick={() => handleCambiarPagina(paginaActual + 1)} disabled={paginaActual === totalPaginas} className="bg-blue-600 text-white px-6 py-2 rounded-lg disabled:opacity-50">
-          Siguiente
-        </button>
+      <div className="w-1/2 pl-2"> {/* Ajustar espacio de la izquierda */}
+        <input
+          type="text"
+          placeholder="Buscar por nombre..."
+          value={searchTerm}
+          onChange={(e) => setSearchTerm(e.target.value)}
+          className="w-full px-4 py-2 border-2 border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+        />
       </div>
+    </div>
 
-      {/* Modal para mostrar los detalles del evento */}
-      {eventoSeleccionado && (
+    {/* Tabla de eventos */}
+    <TablaEvento 
+      eventosPaginados={eventosPaginados}
+      handleEditar={handleEditar}
+      handleCambiarEstado={handleCambiarEstado}
+      handleVerMas={handleVerMas}
+    />
+
+    {/* Paginación */}
+    <div className="flex justify-between items-center mt-6">
+      <button onClick={() => handleCambiarPagina(paginaActual - 1)} disabled={paginaActual === 1} className="bg-blue-600 text-white px-6 py-2 rounded-lg disabled:opacity-50">
+        Anterior
+      </button>
+      <span className="text-gray-700">
+        Página {paginaActual} de {totalPaginas}
+      </span>
+      <button onClick={() => handleCambiarPagina(paginaActual + 1)} disabled={paginaActual === totalPaginas} className="bg-blue-600 text-white px-6 py-2 rounded-lg disabled:opacity-50">
+        Siguiente
+      </button>
+    </div>
+
+    {/* Modal para mostrar los detalles del evento */}
+    {eventoSeleccionado && (
       <div className="fixed inset-0 flex justify-center items-center bg-black bg-opacity-50">
         <div className="bg-white p-8 rounded-lg shadow-xl max-w-lg w-full overflow-y-auto max-h-[80vh]">
           <h3 className="text-2xl font-semibold text-gray-800 mb-4">Detalles del Evento</h3>
@@ -225,8 +214,9 @@ const EventosAdmin = () => {
         </div>
       </div>
     )}
-    </div>
-  );
+  </div>
+);
+
 };
 
 export default EventosAdmin;
