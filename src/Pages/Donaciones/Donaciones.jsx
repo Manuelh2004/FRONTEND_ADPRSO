@@ -1,71 +1,86 @@
-import React from "react";
+import React, { useState } from "react";
+import perritoSilueta from "../../Imagenes/perrito-silueta.jpg";
 
 const Donaciones = () => {
+  const [mostrarModal, setMostrarModal] = useState(false);
   return (
     <div className="px-8 py-10 space-y-16">
-      {/* Planes de ayuda económica */}
-      <section>
-        <h2 className="text-3xl font-bold text-center mb-10">Planes de ayuda económica</h2>
-        <div className="grid md:grid-cols-2 gap-8 justify-items-center">
-          <div className="text-center space-y-4">
-            <div className="w-48 h-48 bg-gray-300">Imagen de perrito</div>
-            <p>Descripción del plan de apadrinamiento (10 soles mensuales).</p>
-            <button className="bg-blue-500 text-white px-4 py-2 rounded">10 soles mensuales</button>
-          </div>
-          <div className="text-center space-y-4">
-            <div className="w-48 h-48 bg-gray-300">Imagen de perrito</div>
-            <p>Descripción del plan de apadrinamiento (30 soles mensuales).</p>
-            <button className="bg-blue-500 text-white px-4 py-2 rounded">30 soles mensuales</button>
-          </div>
-        </div>
-      </section>
 
-      {/* Explicación de fondos */}
+      {/* Explicación de fondos*/}
       <section>
-        <h2 className="text-3xl font-bold text-center mb-10">Explicación de fondos</h2>
-        <div className="grid md:grid-cols-3 gap-8 justify-items-center">
-          {[1, 2, 3].map((_, i) => (
-            <div key={i} className="text-center space-y-2">
-              <div className="w-40 h-40 bg-gray-300">Imagen de perrito</div>
-              <p>Explicación corta sobre el uso de los fondos {i + 1}.</p>
-            </div>
-          ))}
+        <h1 className="text-4xl font-extrabold text-center text-indigo-700 mb-10">¿A dónde va tu ayuda?</h1>
+        <p className="text-center text-lg text-gray-600 max-w-3xl mx-auto mb-12">
+          Cada sol que donas cambia vidas. Con tu ayuda, podemos rescatar, alimentar, y dar una segunda oportunidad a animales que lo necesitan.
+        </p>
+        <div className="grid md:grid-cols-3 gap-8">
+          <div className="bg-white rounded-2xl shadow-xl p-6 text-center hover:scale-105 transition-transform duration-300 border-t-4 border-yellow-400">
+            <div className="w-20 h-20 mx-auto bg-yellow-100 rounded-full flex items-center justify-center text-3xl">🍖</div>
+            <h3 className="text-xl font-bold mt-4">Alimentación</h3>
+            <p className="text-gray-600 mt-2">Proveemos comida diaria y suplementos para mejorar su salud y crecimiento.</p>
+          </div>
+          <div className="bg-white rounded-2xl shadow-xl p-6 text-center hover:scale-105 transition-transform duration-300 border-t-4 border-pink-400">
+            <div className="w-20 h-20 mx-auto bg-pink-100 rounded-full flex items-center justify-center text-3xl">💉</div>
+            <h3 className="text-xl font-bold mt-4">Cuidados médicos</h3>
+            <p className="text-gray-600 mt-2">Realizamos tratamientos, vacunaciones y esterilizaciones para el bienestar de los animales.</p>
+          </div>
+          <div className="bg-white rounded-2xl shadow-xl p-6 text-center hover:scale-105 transition-transform duration-300 border-t-4 border-green-400">
+            <div className="w-20 h-20 mx-auto bg-green-100 rounded-full flex items-center justify-center text-3xl">🏡</div>
+            <h3 className="text-xl font-bold mt-4">Refugio y adopciones</h3>
+            <p className="text-gray-600 mt-2">Les damos un hogar temporal y buscamos familias amorosas que los adopten.</p>
+          </div>
         </div>
       </section>
 
       {/* Donación libre */}
-      <section>
-        <h2 className="text-3xl font-bold text-center mb-10">Donación libre</h2>
-        <div className="flex justify-around items-start flex-wrap gap-6">
-          <div className="text-center">
-            <div className="w-28 h-28 bg-gray-300 mx-auto">QR Yape</div>
-            <p>Yape</p>
-          </div>
-          <div className="text-center space-y-2">
-            <div className="w-48 h-48 bg-gray-300 mx-auto">Imagen de perrito</div>
-            <p>Descripción breve para incentivar donación libre.</p>
-            <p className="text-sm">Cuentas bancarias</p>
-          </div>
-          <div className="text-center">
-            <div className="w-28 h-28 bg-gray-300 mx-auto">QR Plin</div>
-            <p>Plin</p>
-          </div>
-        </div>
-      </section>
+    <section>
+      <h2 className="text-4xl font-extrabold text-center text-indigo-700 mb-10">Donación libre</h2>
+      
+      <div className="flex flex-col items-center gap-8">
 
-      {/* Productos en venta */}
-      <section>
-        <h2 className="text-3xl font-bold text-center mb-10">Productos en venta</h2>
-        <div className="grid md:grid-cols-4 gap-6 justify-items-center">
-          {[1, 2, 3, 4].map((_, i) => (
-            <div key={i} className="text-center space-y-2">
-              <div className="w-36 h-36 bg-gray-300">Imagen de merch</div>
-              <p>Descripción del producto {i + 1}</p>
-              <button className="bg-green-500 text-white px-4 py-2 rounded">Comprar</button>
-            </div>
-          ))}
+        {/* Card de donación */}
+        <div className="bg-white rounded-2xl shadow-lg p-6 w-full max-w-md text-center space-y-4 hover:shadow-2xl transition-shadow">
+          <div className="w-48 h-48 bg-gray-300 mx-auto rounded-lg overflow-hidden">
+            {/* Reemplaza esto por una imagen real si tienes una */}
+            <img
+              src={perritoSilueta}
+              alt="Perrito en adopción"
+              className="w-full h-full object-cover"
+            />
+          </div>
+          <p className="text-gray-700 text-base">
+            Tu apoyo hace la diferencia. Con una donación libre, ayudas a que más perritos para que reciban alimento, cuidados médicos y una oportunidad de ser felices.
+          </p>
+          <button
+            onClick={() => setMostrarModal(true)}
+              className="bg-pink-500 hover:bg-pink-600 text-white font-semibold px-6 py-2 rounded-lg shadow"
+            >
+              Donar ahora
+          </button>
         </div>
-      </section>
+      </div>
+    </section>
+
+    {/* Modal con QR */}
+      {mostrarModal && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+          <div className="bg-white rounded-xl p-6 max-w-sm w-full text-center shadow-2xl relative">
+            <h3 className="text-xl font-semibold mb-4 text-gray-800">Escanea el código QR con Yape</h3>
+            <img
+              src="Imagenes/QR"
+              alt="QR Yape"
+              className="w-48 h-48 mx-auto object-contain rounded-md"
+            />
+            <p className="text-sm text-gray-600 mt-4">¡Gracias por todo tu apoyo!</p>
+            <button
+              onClick={() => setMostrarModal(false)}
+              className="mt-6 bg-gray-700 hover:bg-gray-800 text-white px-4 py-2 rounded-lg"
+            >
+              Cerrar
+            </button>
+          </div>
+        </div>
+      )}
+
     </div>
   );
 };
