@@ -11,6 +11,7 @@ import ProtectedRoute from './components/ProtectedRoute';
 import ListaEventos from './Pages/Eventos/ListaEventos';
 import EventoDetalle from './Pages/Eventos/EventoDetalle';
 import { useAuth } from './context/AuthContext';
+import Administrador from './Pages/Administrador/Administrador';
 
 export const App = () => {
   const { isAuthenticated, role, logout } = useAuth();
@@ -28,7 +29,13 @@ export const App = () => {
             <li><Link to="/nosotros">Nosotros</Link></li>
             <li><Link to="/adopta">Adopta</Link></li>
             <li><Link to="/donaciones">Donaciones</Link></li>
-            <li><Link to="/contacto">Contacto</Link></li>
+            <li><Link to="/contacto">Contacto</Link></li>           
+            
+           {isAuthenticated && role === 'ROLE_ADMIN' && (
+              <li><Link to="/admin-only">Administrador</Link></li>
+            )}
+
+         
           </ul>
         </div>
 
@@ -81,7 +88,7 @@ export const App = () => {
         <Route
           path="/admin-only"
           element={
-            <ProtectedRoute allowedRoles={['Administrador']} element={<h2>Vista Admin</h2>} />
+            <ProtectedRoute allowedRoles={['ROLE_ADMIN']} element={<Administrador/>} />
           }
         />
         <Route
