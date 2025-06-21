@@ -169,7 +169,7 @@ const AdopcionesAdmin = () => {
                     <>
                       <button
                         className="bg-green-500 text-white px-4 py-2 rounded ml-2 hover:bg-green-700 transition duration-300"
-                        onClick={() => solicitarCambioEstado(adopcion, 1)} // Cambia a "Aceptada"
+                        onClick={() => solicitarCambioEstado(adopcion, 1)} 
                       >
                         Aceptar
                       </button>

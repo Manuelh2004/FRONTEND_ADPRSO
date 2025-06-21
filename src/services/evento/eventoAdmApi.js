@@ -104,4 +104,18 @@ export const obtenerEventosPorEstado = async (estadoFiltro, token) => {
   }
 };
 
-
+// Función para buscar eventos por nombre
+export const buscarEventosPorNombre = async (token, nombre) => {
+  try {
+    const response = await axios.get(`${API_URL}/buscar`, {
+      params: { nombre: nombre }, // Pasa el nombre como parámetro
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    });
+    return response.data; // Devuelve la respuesta de la API
+  } catch (error) {
+    console.error('Error buscando eventos por nombre', error);
+    throw error;
+  }
+};
