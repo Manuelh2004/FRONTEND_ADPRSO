@@ -3,6 +3,7 @@ import { fetchEventos, registrarEvento, actualizarEvento, cambiarEstadoEvento, o
 import FormularioEvento from './FormularioEvento';
 import FiltroEstado from './FiltroEstado';
 import TablaEvento from './TablaEvento';  
+import ModalEvento from './ModalEvento'; // Importar el nuevo componente del modal
 
 const EventosAdmin = () => {
   const [eventos, setEventos] = useState([]);
@@ -139,84 +140,55 @@ const EventosAdmin = () => {
   };
 
   return (
-  <div className="container mx-auto p-8 bg-gray-50 min-h-screen">
-    <h2 className="text-4xl font-semibold text-gray-800 mb-8">Gestión de Eventos</h2>
+    <div className="container mx-auto p-8 bg-gray-50 min-h-screen">
+      <h2 className="text-4xl font-semibold text-gray-800 mb-8">Gestión de Eventos</h2>
 
-    {/* Formulario */}
-    <FormularioEvento
-      formData={formData}
-      setFormData={setFormData}
-      handleSubmit={handleSubmit}
-      editandoId={editandoId}
-    />
+      {/* Formulario */}
+      <FormularioEvento
+        formData={formData}
+        setFormData={setFormData}
+        handleSubmit={handleSubmit}
+        editandoId={editandoId}
+      />
 
-    {/* Filtro por estado y búsqueda */}
-    <div className="flex justify-between mb-6">
-      <div className="w-1/2 pr-2"> {/* Ajustar espacio de la derecha */}
-        <FiltroEstado filtroEstado={filtroEstado} setFiltroEstado={setFiltroEstado} />
+      {/* Filtro por estado y búsqueda */}
+      <FiltroEstado 
+        filtroEstado={filtroEstado} 
+        setFiltroEstado={setFiltroEstado} 
+        searchTerm={searchTerm} 
+        setSearchTerm={setSearchTerm}
+      />
+
+      {/* Tabla de eventos */}
+      <TablaEvento 
+        eventosPaginados={eventosPaginados}
+        handleEditar={handleEditar}
+        handleCambiarEstado={handleCambiarEstado}
+        handleVerMas={handleVerMas}
+      />
+
+      {/* Paginación */}
+      <div className="flex justify-between items-center mt-6">
+        <button onClick={() => handleCambiarPagina(paginaActual - 1)} disabled={paginaActual === 1} className="bg-blue-600 text-white px-6 py-2 rounded-lg disabled:opacity-50">
+          Anterior
+        </button>
+        <span className="text-gray-700">
+          Página {paginaActual} de {totalPaginas}
+        </span>
+        <button onClick={() => handleCambiarPagina(paginaActual + 1)} disabled={paginaActual === totalPaginas} className="bg-blue-600 text-white px-6 py-2 rounded-lg disabled:opacity-50">
+          Siguiente
+        </button>
       </div>
-      <div className="w-1/2 pl-2"> {/* Ajustar espacio de la izquierda */}
-        <input
-          type="text"
-          placeholder="Buscar por nombre..."
-          value={searchTerm}
-          onChange={(e) => setSearchTerm(e.target.value)}
-          className="w-full px-4 py-2 border-2 border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+
+      {/* Mostrar el modal si se ha seleccionado un evento */}
+      {eventoSeleccionado && (
+        <ModalEvento 
+          eventoSeleccionado={eventoSeleccionado} 
+          setEventoSeleccionado={setEventoSeleccionado} 
         />
-      </div>
+      )}
     </div>
-
-    {/* Tabla de eventos */}
-    <TablaEvento 
-      eventosPaginados={eventosPaginados}
-      handleEditar={handleEditar}
-      handleCambiarEstado={handleCambiarEstado}
-      handleVerMas={handleVerMas}
-    />
-
-    {/* Paginación */}
-    <div className="flex justify-between items-center mt-6">
-      <button onClick={() => handleCambiarPagina(paginaActual - 1)} disabled={paginaActual === 1} className="bg-blue-600 text-white px-6 py-2 rounded-lg disabled:opacity-50">
-        Anterior
-      </button>
-      <span className="text-gray-700">
-        Página {paginaActual} de {totalPaginas}
-      </span>
-      <button onClick={() => handleCambiarPagina(paginaActual + 1)} disabled={paginaActual === totalPaginas} className="bg-blue-600 text-white px-6 py-2 rounded-lg disabled:opacity-50">
-        Siguiente
-      </button>
-    </div>
-
-    {/* Modal para mostrar los detalles del evento */}
-    {eventoSeleccionado && (
-      <div className="fixed inset-0 flex justify-center items-center bg-black bg-opacity-50">
-        <div className="bg-white p-8 rounded-lg shadow-xl max-w-lg w-full overflow-y-auto max-h-[80vh]">
-          <h3 className="text-2xl font-semibold text-gray-800 mb-4">Detalles del Evento</h3>
-
-          {/* Mostrar los detalles del evento */}
-          <p><strong className="text-gray-600">Nombre:</strong> {eventoSeleccionado.even_nombre}</p>
-          <p><strong className="text-gray-600">Lugar:</strong> {eventoSeleccionado.even_lugar}</p>
-          <p><strong className="text-gray-600">Fecha de Inicio:</strong> {eventoSeleccionado.even_fecha_inicio}</p>
-          <p><strong className="text-gray-600">Fecha de Fin:</strong> {eventoSeleccionado.even_fecha_fin}</p>
-          <p><strong className="text-gray-600">Descripción:</strong></p>
-          <div className="text-gray-700 whitespace-pre-line">{eventoSeleccionado.even_descripcion}</div>
-
-          <p><strong className="text-gray-600">Estado:</strong> {eventoSeleccionado.even_estado === 1 ? 'Activo' : 'Inactivo'}</p>
-
-          {/* Botón para cerrar el modal */}
-          <div className="mt-4">
-            <button 
-              onClick={() => setEventoSeleccionado(null)} 
-              className="bg-blue-600 text-white py-2 px-6 rounded-lg hover:bg-blue-700 transition duration-300 transform hover:scale-105">
-              Cerrar
-            </button>
-          </div>
-        </div>
-      </div>
-    )}
-  </div>
-);
-
+  );
 };
 
 export default EventosAdmin;
