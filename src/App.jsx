@@ -1,13 +1,15 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
 import Nosotros from './Pages/Nosotros/Nosotros';
 import Adopta from './Pages/Adopta/Adopta';
 import Donaciones from './Pages/Donaciones/Donaciones';
 import Contacto from './Pages/Contacto/Contacto';
 import MascotaDetalle from './Pages/Adopta/MascotaDetalle';
-import Voluntario from './Pages/Voluntario/Voluntario';
+import Eventos from './Pages/Eventos/Eventos';
 import Login from './Login';
 import ProtectedRoute from './components/ProtectedRoute';
+import ListaEventos from './Pages/Eventos/ListaEventos';
+import EventoDetalle from './Pages/Eventos/EventoDetalle';
 import { useAuth } from './context/AuthContext';
 
 export const App = () => {
@@ -22,7 +24,7 @@ export const App = () => {
           </div>
 
           <ul className="hidden md:flex space-x-6 text-blue-900 font-medium">
-            <li><Link to="/">Voluntariado</Link></li>
+            <li><Link to="/eventos">Eventos</Link></li>
             <li><Link to="/nosotros">Nosotros</Link></li>
             <li><Link to="/adopta">Adopta</Link></li>
             <li><Link to="/donaciones">Donaciones</Link></li>
@@ -59,7 +61,7 @@ export const App = () => {
 
       <Routes>
         {/* RUTA PÚBLICA */}
-        <Route path="/" element={<Voluntario />} />
+        <Route path="/eventos" element={<Eventos/>} />
 
         {/* RUTAS PÚBLICAS EXTRAS */}
         <Route path="/nosotros" element={<Nosotros />} />
@@ -67,6 +69,10 @@ export const App = () => {
         <Route path="/adopta/:id" element={<MascotaDetalle />} />
         <Route path="/donaciones" element={<Donaciones />} />
         <Route path="/contacto" element={<Contacto />} />
+        <Route path="/eventos/lista" element={<ListaEventos />} />
+        <Route path="/eventos/:id" element={<EventoDetalle />} />
+
+
 
         {/* RUTA DE LOGIN */}
         <Route path="/login" element={<Login />} />
