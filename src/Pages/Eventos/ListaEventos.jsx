@@ -12,7 +12,7 @@ export default function ListaEventos () {
   useEffect(() => {
     const fetchEventos = async () => {
       try {
-        const response = await fetch('http://localhost:8080/api/evento/activos/public');
+        const response = await fetch(`http://localhost:8080/api/evento/activos/public`);
         const data = await response.json();
 
         if (response.ok && data.status === 'success') {

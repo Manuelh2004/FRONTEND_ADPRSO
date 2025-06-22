@@ -1,7 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
+
 
 export default function EventoDetalle () {
+  const navigate = useNavigate();
   const { id } = useParams();
   const [evento, setEvento] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -28,9 +31,9 @@ export default function EventoDetalle () {
     fetchEvento();
   }, [id]);
 
-  const handleRegistrarEvento = () => {
+  const handleRegistrarse = () => {
     // Registro del usuario al evento
-    alert('Función de registro aún no implementada');
+    navigate('/Login');;
   };
 
   if (loading) return <p className="text-center mt-10">Cargando detalles...</p>;
@@ -95,8 +98,9 @@ export default function EventoDetalle () {
         </p>
         <p className="text-gray-800 leading-relaxed whitespace-pre-line">{evento.even_descripcion}</p>
         <button
-          onClick={handleRegistrarEvento}
-          className="bg-blue-600 text-white font-bold px-4 py-2 rounded hover:bg-blue-700 mt-4"
+          onClick={handleRegistrarse}
+          className="text-white font-bold px-4 py-2 rounded mt-4"
+          style={{ backgroundColor: '#dda15e' }}
         >
           ¡Quiero participar!
         </button>
