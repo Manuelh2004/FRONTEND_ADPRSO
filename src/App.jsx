@@ -84,8 +84,6 @@ export const App = () => {
         <Route path="/donaciones" element={<Donaciones />} />
         <Route path="/contacto" element={<Contacto />} />
         <Route path="/eventos/lista" element={<ListaEventos />} />
-
-
         <Route path="/eventos/:id" element={<EventoDetalle />} />
 
 
