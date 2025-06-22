@@ -1,48 +1,65 @@
 import axios from 'axios';
 
-const API_BASE_URL = "http://localhost:8080/admin/api/mascota";
+const API_URL = 'http://localhost:8080/admin/api/mascota';  // Asegúrate de tener la URL correcta
 
-// 🔐 Función para obtener headers con token
-const getHeaders = () => {
-  const token = localStorage.getItem('token');
-  return {
-    Authorization: `Bearer ${token}`,
-    'Content-Type': 'application/json'
-  };
+// Función para obtener todas las mascotas
+export const listarMascotas = async (token) => {
+  try {
+    const response = await axios.get(`${API_URL}/listar_mascota`, {
+      headers: {
+        'Authorization': `Bearer ${token}`,
+      }
+    });
+    return response.data;
+  } catch (error) {
+    console.error('Error al listar mascotas:', error);
+    throw error;
+  }
 };
 
-// 📥 1. Listar mascotas
-export const listarMascotas = async () => {
-  const response = await axios.get(`${API_BASE_URL}/listar_mascota`, {
-    headers: getHeaders()
-  });
-  return response.data.data; // o como esté estructurada tu respuesta
+// Función para registrar una nueva mascota
+export const registrarMascota = async (token, mascotaData) => {
+  try {
+    const response = await axios.post(`${API_URL}/registrar_mascota`, mascotaData, {
+      headers: {
+        'Authorization': `Bearer ${token}`,
+      }
+    });
+    return response.data;
+  } catch (error) {
+    console.error('Error al registrar mascota:', error);
+    throw error;
+  }
 };
 
-// 🐾 2. Registrar mascota (DTO: mascota + gustos + imágenes)
-export const registrarMascota = (data, token) =>
-  axios.post(`http://localhost:8080/admin/api/mascota/registrar`, data, {
-    headers: {
-      Authorization: `Bearer ${token}`
-    }
-});
-
-// ✏️ 3. Actualizar mascota (por ID)
-export const actualizarMascota = async (id, mascota, gustosIds = [], imagenUrls = []) => {
-  const params = new URLSearchParams();
-  gustosIds.forEach(id => params.append("nuevosGustosIds", id));
-  imagenUrls.forEach(url => params.append("nuevasImagenUrls", url));
-
-  const response = await axios.put(`${API_BASE_URL}/${id}?${params.toString()}`, mascota, {
-    headers: getHeaders()
-  });
-  return response.data.data;
+// Función para actualizar los datos de una mascota
+export const actualizarMascota = async (token, id, mascotaData) => {
+  try {
+    const response = await axios.put(`${API_URL}/${id}`, mascotaData, {
+      headers: {
+        'Authorization': `Bearer ${token}`,
+        'Content-Type': 'application/json',
+      }
+    });
+    return response.data;
+  } catch (error) {
+    console.error('Error al actualizar mascota:', error);
+    throw error;
+  }
 };
 
-// 🔄 4. Cambiar estado (activo/inactivo)
-export const cambiarEstadoMascota = async (id, nuevoEstado) => {
-  const response = await axios.put(`${API_BASE_URL}/${id}/estado?nuevoEstado=${nuevoEstado}`, null, {
-    headers: getHeaders()
-  });
-  return response.data.data;
+// Función para cambiar el estado de una mascota
+export const cambiarEstadoMascota = async (token, id, nuevoEstado) => {
+  try {
+    const response = await axios.put(`${API_URL}/${id}/estado`, null, {
+      params: { nuevoEstado },
+      headers: {
+        'Authorization': `Bearer ${token}`,
+      }
+    });
+    return response.data;
+  } catch (error) {
+    console.error('Error al cambiar estado de la mascota:', error);
+    throw error;
+  }
 };

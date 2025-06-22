@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import FormularioMascota from './FormularioMascota'; // Asegúrate de importar el componente
+import ApiService from '../../../../services/itemAdmApi'; 
+import { registrarMascota } from '../../../../services/mascota/mascotaAdmApi'; // Asegúrate de tener la ruta correcta
 
 const MascotasAdmin = () => {
   // Declaración de los estados
@@ -30,52 +32,39 @@ const MascotasAdmin = () => {
   // Obtener las listas de items desde el servidor
   useEffect(() => {
     const fetchData = async () => {
+      const token = localStorage.getItem('token');
+      
+      // Verificar si existe token
+      if (!token) {
+        console.error("No token found.");
+        return;
+      }
+
       try {
-        const token = localStorage.getItem('token');
-        
-        // Realizamos las peticiones a las API
-        const responseSalud = await axios.get('http://localhost:8080/admin/api/item/estado_salud', {
-          headers: { 'Authorization': `Bearer ${token}` }
-        });
-        setEstadoSalud(responseSalud.data.data);
+        const [dataSalud, dataVacuna, dataEnergia, dataTamanio, dataTipoMascota, dataSexo, dataGustos] = await Promise.all([
+          ApiService.getData('estado_salud', token),
+          ApiService.getData('estado_vacuna', token),
+          ApiService.getData('nivel_energia', token),
+          ApiService.getData('tamanios', token),
+          ApiService.getData('tipo_mascota', token),
+          ApiService.getData('sexo', token),
+          ApiService.getData('gustos', token)
+        ]);
 
-        const responseVacuna = await axios.get('http://localhost:8080/admin/api/item/estado_vacuna', {
-          headers: { 'Authorization': `Bearer ${token}` }
-        });
-        setEstadoVacuna(responseVacuna.data.data);
-
-        const responseEnergia = await axios.get('http://localhost:8080/admin/api/item/nivel_energia', {
-          headers: { 'Authorization': `Bearer ${token}` }
-        });
-        setNivelEnergia(responseEnergia.data.data);
-
-        const responseTamanio = await axios.get('http://localhost:8080/admin/api/item/tamanios', {
-          headers: { 'Authorization': `Bearer ${token}` }
-        });
-        setTamanios(responseTamanio.data.data);
-
-        const responseTipoMascota = await axios.get('http://localhost:8080/admin/api/item/tipo_mascota', {
-          headers: { 'Authorization': `Bearer ${token}` }
-        });
-        setTipoMascota(responseTipoMascota.data.data);
-
-        const responseSexo = await axios.get('http://localhost:8080/admin/api/item/sexo', {
-          headers: { 'Authorization': `Bearer ${token}` }
-        });
-        setSexos(responseSexo.data.data);
-
-        const responseGustos = await axios.get('http://localhost:8080/admin/api/item/gustos', {
-          headers: { 'Authorization': `Bearer ${token}` }
-        });
-        setGustos(responseGustos.data.data);
-
+        setEstadoSalud(dataSalud);
+        setEstadoVacuna(dataVacuna);
+        setNivelEnergia(dataEnergia);
+        setTamanios(dataTamanio);
+        setTipoMascota(dataTipoMascota);
+        setSexos(dataSexo);
+        setGustos(dataGustos);
       } catch (error) {
         console.error("Error al cargar las listas de items:", error);
       }
     };
 
     fetchData();
-  }, []);
+  }, []); // Solo se ejecuta al montar el componente
 
   const handleChange = e => {
     const { name, value } = e.target;
@@ -93,7 +82,7 @@ const MascotasAdmin = () => {
 
   const handleImageRemove = (index) => {
     const newImagenes = [...imagenes];
-    newImagenes.splice(index, 1); // Elimina el campo de imagen en la posición `index`
+    newImagenes.splice(index, 1); // Elimina el campo de imagen en la posición index
     setImagenes(newImagenes);
   };
 
@@ -150,21 +139,40 @@ const MascotasAdmin = () => {
     };
 
     const token = localStorage.getItem('token');
-    try {
-      const response = await axios.post('http://localhost:8080/admin/api/mascota/registrar_mascota', mascotaDTO, {
-        headers: {
-          'Authorization': `Bearer ${token}`,
-          'Content-Type': 'application/json',
-        }
-      });
+    if (!token) {
+      alert('Token no encontrado.');
+      return;
+    }
 
-      if (response.status === 201) {
+    try {
+      const response = await registrarMascota(token, mascotaDTO);  // Usamos el servicio aquí
+
+      // Verificar si la respuesta fue exitosa
+      if (response.code === 201) {
         console.log("Mascota registrada con éxito:", response.data);
+
+        // Limpiar los campos del formulario después del registro exitoso
+        setFormData({
+          masc_nombre: '',
+          masc_fecha_nacimiento: '',
+          masc_historia: '',
+          masc_observacion: '',
+          estadoSalud: '',
+          estadoVacuna: '',
+          nivelEnergia: '',
+          tamanio: '',
+          tipoMascota: '',
+          sexo: ''
+        });
+        setImagenes(['']);
+        setGustosSeleccionados([]);
       } else {
         console.error('Error al registrar mascota:', response);
+        alert('Error al registrar mascota.');
       }
     } catch (error) {
       console.error("Error al registrar mascota:", error);
+      alert('Hubo un error al registrar la mascota.');
     }
   };
 
@@ -186,6 +194,8 @@ const MascotasAdmin = () => {
       sexos={sexos}
       imagenes={imagenes}
       handleSubmit={handleSubmit}
+
+      
     />
   );
 };

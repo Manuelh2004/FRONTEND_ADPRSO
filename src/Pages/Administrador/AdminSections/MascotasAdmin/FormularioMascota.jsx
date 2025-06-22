@@ -1,5 +1,3 @@
-import React from 'react';
-
 const FormularioMascota = ({
   formData,
   handleChange,
@@ -198,13 +196,13 @@ const FormularioMascota = ({
               <input
                 type="text"
                 value={img}
-                onChange={(e) => handleImageChange(index, e.target.value)}
+                onChange={(e) => handleImageChange(index, e.target.value)} // Llamada a handleImageChange
                 placeholder={`URL de imagen ${index + 1}`}
                 className="w-full border border-gray-300 rounded px-3 py-2"
               />
               <button
                 type="button"
-                onClick={() => handleImageRemove(index)}
+                onClick={() => handleImageRemove(index)} // Llamada a handleImageRemove
                 className="text-red-500 hover:text-red-700 text-sm font-medium"
               >
                 Eliminar
@@ -228,6 +226,7 @@ const FormularioMascota = ({
           >
             Registrar Mascota
           </button>
+          
         </div>
       </form>
     </div>
