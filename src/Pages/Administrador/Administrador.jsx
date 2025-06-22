@@ -3,20 +3,48 @@ import MascotasAdmin from './AdminSections/MascotasAdmin/MascotasAdmin';
 import EventosAdmin from './AdminSections/EventosAdmin/EventosAdmin';
 import AdopcionesAdmin from './AdminSections/AdopcionesAdmin/AdopcionesAdmin';
 import UsuariosAdmin from './AdminSections/UsuariosAdmin/UsuariosAdmin';
+import ListarMascota from './AdminSections/MascotasAdmin/ListarMascota';  // Correcto
 
 const Administrador = () => {
   const [seccionActiva, setSeccionActiva] = useState('mascotas');
+  const [subseccionActiva, setSubseccionActiva] = useState('registrar'); // Estado para manejar submódulos
 
   const renderContenido = () => {
     switch (seccionActiva) {
       case 'mascotas':
-        return <MascotasAdmin />;
+        return (
+          <div>
+            {/* Submódulos para la sección "Mascotas" */}
+            <nav className="flex gap-4 mb-6">
+              <button
+                onClick={() => setSubseccionActiva('registrar')}
+                className={`px-4 py-2 rounded-lg transition-colors ${
+                  subseccionActiva === 'registrar'
+                    ? 'bg-blue-600 font-semibold'
+                    : 'hover:bg-blue-700'
+                }`}
+              >
+                Registrar
+              </button>
+              <button
+                onClick={() => setSubseccionActiva('listar')}
+                className={`px-4 py-2 rounded-lg transition-colors ${
+                  subseccionActiva === 'listar'
+                    ? 'bg-blue-600 font-semibold'
+                    : 'hover:bg-blue-700'
+                }`}
+              >
+                Listar
+              </button>
+            </nav>
+            {/* Renderizar el contenido según el submódulo seleccionado */}
+            {subseccionActiva === 'registrar' ? <MascotasAdmin /> : <ListarMascota />}
+          </div>
+        );
       case 'eventos':
         return <EventosAdmin />;
       case 'adopciones':
-        return <AdopcionesAdmin />;
-      case 'usuarios':
-        return <UsuariosAdmin />;
+        return <AdopcionesAdmin />;     
       default:
         return <MascotasAdmin />;
     }
@@ -26,7 +54,6 @@ const Administrador = () => {
     { id: 'mascotas', label: '🐾 Mascotas' },
     { id: 'eventos', label: '📅 Eventos' },
     { id: 'adopciones', label: '📋 Adopciones' },
-    { id: 'usuarios', label: '👥 Usuarios' },
   ];
 
   return (

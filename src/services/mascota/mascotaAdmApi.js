@@ -4,16 +4,28 @@ const API_URL = 'http://localhost:8080/admin/api/mascota';  // Asegúrate de ten
 
 // Función para obtener todas las mascotas
 export const listarMascotas = async (token) => {
+  // Verificar si el token existe
+  if (!token) {
+    throw new Error('Token de autenticación es necesario');
+  }
+
   try {
+    // Realizar la solicitud con el token en los encabezados
     const response = await axios.get(`${API_URL}/listar_mascota`, {
       headers: {
-        'Authorization': `Bearer ${token}`,
+        'Authorization': `Bearer ${token}`,  // Asegúrate de que el token esté en el encabezado Authorization
       }
     });
-    return response.data;
+
+    return response.data;  // Retornar los datos obtenidos de la API
   } catch (error) {
-    console.error('Error al listar mascotas:', error);
-    throw error;
+    // Manejo de errores
+    if (error.response && error.response.status === 401) {
+      throw new Error('No autorizado. El token podría estar expirado o no ser válido.');
+    } else {
+      console.error('Error al listar mascotas:', error);
+      throw new Error('Error al listar mascotas.');
+    }
   }
 };
 
