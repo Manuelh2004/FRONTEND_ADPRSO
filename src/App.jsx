@@ -13,58 +13,65 @@ import EventoDetalle from './Pages/Eventos/EventoDetalle';
 import { useAuth } from './context/AuthContext';
 import Administrador from './Pages/Administrador/Administrador';
 
+
+
 export const App = () => {
   const { isAuthenticated, role, logout } = useAuth();
 
   return (
     <Router>
-      <nav className="flex items-center justify-between px-6 py-4 bg-white shadow-md">
-        <div className="flex items-center space-x-4">
-          <div className="bg-blue-900 text-white font-bold text-xl px-6 py-2 rounded-full">
-            <span className="tracking-wide">San Francisco</span>
+    <nav className="flex items-center justify-between px-6 py-4 bg-white shadow-lg border-b border-blue-100 transition-all duration-300 sticky top-0 z-50">
+          <div className="flex items-center space-x-6">
+            <div className="bg-blue-900 text-white font-extrabold text-2xl px-6 py-2 rounded-full shadow-md hover:scale-105 transform transition duration-300">
+              <span className="tracking-wider">San Francisco</span>
+            </div>
+
+            <ul className="hidden md:flex space-x-6 text-blue-900 font-semibold">
+              <li className="hover:text-blue-600 transition duration-300">
+                <Link to="/eventos">Eventos</Link>
+              </li>
+              <li className="hover:text-blue-600 transition duration-300">
+                <Link to="/nosotros">Nosotros</Link>
+              </li>
+              <li className="hover:text-blue-600 transition duration-300">
+                <Link to="/adopta">Adopta</Link>
+              </li>
+              <li className="hover:text-blue-600 transition duration-300">
+                <Link to="/donaciones">Donaciones</Link>
+              </li>
+              <li className="hover:text-blue-600 transition duration-300">
+                <Link to="/contacto">Contacto</Link>
+              </li>
+              {isAuthenticated && role === 'ROLE_ADMIN' && (
+                <li className="hover:text-blue-600 transition duration-300">
+                  <Link to="/admin-only">Administrador</Link>
+                </li>
+              )}
+            </ul>
           </div>
 
-          <ul className="hidden md:flex space-x-6 text-blue-900 font-medium">
-            <li><Link to="/eventos">Eventos</Link></li>
-            <li><Link to="/nosotros">Nosotros</Link></li>
-            <li><Link to="/adopta">Adopta</Link></li>
-            <li><Link to="/donaciones">Donaciones</Link></li>
-            <li><Link to="/contacto">Contacto</Link></li>           
-            
-           {isAuthenticated && role === 'ROLE_ADMIN' && (
-              <li><Link to="/admin-only">Administrador</Link></li>
-            )}
-
-         
-          </ul>
-        </div>
-
-        <div className="flex items-center space-x-4">
-          <button className="bg-yellow-400 text-black font-bold px-4 py-2 rounded-full shadow-md hover:bg-yellow-300 transition">
-            AYUDA AQUÍ
-          </button>
-
-          {isAuthenticated ? (
-            <>
-              <div className="text-blue-900 font-medium">Rol: {role}</div>
-              <button
-                onClick={logout}
-                className="text-red-500 font-medium hover:underline"
+          <div className="flex items-center space-x-4">
+            {isAuthenticated ? (
+              <>
+                <div className="text-blue-900 font-semibold">Rol: {role}</div>
+                <button
+                  onClick={logout}
+                  className="text-white bg-red-500 px-4 py-2 rounded-full hover:bg-red-600 transition duration-300 shadow-sm"
+                >
+                  Cerrar sesión
+                </button>
+              </>
+            ) : (
+              <Link
+                to="/login"
+                className="text-white bg-blue-900 px-4 py-2 rounded-full hover:bg-blue-700 transition duration-300 shadow-sm"
               >
-                Cerrar sesión
-              </button>
-            </>
-          ) : (
-            <Link
-              to="/login"
-              className="text-blue-900 font-medium hover:underline"
-            >
-              Iniciar sesión
-            </Link>
-          )}
-        </div>
+                Iniciar sesión
+              </Link>
+            )}
+          </div>
+        </nav>
 
-      </nav>
 
       <Routes>
         {/* RUTA PÚBLICA */}
@@ -77,6 +84,8 @@ export const App = () => {
         <Route path="/donaciones" element={<Donaciones />} />
         <Route path="/contacto" element={<Contacto />} />
         <Route path="/eventos/lista" element={<ListaEventos />} />
+
+
         <Route path="/eventos/:id" element={<EventoDetalle />} />
 
 

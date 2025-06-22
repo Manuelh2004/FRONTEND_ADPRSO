@@ -10,7 +10,7 @@ export default function EventoDetalle () {
   useEffect(() => {
     const fetchEvento = async () => {
       try {
-        const response = await fetch(`/api/evento/${id}/public`);
+        const response = await fetch(`http://localhost:8080/api/evento/${id}/public`);
         const data = await response.json();
 
         if (response.ok && data.status === 'success') {
@@ -37,54 +37,69 @@ export default function EventoDetalle () {
   if (error) return <p className="text-center text-red-600 mt-10">Error: {error}</p>;
   if (!evento) return <p className="text-center mt-10">Evento no encontrado</p>;
 
-    // Cálculo de días restantes
-  const calcularMensajeDias = () => {
-    const fechaInicio = new Date(evento.even_fecha_inicio);
-    const hoy = new Date();
-    hoy.setHours(0, 0, 0, 0);
-    fechaInicio.setHours(0, 0, 0, 0);
+    // Función auxiliar para crear fecha local sin problemas de zona horaria
+    const crearFechaLocal = (fechaString) => {
+      const fecha = new Date(fechaString + 'T00:00:00');
+      return fecha;
+    };
 
-    const diffTime = fechaInicio - hoy;
-    const diffDias = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+    // Cálculo de días restantes - CORREGIDO
+    const calcularMensajeDias = () => {
+      const fechaInicio = crearFechaLocal(evento.even_fecha_inicio);
+      const fechaFin = crearFechaLocal(evento.even_fecha_fin);
+      const hoy = new Date();
+      hoy.setHours(0, 0, 0, 0);
 
-    if (diffDias > 0) {
-      return <p className="text-blue-600 font-medium">Faltan {diffDias} día{diffDias > 1 ? 's' : ''}</p>;
-    } else if (diffDias === 0) {
-      return <p className="text-green-600 font-medium">¡Hoy es el evento!</p>;
-    } else {
-      return <p className="text-red-500 font-medium">Evento finalizado</p>;
-    }
-  };
-  return (
-    <div className="max-w-3xl mx-auto p-6 bg-white shadow-md rounded-lg mt-6">
-      {evento.even_imagen && (
-        <img
-          src={evento.even_imagen}
-          alt={evento.even_nombre}
-          className="w-full h-64 object-cover rounded-md mb-4"
-        />
-      )}
-      <h2 className="text-3xl font-bold text-blue-900 mb-2">{evento.even_nombre}</h2>
-      <p className="text-gray-700 mb-1">
-        <strong>Ubicación:</strong> {evento.even_lugar}
-      </p>
-      <p className="text-gray-700 mb-1">
-        <strong>Fecha inicio:</strong> {new Date(evento.even_fecha_inicio).toLocaleDateString()}
-      </p>
-      {calcularMensajeDias()}
+      // Si el evento aún no ha comenzado
+      if (hoy < fechaInicio) {
+        const diffTime = fechaInicio - hoy;
+        const diffDias = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+        return <p className="text-blue-600 font-medium">Faltan {diffDias} día{diffDias > 1 ? 's' : ''}</p>;
+      }
+      // Si el evento está en curso (hoy está entre fecha inicio y fecha fin)
+      else if (hoy >= fechaInicio && hoy <= fechaFin) {
+        const diffTime = fechaFin - hoy;
+        const diffDias = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+        
+        if (diffDias === 0) {
+          return <p className="text-orange-600 font-medium">¡Último día del evento!</p>;
+        } else {
+          return <p className="text-green-600 font-medium">¡Evento en curso! Quedan {diffDias} día{diffDias > 1 ? 's' : ''}</p>;
+        }
+      }
+      // Si el evento ya terminó
+      else {
+        return <p className="text-red-500 font-medium">Evento finalizado</p>;
+      }
+    };
 
-      <p className="text-gray-700 mb-4">
-        <strong>Fecha fin:</strong> {new Date(evento.even_fecha_fin).toLocaleDateString()}
-      </p>
-      <p className="text-gray-800 leading-relaxed whitespace-pre-line">{evento.even_descripcion}</p>
-      
-      <button
-        onClick={handleRegistrarEvento}
-        className="bg-blue-600 text-white font-bold px-4 py-2 rounded hover:bg-blue-700 mt-4"
-      >
-        ¡Quiero participar!
-      </button>
-
-    </div>
-  );
+    return (
+      <div className="max-w-3xl mx-auto p-6 bg-white shadow-md rounded-lg mt-6">
+        {evento.even_imagen && (
+          <img
+            src={evento.even_imagen}
+            alt={evento.even_nombre}
+            className="w-full h-64 object-cover rounded-md mb-4"
+          />
+        )}
+        <h2 className="text-3xl font-bold text-blue-900 mb-2">{evento.even_nombre}</h2>
+        <p className="text-gray-700 mb-1">
+          <strong>Ubicación:</strong> {evento.even_lugar}
+        </p>
+        <p className="text-gray-700 mb-1">
+          <strong>Fecha inicio:</strong> {crearFechaLocal(evento.even_fecha_inicio).toLocaleDateString()}
+        </p>
+        {calcularMensajeDias()}
+        <p className="text-gray-700 mb-4">
+          <strong>Fecha fin:</strong> {crearFechaLocal(evento.even_fecha_fin).toLocaleDateString()}
+        </p>
+        <p className="text-gray-800 leading-relaxed whitespace-pre-line">{evento.even_descripcion}</p>
+        <button
+          onClick={handleRegistrarEvento}
+          className="bg-blue-600 text-white font-bold px-4 py-2 rounded hover:bg-blue-700 mt-4"
+        >
+          ¡Quiero participar!
+        </button>
+      </div>
+    );
 };
