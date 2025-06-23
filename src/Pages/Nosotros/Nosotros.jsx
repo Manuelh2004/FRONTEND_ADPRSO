@@ -5,22 +5,22 @@ export const Nosotros = () => {
     <div className="p-8 space-y-12 bg-gray-50">
 
       {/* Título Principal */}
-      <h1 className="text-4xl font-bold text-center text-blue-800 mb-10">¡Conócenos!</h1>
+      <h1 className="text-4xl font-bold text-center text-bg-[#dda15e]  mb-10">¡Conócenos!</h1>
 
       {/* Misión y Visión */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-8 text-center">
-        <div className="border-2 border-blue-800 p-6 rounded-lg shadow-lg bg-white">
-          <h2 className="text-2xl font-semibold text-blue-800">Misión</h2>
+        <div className="border-2 border-bg-[#dda15e]  p-6 rounded-lg shadow-lg bg-white">
+          <h2 className="text-2xl font-semibold text-bg-[#dda15e] ">Misión</h2>
           <p className="text-gray-700 mt-4">Construir un mundo mejor para los perros y gatos a través de iniciativas sostenibles de adopción, salud y educación.</p>
         </div>
-        <div className="border-2 border-blue-800 p-6 rounded-lg shadow-lg bg-white">
-          <h2 className="text-2xl font-semibold text-blue-800">Visión</h2>
+        <div className="border-2 border-bg-[#dda15e]  p-6 rounded-lg shadow-lg bg-white">
+          <h2 className="text-2xl font-semibold text-bg-[#dda15e] ">Visión</h2>
           <p className="text-gray-700 mt-4">Ser una organización líder en el bienestar animal, promoviendo la adopción responsable y el respeto por los animales.</p>
         </div>
       </div>
 
       {/* Nuestra Historia */}
-      <div className="bg-blue-600 p-8 rounded-lg shadow-md">
+      <div className="bg-bg-[#dda15e] p-8 rounded-lg shadow-md">
         <h2 className="text-3xl font-semibold text-center text-yellow-200 mb-6">Nuestra Historia</h2>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
           <p className="text-white font-medium">
@@ -37,7 +37,7 @@ export const Nosotros = () => {
 
       {/* Estadísticas */}
       <div className="text-center">
-        <h2 className="text-2xl font-semibold text-blue-800 mb-6">Impacto en Números</h2>
+        <h2 className="text-2xl font-semibold text-bg-[#dda15e]  mb-6">Impacto en Números</h2>
         <div className="grid grid-cols-2 md:grid-cols-4 gap-6 mt-4 text-gray-700">
           <div className="bg-blue-100 p-6 rounded-lg shadow-md hover:bg-blue-200 transition-colors duration-300">
             <p className="text-xl font-bold">+14,000</p>

@@ -72,7 +72,7 @@ const Contacto = () => {
             <option value="Voluntariado">Voluntariado</option>
             <option value="Otros">Otros</option>
           </select>
-          <button type="submit" className="w-full bg-blue-500 text-white py-2 rounded hover:bg-blue-600">
+          <button type="submit" className="w-full bg-[#dda15e] text-white py-2 rounded hover:bg-[#dda15e] ">
             Guardar
           </button>
         </form>
@@ -82,7 +82,7 @@ const Contacto = () => {
           <h3 className="text-xl font-bold text-green-700">¡Felicidades!</h3>
           <p>Se guardó exitosamente sus datos</p>
           <button
-            className="mt-4 bg-blue-500 text-white px-6 py-2 rounded hover:bg-blue-600"
+            className="mt-4 bg-[#dda15e]  text-white px-6 py-2 rounded hover:bg-[#dda15e] "
             onClick={() => setEnviado(false)}
           >
             Aceptar

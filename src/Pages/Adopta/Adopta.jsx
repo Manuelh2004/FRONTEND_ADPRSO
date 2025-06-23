@@ -80,7 +80,7 @@ const Adopta = () => {
           key={t.tam_id}
           onClick={() => handleFiltroChange('tamId', t.tam_id)}
           className={`px-3 py-1 rounded-full text-sm font-medium transition ${
-            filtros.tamId === t.tam_id ? 'bg-blue-500 text-white' : 'bg-gray-200 hover:bg-gray-300'
+            filtros.tamId === t.tam_id ? 'bg-[#dda15e]  text-white' : 'bg-gray-200 hover:bg-gray-300'
           }`}
         >
           {t.tam_nombre}
@@ -101,7 +101,7 @@ const Adopta = () => {
             value={s.sex_id}
             checked={filtros.sexId === s.sex_id}
             onChange={() => handleFiltroChange('sexId', s.sex_id)}
-            className="accent-blue-500"
+            className="accent-bg-[#dda15e] "
           />
           <span className="text-sm">{s.sex_nombre}</span>
         </label>

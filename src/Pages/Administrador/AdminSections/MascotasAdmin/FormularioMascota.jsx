@@ -185,7 +185,7 @@ const FormularioMascota = ({
                   value={gusto.gust_id}
                   checked={gustosSeleccionados.includes(gusto.gust_id)}
                   onChange={() => handleGustoChange(gusto.gust_id)}
-                  className="form-checkbox h-4 w-4 text-blue-600"
+                  className="form-checkbox h-4 w-4 text-bg-[#dda15e] "
                 />
                 <span className="text-gray-700 text-sm">{gusto.gust_nombre}</span>
               </label>
@@ -217,7 +217,7 @@ const FormularioMascota = ({
           <button
             type="button"
             onClick={agregarCampoImagen}
-            className="text-blue-600 hover:text-blue-800 text-sm mt-1"
+            className="text-bg-[#dda15e]  hover:text-bg-[#dda15e]  text-sm mt-1"
           >
             + Agregar otra imagen
           </button>
@@ -227,7 +227,7 @@ const FormularioMascota = ({
         <div className="md:col-span-2 text-center mt-4">
           <button
             type="submit"
-            className="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-6 rounded"
+            className="bg-[#dda15e]  hover:bg-[#dda15e]  text-white font-semibold py-2 px-6 rounded"
           >
             {formData.masc_nombre ? 'Guardar Cambios' : 'Registrar Mascota'}
           </button>

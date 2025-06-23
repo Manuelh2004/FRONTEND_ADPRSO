@@ -20,7 +20,7 @@ const ModalEvento = ({ eventoSeleccionado, setEventoSeleccionado }) => {
         <div className="mt-4">
           <button
             onClick={() => setEventoSeleccionado(null)} 
-            className="bg-blue-600 text-white py-2 px-6 rounded-lg hover:bg-blue-700 transition duration-300 transform hover:scale-105">
+            className="bg-[#dda15e]  text-white py-2 px-6 rounded-lg hover:bg-[#dda15e]  transition duration-300 transform hover:scale-105">
             Cerrar
           </button>
         </div>

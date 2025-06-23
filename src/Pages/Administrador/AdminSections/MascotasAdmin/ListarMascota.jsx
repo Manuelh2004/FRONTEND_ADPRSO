@@ -130,7 +130,7 @@ const ListarMascota = () => {
   return (
     <div>
       <table className="min-w-full table-auto text-sm text-center">
-        <thead className="bg-blue-600 text-white">
+        <thead className="bg-[#dda15e] text-white">
           <tr>
             <th className="px-6 py-4">Nombre</th>
             <th className="px-6 py-4">Fecha de Nacimiento</th>
@@ -156,7 +156,7 @@ const ListarMascota = () => {
               <td className="px-6 py-4">{mascota.sexo.sex_nombre}</td>
               <td className="px-6 py-4">
                 <button
-                  className="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-lg transition duration-300"
+                  className="bg-[#dda15e] - hover:bg-[#dda15e]  text-white px-4 py-2 rounded-lg transition duration-300"
                   onClick={() => handleEdit(mascota)} // Llamamos a la función handleEdit con la mascota seleccionada
                 >
                   Editar
@@ -172,7 +172,7 @@ const ListarMascota = () => {
         <button
           onClick={() => handlePageChange(currentPage - 1)}
           disabled={currentPage === 1}
-          className="px-4 py-2 bg-blue-500 text-white rounded-l hover:bg-blue-600 transition duration-300"
+          className="px-4 py-2 bg-[#dda15e] text-white rounded-l hover:bg-[#dda15e]  transition duration-300"
         >
           Anterior
         </button>
@@ -182,7 +182,7 @@ const ListarMascota = () => {
         <button
           onClick={() => handlePageChange(currentPage + 1)}
           disabled={currentPage === totalPages}
-          className="px-4 py-2 bg-blue-500 text-white rounded-r hover:bg-blue-600 transition duration-300"
+          className="px-4 py-2 bg-[#dda15e]  text-white rounded-r hover:bg-[#dda15e]  transition duration-300"
         >
           Siguiente
         </button>
