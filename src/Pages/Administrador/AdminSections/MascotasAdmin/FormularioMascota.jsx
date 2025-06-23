@@ -18,7 +18,12 @@ const FormularioMascota = ({
 }) => {
   return (
     <div className="max-w-4xl mx-auto mt-10 p-6 bg-white shadow-lg rounded-xl">
-      <h2 className="text-2xl font-bold mb-6 text-center text-gray-700">Registrar Mascota</h2>
+      {/* Título dinámico */}
+      <h2 className="text-2xl font-bold mb-6 text-center text-gray-700">
+        {formData.masc_nombre ? 'Editar Mascota' : 'Registrar Mascota'}
+      </h2>
+
+      {/* Formulario */}
       <form onSubmit={handleSubmit} className="grid grid-cols-1 md:grid-cols-2 gap-4">
         
         {/* Nombre */}
@@ -224,9 +229,8 @@ const FormularioMascota = ({
             type="submit"
             className="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-6 rounded"
           >
-            Registrar Mascota
+            {formData.masc_nombre ? 'Guardar Cambios' : 'Registrar Mascota'}
           </button>
-          
         </div>
       </form>
     </div>
