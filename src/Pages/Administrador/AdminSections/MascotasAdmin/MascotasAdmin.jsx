@@ -3,6 +3,7 @@ import axios from 'axios';
 import FormularioMascota from './FormularioMascota'; // Asegúrate de importar el componente
 import ApiService from '../../../../services/itemAdmApi'; 
 import { registrarMascota } from '../../../../services/mascota/mascotaAdmApi'; // Asegúrate de tener la ruta correcta
+import TablaMascota from './TablaMascota';
 
 const MascotasAdmin = () => {
   // Declaración de los estados
@@ -177,26 +178,27 @@ const MascotasAdmin = () => {
   };
 
   return (
-    <FormularioMascota
-      formData={formData}
-      handleChange={handleChange}
-      handleImageChange={handleImageChange}
-      handleImageRemove={handleImageRemove}
-      agregarCampoImagen={agregarCampoImagen}
-      handleGustoChange={handleGustoChange}
-      gustos={gustos}
-      gustosSeleccionados={gustosSeleccionados}
-      estadoSalud={estadoSalud}
-      estadoVacuna={estadoVacuna}
-      nivelEnergia={nivelEnergia}
-      tamanios={tamanios}
-      tipoMascota={tipoMascota}
-      sexos={sexos}
-      imagenes={imagenes}
-      handleSubmit={handleSubmit}
-
-      
-    />
+    <div>
+      <FormularioMascota
+        formData={formData}
+        handleChange={handleChange}
+        handleImageChange={handleImageChange}
+        handleImageRemove={handleImageRemove}
+        agregarCampoImagen={agregarCampoImagen}
+        handleGustoChange={handleGustoChange}
+        gustos={gustos}
+        gustosSeleccionados={gustosSeleccionados}
+        estadoSalud={estadoSalud}
+        estadoVacuna={estadoVacuna}
+        nivelEnergia={nivelEnergia}
+        tamanios={tamanios}
+        tipoMascota={tipoMascota}
+        sexos={sexos}
+        imagenes={imagenes}
+        handleSubmit={handleSubmit}
+      />
+      <TablaMascota />  {/* Aquí se agrega la tabla debajo del formulario */}
+    </div>
   );
 };
 

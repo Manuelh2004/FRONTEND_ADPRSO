@@ -3,7 +3,7 @@ import { listarMascotas } from '../../../../services/mascota/mascotaAdmApi';  //
 import FormularioMascota from './FormularioMascota';  // Asegúrate de que el formulario esté correctamente importado
 import ApiService from '../../../../services/itemAdmApi'; // Asegúrate de importar el servicio de la API
 
-const ListarMascota = () => {
+const TablaMascota = () => {
   const [mascotas, setMascotas] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -186,35 +186,9 @@ const ListarMascota = () => {
         >
           Siguiente
         </button>
-      </div>
-
-      {/* Modal para editar mascota */}
-      {isModalOpen && (
-        <div className="fixed inset-0 bg-gray-500 bg-opacity-75 flex justify-center items-center z-50">
-          <div className="bg-white p-8 rounded-lg shadow-lg w-4/5 md:w-2/3">
-            <button
-              onClick={handleCloseModal}
-              className="absolute top-4 right-4 text-2xl text-gray-500 hover:text-gray-800"
-            >
-              &times;
-            </button>
-            <FormularioMascota
-              formData={formData}
-              handleChange={handleChange}
-              handleGustoChange={handleGustoChange}  // Pasamos handleGustoChange aquí
-              gustos={gustos} // Aquí pasamos los gustos
-              gustosSeleccionados={gustosSeleccionados}
-              imagenes={imagenes}
-              handleImageChange={handleImageChange} // Pasamos handleImageChange aquí
-              handleImageRemove={handleImageRemove}  // Pasamos handleImageRemove aquí
-              agregarCampoImagen={agregarCampoImagen}
-              handleSubmit={handleSubmit}  // Llamas a la función para enviar los cambios
-            />
-          </div>
-        </div>
-      )}
+      </div>     
     </div>
   );
 };
 
-export default ListarMascota;
+export default TablaMascota;
