@@ -12,6 +12,9 @@ import ListaEventos from './Pages/Eventos/ListaEventos';
 import EventoDetalle from './Pages/Eventos/EventoDetalle';
 import { useAuth } from './context/AuthContext';
 import Administrador from './Pages/Administrador/Administrador';
+import UsuarioMenu from './components/UsuarioMenu';
+import MisEventos from './Pages/Usuario/EventosUsuario/MisEventos';
+import MisAdopciones from './Pages/Usuario/AdopcionesUsuario/MisAdopciones';
 
 
 
@@ -52,15 +55,7 @@ export const App = () => {
 
           <div className="flex items-center space-x-4">
             {isAuthenticated ? (
-              <>
-                <div className="text-[#bc6c25] font-semibold">Rol: {role}</div>
-                <button
-                  onClick={logout}
-                  className="text-white bg-red-500 px-4 py-2 rounded-full hover:bg-red-600 transition duration-300 shadow-sm"
-                >
-                  Cerrar sesión
-                </button>
-              </>
+              <UsuarioMenu />
             ) : (
               <Link
                 to="/login"
@@ -70,6 +65,7 @@ export const App = () => {
               </Link>
             )}
           </div>
+
         </nav>
 
 
@@ -100,9 +96,16 @@ export const App = () => {
           }
         />
         <Route
-          path="/usuario-only"
+          path="/mis-eventos"
           element={
-            <ProtectedRoute allowedRoles={['Usuario']} element={<h2>Vista Usuario</h2>} />
+            <ProtectedRoute allowedRoles={['Usuario', 'Administrador']} element={<MisEventos />} />
+          }
+        />
+
+        <Route
+          path="/mis-adopciones"
+          element={
+            <ProtectedRoute allowedRoles={['Usuario', 'Administrador']} element={<MisAdopciones />} />
           }
         />
       </Routes>
