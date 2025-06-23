@@ -145,7 +145,7 @@ const AdopcionesAdmin = () => {
       {/* Tabla con adopciones */}
       <div className="overflow-x-auto bg-white shadow-md rounded-lg">
         <table className="min-w-full text-sm table-auto border-collapse">
-          <thead className="bg-blue-600 text-white">
+        <thead className="bg-[#dda15e] text-white">
             <tr>
               {['ID', 'Fecha', 'Estado', 'Mascota', 'Tipo', 'Usuario', 'Teléfono', 'Acciones'].map((header) => (
                 <th key={header} className="px-6 py-4 text-center font-medium">{header}</th>
@@ -170,7 +170,7 @@ const AdopcionesAdmin = () => {
                 <td className="px-6 py-4">{adopcion.usuario.usr_telefono}</td>
                 <td className="px-6 py-4 text-center space-x-4">
                   <button
-                    className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 transition duration-300"
+                     className="bg-[#dda15e] text-white px-4 py-2 rounded hover:bg-[#bc6c25] transition duration-300"
                     onClick={() => handleVerMas(adopcion)}
                   >
                     Ver más
@@ -217,14 +217,14 @@ const AdopcionesAdmin = () => {
       {/* Paginación */}
       <div className="flex justify-between mt-4">
         <button
-          className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
+           className="bg-[#dda15e] text-white px-4 py-2 rounded hover:bg-[#bc6c25]"
           onClick={handlePaginaAnterior}
           disabled={isPrevDisabled}
         >
           Anterior
         </button>
         <button
-          className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
+           className="bg-[#dda15e] text-white px-4 py-2 rounded hover:bg-[#bc6c25]"
           onClick={handlePaginaSiguiente}
           disabled={isNextDisabled}
         >
