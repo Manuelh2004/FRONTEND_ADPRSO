@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react';
-import axios from 'axios';
 import FormularioMascota from './FormularioMascota'; // Asegúrate de importar el componente
 import ApiService from '../../../../services/itemAdmApi'; 
-import { registrarMascota } from '../../../../services/mascota/mascotaAdmApi'; // Asegúrate de tener la ruta correcta
+import { registrarMascota, obtenerMascotasPorEstado, buscarMascotasPorNombre } from '../../../../services/mascota/mascotaAdmApi';
 import TablaMascota from './TablaMascota';
+import FiltroEstado from './FiltroEstado';  // Importar el filtro
 
 const MascotasAdmin = () => {
   // Declaración de los estados
@@ -30,14 +30,20 @@ const MascotasAdmin = () => {
   const [imagenes, setImagenes] = useState(['']);
   const [gustosSeleccionados, setGustosSeleccionados] = useState([]);
 
+  const [mascotas, setMascotas] = useState([]);
+  const [filtroEstado, setFiltroEstado] = useState("");  // Estado del filtro
+  const [searchTerm, setSearchTerm] = useState("");  // Filtro por nombre
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  const token = localStorage.getItem('token');
+
   // Obtener las listas de items desde el servidor
   useEffect(() => {
-    const fetchData = async () => {
-      const token = localStorage.getItem('token');
-      
-      // Verificar si existe token
+    const fetchData = async () => {      
       if (!token) {
-        console.error("No token found.");
+        setError('Token de autenticación es necesario');
+        setLoading(false);
         return;
       }
 
@@ -49,7 +55,8 @@ const MascotasAdmin = () => {
           ApiService.getData('tamanios', token),
           ApiService.getData('tipo_mascota', token),
           ApiService.getData('sexo', token),
-          ApiService.getData('gustos', token)
+          ApiService.getData('gustos', token),
+
         ]);
 
         setEstadoSalud(dataSalud);
@@ -59,13 +66,41 @@ const MascotasAdmin = () => {
         setTipoMascota(dataTipoMascota);
         setSexos(dataSexo);
         setGustos(dataGustos);
+
+        // Traer las mascotas con el filtro de estado
+        const mascotasData = await obtenerMascotasPorEstado(filtroEstado, token);
+        setMascotas(mascotasData.data);
       } catch (error) {
         console.error("Error al cargar las listas de items:", error);
+        setError('Error al cargar las mascotas');
+      } finally {
+        setLoading(false);
       }
     };
 
     fetchData();
-  }, []); // Solo se ejecuta al montar el componente
+  }, [filtroEstado, token]);  
+
+  // Función para aplicar el filtro por nombre
+  useEffect(() => {
+    const applySearchFilter = () => {
+      if (searchTerm) {
+        const filteredMascotas = mascotas.filter((mascota) => 
+          mascota.masc_nombre.toLowerCase().includes(searchTerm.toLowerCase())
+        );
+        setMascotas(filteredMascotas);
+      } else {
+        // Si no hay término de búsqueda, volvemos a las mascotas originales filtradas por estado
+        const fetchMascotas = async () => {
+          const mascotasData = await obtenerMascotasPorEstado(filtroEstado, token);
+          setMascotas(mascotasData.data);
+        };
+        fetchMascotas();
+      }
+    };
+
+    applySearchFilter();
+  }, [searchTerm, mascotas, filtroEstado, token]);
 
   const handleChange = e => {
     const { name, value } = e.target;
@@ -197,7 +232,13 @@ const MascotasAdmin = () => {
         imagenes={imagenes}
         handleSubmit={handleSubmit}
       />
-      <TablaMascota />  {/* Aquí se agrega la tabla debajo del formulario */}
+      <FiltroEstado 
+        filtroEstado={filtroEstado} 
+        setFiltroEstado={setFiltroEstado} 
+        searchTerm={searchTerm} 
+        setSearchTerm={setSearchTerm}
+      />
+      <TablaMascota mascotas={mascotas} /> 
     </div>
   );
 };
