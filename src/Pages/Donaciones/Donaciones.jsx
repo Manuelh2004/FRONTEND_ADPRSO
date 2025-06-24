@@ -1,5 +1,12 @@
 import React, { useState } from "react";
 import perritoSilueta from "../../Imagenes/perrito-silueta.jpg";
+import yape from "../../Imagenes/yape.png";
+import plin from "../../Imagenes/plin.png";
+import bcp from "../../Imagenes/bcp.jpg";
+import interbank from "../../Imagenes/interbank.png";
+import western_union from "../../Imagenes/Western-Union-Logo.png";
+import paypal from "../../Imagenes/PayPal.png";
+import bbva from "../../Imagenes/bbva.jpg";
 
 const Donaciones = () => {
   const [mostrarModal, setMostrarModal] = useState(false);
@@ -81,6 +88,54 @@ const Donaciones = () => {
         </div>
       )}
 
+      {/* Métodos de pago adicionales */}
+      <section>
+        <h2 className="text-4xl font-extrabold text-center text-indigo-700 mb-10">Otras formas de ayudar</h2>
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-8 px-4 md:px-0">
+          {/* Yape */}
+          <div className="flex flex-col items-center text-center bg-white rounded-xl p-4 shadow-md">
+            <img src={yape} alt="Yape" className="w-60 h-60 object-contain mb-2" />
+            <p className="text-gray-700 text-lg mt-4">922-266-310</p>
+          </div>
+          {/* Plin */}
+          <div className="flex flex-col items-center text-center bg-white rounded-xl p-4 shadow-md">
+            <img src={plin} alt="Plin" className="w-60 h-60 object-contain mb-2" />
+            <p className="text-gray-700 text-lg mt-4">922-266-310</p>
+          </div>
+          {/* BCP */}
+          <div className="flex flex-col items-center text-center bg-white rounded-xl p-4 shadow-md">
+            <img src={bcp} alt="BCP" className="w-60 h-60 object-contain mb-2" />
+            <p className="text-gray-700 text-lg mt-4">191-36249867-0-25</p>
+            <p className="text-gray-700 text-lg">CCI: 00219113624986702559</p>
+          </div>
+          {/* Interbank - Soles */}
+          <div className="flex flex-col items-center text-center bg-white rounded-xl p-4 shadow-md">
+            <img src={interbank} alt="Interbank Soles" className="w-60 h-60 object-contain mb-2" />
+            <p className="text-gray-700 text-lg mt-4">1543147371121</p>
+          </div>
+          {/* Interbank - Dólares */}
+          <div className="flex flex-col items-center text-center bg-white rounded-xl p-4 shadow-md">
+            <img src={interbank} alt="Interbank Dólares" className="w-60 h-60 object-contain mb-2" />
+            <p className="text-gray-700 text-lg mt-4">8983170530579</p>
+            <p className="text-gray-700 text-lg">CCI: 00389801317053057948</p>
+          </div>
+          {/* BBVA */}
+          <div className="flex flex-col items-center text-center bg-white rounded-xl p-4 shadow-md">
+            <img src={bbva} alt="BBVA" className="w-60 h-60 object-contain mb-2" />
+            <p className="text-gray-700 text-lg mt-4">001108140221701416</p>
+          </div>
+          {/* Western Union */}
+          <div className="flex flex-col items-center text-center bg-white rounded-xl p-4 shadow-md">
+            <img src={western_union} alt="Western Union" className="w-60 h-60 object-contain mb-2" />
+            <p className="text-gray-700 text-lg mt-4">tephi.chris@gmail.com</p>
+          </div>
+          {/* PayPal */}
+          <div className="flex flex-col items-center text-center bg-white rounded-xl p-4 shadow-md">
+            <img src={paypal} alt="PayPal" className="w-60 h-60 object-contain mb-2" />
+            <p className="text-gray-700 text-lg mt-4">tephi.chris@gmail.com</p>
+          </div>
+        </div>
+      </section>
     </div>
   );
 };
