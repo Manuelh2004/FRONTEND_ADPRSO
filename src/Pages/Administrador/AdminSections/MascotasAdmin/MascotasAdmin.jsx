@@ -4,6 +4,7 @@ import ApiService from '../../../../services/itemAdmApi';
 import TablaMascota from './TablaMascota';
 import FiltroEstado from './FiltroEstado';  // Importar el filtro
 import FormularioMascota from './FormularioMascota'; // Asegúrate de importar el componente
+import ModalMascota from './ModalMascota';
 
 const MascotasAdmin = () => {
   const [mascotas, setMascotas] = useState([]);
@@ -224,7 +225,31 @@ const mascotasPaginados = Array.isArray(mascotas) && mascotas ? mascotas.slice(
   };
 
   const handleVerMas = async (mascota) => {
-    console.log('Ver más detalles de', mascota);
+    try {
+      if (!mascota || !mascota.masc_id) {
+        console.error('ID de mascota no válido:', evento);
+        return;
+      }
+      const url = `http://localhost:8080/api/mascota/${mascota.masc_id}/public`;
+
+      const response = await fetch(url);
+      if (!response.ok) {
+        throw new Error('Error al obtener los detalles de la mascota');
+      }
+
+      const result = await response.json();
+      const mascotaDetails = result.data;
+
+      if (!mascotaDetails) {
+        console.error('Detalles de la mascota no encontrados');
+        return;
+      }
+
+      setMascotaSeleccionada(mascotaDetails);
+      console.log('Detalles de la mascota:', mascotaDetails); 
+    } catch (error) {
+      alert('Hubo un error al cargar los detalles del evento.');
+    }
   };  
 
   const handleChange = e => {
@@ -292,7 +317,9 @@ const mascotasPaginados = Array.isArray(mascotas) && mascotas ? mascotas.slice(
         mascotasPaginados={mascotasPaginados}
         handleEditar={handleEditar}
         handleCambiarEstado={handleCambiarEstado}
-        handleVerMas={handleVerMas}        
+        handleVerMas={handleVerMas} 
+        paginaActual={paginaActual}
+        registrosPorPagina={registrosPorPagina}
       />
 
       {/* Paginación */}
@@ -307,6 +334,14 @@ const mascotasPaginados = Array.isArray(mascotas) && mascotas ? mascotas.slice(
           Siguiente
         </button>
       </div>
+
+      {/* Mostrar el modal si se ha seleccionado un evento */}
+      {mascotaSeleccionada && (
+        <ModalMascota 
+          mascotaSeleccionada={mascotaSeleccionada} 
+          setMascotaSeleccionada={setMascotaSeleccionada} 
+        />
+      )}
 
     </div>
   );
