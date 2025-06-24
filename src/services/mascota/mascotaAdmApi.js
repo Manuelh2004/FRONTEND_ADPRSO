@@ -2,6 +2,21 @@ import axios from 'axios';
 
 const API_URL = 'http://localhost:8080/admin/api/mascota';  // Asegúrate de tener la URL correcta
 
+
+export const fetchMascotas = async (token) => {
+  try {
+    const response = await axios.get(`${API_URL}/listar_mascota`, {
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    });
+    return response.data.data;
+  } catch (error) {
+    console.error('Error al listar mascotas', error);
+    throw error;
+  }
+};
+
 // Función para obtener todas las mascotas
 export const listarMascotas = async (token) => {
   // Verificar si el token existe

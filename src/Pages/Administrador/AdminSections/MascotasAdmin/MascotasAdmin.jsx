@@ -1,11 +1,13 @@
 import React, { useEffect, useState } from 'react';
-import FormularioMascota from './FormularioMascota'; // Asegúrate de importar el componente
+import { fetchMascotas, registrarMascota, actualizarMascota, cambiarEstadoMascota, obtenerMascotasPorEstado, buscarMascotasPorNombre } from '../../../../services/mascota/mascotaAdmApi';
 import ApiService from '../../../../services/itemAdmApi'; 
-import { registrarMascota, listarMascotas, obtenerMascotasPorEstado, buscarMascotasPorNombre } from '../../../../services/mascota/mascotaAdmApi';
 import TablaMascota from './TablaMascota';
 import FiltroEstado from './FiltroEstado';  // Importar el filtro
+import FormularioMascota from './FormularioMascota'; // Asegúrate de importar el componente
 
 const MascotasAdmin = () => {
+  const [mascotas, setMascotas] = useState([]);
+  const [mascotaSeleccionada, setMascotaSeleccionada] = useState(null);
   const [formData, setFormData] = useState({
     masc_nombre: '',
     masc_fecha_nacimiento: '',
@@ -17,8 +19,7 @@ const MascotasAdmin = () => {
     tamanio: '',
     tipoMascota: '',
     sexo: ''
-  });
-  
+  });  
 
   const [estadoSalud, setEstadoSalud] = useState([]);
   const [estadoVacuna, setEstadoVacuna] = useState([]);
@@ -30,17 +31,15 @@ const MascotasAdmin = () => {
   const [imagenes, setImagenes] = useState(['']);
   const [gustosSeleccionados, setGustosSeleccionados] = useState([]);
 
-  const [mascotas, setMascotas] = useState([]);
-  const [mascotasFiltradas, setMascotasFiltradas] = useState([]);  // Estado para las mascotas filtradas
+  const [editandoId, setEditandoId] = useState(null);
+  const [paginaActual, setPaginaActual] = useState(1);
+  const [registrosPorPagina] = useState(10);
   const [filtroEstado, setFiltroEstado] = useState("");  // Estado del filtro
   const [searchTerm, setSearchTerm] = useState("");  // Filtro por nombre
   const token = localStorage.getItem('token');
 
-  const [registrosPorPagina] = useState(10);
-  const [paginaActual, setPaginaActual] = useState(1);
-
   useEffect(() => {
-    const fetchData = async () => {      
+    const obtenerMascotas = async () => {      
       if (!token) {
         setError('Token de autenticación es necesario');
         setLoading(false);
@@ -57,8 +56,8 @@ const MascotasAdmin = () => {
           ApiService.getData('sexo', token),
           ApiService.getData('gustos', token),
 
-        ]);
-
+        ]);       
+       
         setEstadoSalud(dataSalud);
         setEstadoVacuna(dataVacuna);
         setNivelEnergia(dataEnergia);
@@ -69,30 +68,135 @@ const MascotasAdmin = () => {
         
       } catch (error) {
         console.error("Error al cargar las listas de items:", error);
-        setError('Error al cargar las mascotas');
-      } 
+      }    
+      
+      try{
+        const mascotasFiltrados = await obtenerMascotasPorEstado(filtroEstado, token);
+        setMascotas(mascotasFiltrados);
+      }catch (error) {
+        console.error("Error al cargar las mascotas filtradas:", error);
+      }    
     };
 
-    fetchData();
-  }, [token]);
+    obtenerMascotas();
+  }, [filtroEstado]);
 
   useEffect(() => {
-  const fetchMascotasPorEstado = async () => {
-    if (!token) return;
-    try {
-      const response = await obtenerMascotasPorEstado(filtroEstado, token);
-      setMascotas(response.data);
-      setMascotasFiltradas(response.data);
-    } catch (err) {
-      console.error("Error al filtrar mascotas por estado:", err);
+  const obtnerMascotasPorNombre = async () => {
+    if (searchTerm){
+      try {
+        const mascotasPorNombre = await buscarMascotasPorNombre(token, searchTerm);
+        setMascotas(mascotasPorNombre.data);
+      } catch (err) {
+          console.error("Error al filtrar mascotas por estado:", err);
+      }
+    }else{
+        const mascotasFiltradas = await obtenerMascotasPorEstado(filtroEstado, token);
+        setMascotas(mascotasFiltradas);
+    }    
+  };
+
+  obtnerMascotasPorNombre();
+}, [searchTerm, filtroEstado]);
+
+const mascotasPaginados = Array.isArray(mascotas) && mascotas ? mascotas.slice(
+    (paginaActual - 1) * registrosPorPagina,
+    paginaActual * registrosPorPagina
+  ) : []; 
+  const totalPaginas = Math.ceil((Array.isArray(mascotas) ? mascotas.length : 0) / registrosPorPagina);
+
+  const handleCambiarPagina = (pagina) => {
+    if (pagina >= 1 && pagina <= totalPaginas) {
+      setPaginaActual(pagina);
     }
   };
 
-  fetchMascotasPorEstado();
-}, [filtroEstado, token]);
+  const handleSubmit = async (e) => {
+    e.preventDefault();
 
-   // Función para editar una mascota
+    if(editandoId){
+      await actualizarEvento(token, editandoId, formData);
+    }else{
+      // Validación de campos obligatorios
+      const camposObligatorios = [
+        formData.masc_nombre,
+        formData.masc_fecha_nacimiento,
+        formData.estadoSalud,
+        formData.estadoVacuna,
+        formData.nivelEnergia,
+        formData.tamanio,
+        formData.tipoMascota,
+        formData.sexo
+      ];
+
+      if (camposObligatorios.includes('') || imagenes.includes('')) {
+        alert('Por favor, complete todos los campos obligatorios.');
+        return;
+      }
+
+      if (gustosSeleccionados.length === 0) {
+        alert('Por favor, seleccione al menos un gusto.');
+        return;
+      }
+
+      const mascotaDTO = {
+        mascota: {
+          masc_nombre: formData.masc_nombre,
+          masc_fecha_nacimiento: formData.masc_fecha_nacimiento,
+          sexo: { sex_id: formData.sexo },
+          tamanio: { tam_id: formData.tamanio },
+          nivel_energia: { nien_id: formData.nivelEnergia },
+          tipo_mascota: { tipma_id: formData.tipoMascota },
+          estado_salud: { estsa_id: formData.estadoSalud },
+          estado_vacuna: { estva_id: formData.estadoVacuna },
+          masc_historia: formData.masc_historia,
+          masc_observacion: formData.masc_observacion
+        },
+        gustosIds: gustosSeleccionados,
+        imagenUrls: imagenes
+      };
+
+      const token = localStorage.getItem('token');
+      if (!token) {
+        alert('Token no encontrado.');
+        return;
+      }
+
+      try {
+        const response = await registrarMascota(token, mascotaDTO);  
+
+        if (response.code === 201) {
+          console.log("Mascota registrada con éxito:", response.data);
+          setFormData({
+            masc_nombre: '',
+            masc_fecha_nacimiento: '',
+            masc_historia: '',
+            masc_observacion: '',
+            estadoSalud: '',
+            estadoVacuna: '',
+            nivelEnergia: '',
+            tamanio: '',
+            tipoMascota: '',
+            sexo: ''
+          });
+          setImagenes(['']);
+          setGustosSeleccionados([]);
+        } else {
+          console.error('Error al registrar mascota:', response);
+          alert('Error al registrar mascota.');
+        }
+      } catch (error) {
+        console.error("Error al registrar mascota:", error);
+        alert('Hubo un error al registrar la mascota.');
+      }
+    }
+    setEditandoId(null);
+    const data = await fetchMascotas(token);
+    setMascotas(data);    
+  };
+
   const handleEditar = (mascota) => {
+    setEditandoId(mascota.masc_id);
     setFormData({
       masc_nombre: mascota.masc_nombre || '',
       masc_fecha_nacimiento: mascota.masc_fecha_nacimiento || '',
@@ -107,43 +211,21 @@ const MascotasAdmin = () => {
     });
   };  
 
-  // Función para cambiar el estado de una mascota
   const handleCambiarEstado = async (id, estadoActual) => {
     const nuevoEstado = estadoActual === 1 ? 0 : 1;
     const token = localStorage.getItem('token');
     try {
       await cambiarEstadoMascota(token, id, nuevoEstado);
-      const mascotasData = await obtenerMascotasPorEstado(filtroEstado, token);
-      setMascotas(mascotasData.data);
-      setMascotasFiltradas(mascotasData.data); // Actualizamos también las mascotas filtradas
+      const mascotasFiltradas = await obtenerMascotasPorEstado(filtroEstado, token);
+      setMascotas(mascotasFiltradas);
     } catch (error) {
       console.error('Error al cambiar estado', error);
     }
   };
 
-  // Función para ver más detalles de una mascota
   const handleVerMas = async (mascota) => {
     console.log('Ver más detalles de', mascota);
-    // Aquí podrías mostrar un modal con los detalles de la mascota si es necesario
-  };
-
-  // Función para aplicar el filtro por nombre
-  const handleSearchTermChange = (e) => {
-    setSearchTerm(e.target.value);
-  };
-
-  // Función para aplicar el filtro por nombre
-   useEffect(() => {
-    if (searchTerm.trim() !== '') {
-      const filtradas = mascotas.filter(m =>
-        m.masc_nombre.toLowerCase().includes(searchTerm.toLowerCase())
-      );
-      setMascotasFiltradas(filtradas);
-    } else {
-      setMascotasFiltradas(mascotas);
-    }
-  }, [searchTerm, mascotas]);
-
+  };  
 
   const handleChange = e => {
     const { name, value } = e.target;
@@ -175,95 +257,6 @@ const MascotasAdmin = () => {
     );
   };
 
-  const mascotasPaginados = Array.isArray(mascotas) && mascotas ? mascotas.slice(
-    (paginaActual - 1) * registrosPorPagina,
-    paginaActual * registrosPorPagina
-  ) : []; 
-  const totalPaginas = Math.ceil((Array.isArray(mascotas) ? mascotas.length : 0) / registrosPorPagina);
-
-  const handleCambiarPagina = (pagina) => {
-    if (pagina >= 1 && pagina <= totalPaginas) {
-      setPaginaActual(pagina);
-    }
-  };
-
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-
-    // Validación de campos obligatorios
-    const camposObligatorios = [
-      formData.masc_nombre,
-      formData.masc_fecha_nacimiento,
-      formData.estadoSalud,
-      formData.estadoVacuna,
-      formData.nivelEnergia,
-      formData.tamanio,
-      formData.tipoMascota,
-      formData.sexo
-    ];
-
-    if (camposObligatorios.includes('') || imagenes.includes('')) {
-      alert('Por favor, complete todos los campos obligatorios.');
-      return;
-    }
-
-    if (gustosSeleccionados.length === 0) {
-      alert('Por favor, seleccione al menos un gusto.');
-      return;
-    }
-
-    const mascotaDTO = {
-      mascota: {
-        masc_nombre: formData.masc_nombre,
-        masc_fecha_nacimiento: formData.masc_fecha_nacimiento,
-        sexo: { sex_id: formData.sexo },
-        tamanio: { tam_id: formData.tamanio },
-        nivel_energia: { nien_id: formData.nivelEnergia },
-        tipo_mascota: { tipma_id: formData.tipoMascota },
-        estado_salud: { estsa_id: formData.estadoSalud },
-        estado_vacuna: { estva_id: formData.estadoVacuna },
-        masc_historia: formData.masc_historia,
-        masc_observacion: formData.masc_observacion
-      },
-      gustosIds: gustosSeleccionados,
-      imagenUrls: imagenes
-    };
-
-    const token = localStorage.getItem('token');
-    if (!token) {
-      alert('Token no encontrado.');
-      return;
-    }
-
-    try {
-      const response = await registrarMascota(token, mascotaDTO);  
-
-      if (response.code === 201) {
-        console.log("Mascota registrada con éxito:", response.data);
-        setFormData({
-          masc_nombre: '',
-          masc_fecha_nacimiento: '',
-          masc_historia: '',
-          masc_observacion: '',
-          estadoSalud: '',
-          estadoVacuna: '',
-          nivelEnergia: '',
-          tamanio: '',
-          tipoMascota: '',
-          sexo: ''
-        });
-        setImagenes(['']);
-        setGustosSeleccionados([]);
-      } else {
-        console.error('Error al registrar mascota:', response);
-        alert('Error al registrar mascota.');
-      }
-    } catch (error) {
-      console.error("Error al registrar mascota:", error);
-      alert('Hubo un error al registrar la mascota.');
-    }
-  };
-
   return (
     <div className="container mx-auto p-8 bg-gray-50 min-h-screen">
       <h2 className="text-4xl font-semibold text-gray-800 mb-8">Gestión de Mascotas</h2>
@@ -292,7 +285,7 @@ const MascotasAdmin = () => {
           filtroEstado={filtroEstado} 
           setFiltroEstado={setFiltroEstado} 
           searchTerm={searchTerm} 
-          setSearchTerm={handleSearchTermChange}
+          setSearchTerm={setSearchTerm}
         />
         {/* Tabla de mascotas */}
        <TablaMascota 
