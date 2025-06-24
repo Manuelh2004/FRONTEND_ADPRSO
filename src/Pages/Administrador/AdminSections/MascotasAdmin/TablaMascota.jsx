@@ -20,7 +20,7 @@ const TablaMascota = ({ mascotasPaginados, handleEditar, handleCambiarEstado, ha
       <table className="w-full table-auto text-sm">
         <thead className="bg-[#dda15e] text-white">
           <tr>
-            <th className="px-6 py-4 text-center">#</th> {/* Nueva columna para el contador */}
+            <th className="px-6 py-4 text-center">#</th>
             <th className="px-6 py-4 text-center">Nombre</th>
             <th className="px-6 py-4 text-center">Tipo</th>
             <th className="px-6 py-4 text-center">Edad</th>
@@ -31,16 +31,15 @@ const TablaMascota = ({ mascotasPaginados, handleEditar, handleCambiarEstado, ha
         </thead>
         <tbody className="text-gray-700">
           {mascotasPaginados.map((mascota, index) => {
-            // Calcula el número global del contador
             const numeroRegistro = index + (paginaActual - 1) * registrosPorPagina;
-            const edad = calcularEdad(mascota.masc_fecha_nacimiento); // Calcula la edad
+            const edad = calcularEdad(mascota.masc_fecha_nacimiento);
 
             return (
               <tr key={mascota.masc_id} className="border-t hover:bg-gray-50">
-                <td className="px-6 py-4 text-center">{numeroRegistro + 1}</td> {/* Contador global */}
+                <td className="px-6 py-4 text-center">{numeroRegistro + 1}</td>
                 <td className="px-6 py-4">{mascota.masc_nombre}</td>
                 <td className="px-6 py-4">{mascota.tipo_mascota.tipma_nombre}</td>
-                <td className="px-6 py-4 text-center">{edad}</td> {/* Mostrar la edad calculada */}
+                <td className="px-6 py-4 text-center">{edad}</td>
                 <td className="px-6 py-4">{mascota.sexo.sex_nombre}</td>
                 <td className="px-6 py-4">
                   <span className={`inline-block py-1 px-3 rounded-full ${mascota.masc_estado === 1 ? 'bg-green-200 text-green-800' : 'bg-red-200 text-red-800'}`} />

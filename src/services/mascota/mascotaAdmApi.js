@@ -77,18 +77,21 @@ export const actualizarMascota = async (token, id, mascotaData) => {
 
 export const cambiarEstadoMascota = async (token, id, nuevoEstado) => {
   try {
-    const response = await axios.put(`${API_URL}/${id}/estado`, null, {
-      params: { nuevoEstado },
-      headers: {
-        'Authorization': `Bearer ${token}`,
+    await axios.put(
+      `${API_URL}/${id}/estado?nuevoEstado=${nuevoEstado}`,
+      null,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
       }
-    });
-    return response.data;
+    );
   } catch (error) {
-    console.error('Error al cambiar estado de la mascota:', error);
-    throw new Error(error.response ? error.response.data.message : 'Error al cambiar estado de la mascota.');
-  }
+    console.error('Error cambiando estado', error);
+    throw error;
+  }  
 };
+
 
 // Función para buscar mascotas por nombre
 export const buscarMascotasPorNombre = async (token, nombre) => {
