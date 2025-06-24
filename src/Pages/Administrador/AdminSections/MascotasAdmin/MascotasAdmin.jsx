@@ -18,6 +18,7 @@ const MascotasAdmin = () => {
     tipoMascota: '',
     sexo: ''
   });
+  
 
   const [estadoSalud, setEstadoSalud] = useState([]);
   const [estadoVacuna, setEstadoVacuna] = useState([]);
@@ -33,10 +34,10 @@ const MascotasAdmin = () => {
   const [mascotasFiltradas, setMascotasFiltradas] = useState([]);  // Estado para las mascotas filtradas
   const [filtroEstado, setFiltroEstado] = useState("");  // Estado del filtro
   const [searchTerm, setSearchTerm] = useState("");  // Filtro por nombre
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
-
   const token = localStorage.getItem('token');
+
+  const [registrosPorPagina] = useState(10);
+  const [paginaActual, setPaginaActual] = useState(1);
 
   useEffect(() => {
     const fetchData = async () => {      
@@ -64,18 +65,12 @@ const MascotasAdmin = () => {
         setTamanios(dataTamanio);
         setTipoMascota(dataTipoMascota);
         setSexos(dataSexo);
-        setGustos(dataGustos);
-
-        const mascotasData = await obtenerMascotasPorEstado(filtroEstado, token);
-        setMascotas(mascotasData.data);
-        setMascotasFiltradas(mascotasData.data); 
+        setGustos(dataGustos);       
         
       } catch (error) {
         console.error("Error al cargar las listas de items:", error);
         setError('Error al cargar las mascotas');
-      } finally {
-        setLoading(false);
-      }
+      } 
     };
 
     fetchData();
@@ -97,7 +92,7 @@ const MascotasAdmin = () => {
 }, [filtroEstado, token]);
 
    // Función para editar una mascota
-  const handleEdit = (mascota) => {
+  const handleEditar = (mascota) => {
     setFormData({
       masc_nombre: mascota.masc_nombre || '',
       masc_fecha_nacimiento: mascota.masc_fecha_nacimiento || '',
@@ -138,20 +133,17 @@ const MascotasAdmin = () => {
   };
 
   // Función para aplicar el filtro por nombre
-  useEffect(() => {
-  const aplicarFiltroNombre = () => {
-    if (searchTerm.trim()) {
-      const filtradas = mascotas.filter(mascota =>
-        mascota.masc_nombre.toLowerCase().includes(searchTerm.toLowerCase())
+   useEffect(() => {
+    if (searchTerm.trim() !== '') {
+      const filtradas = mascotas.filter(m =>
+        m.masc_nombre.toLowerCase().includes(searchTerm.toLowerCase())
       );
       setMascotasFiltradas(filtradas);
     } else {
       setMascotasFiltradas(mascotas);
     }
-  };
+  }, [searchTerm, mascotas]);
 
-  aplicarFiltroNombre();
-}, [searchTerm, mascotas]);
 
   const handleChange = e => {
     const { name, value } = e.target;
@@ -181,6 +173,18 @@ const MascotasAdmin = () => {
     setGustosSeleccionados(prev =>
       prev.includes(id) ? prev.filter(g => g !== id) : [...prev, id]
     );
+  };
+
+  const mascotasPaginados = Array.isArray(mascotas) && mascotas ? mascotas.slice(
+    (paginaActual - 1) * registrosPorPagina,
+    paginaActual * registrosPorPagina
+  ) : []; 
+  const totalPaginas = Math.ceil((Array.isArray(mascotas) ? mascotas.length : 0) / registrosPorPagina);
+
+  const handleCambiarPagina = (pagina) => {
+    if (pagina >= 1 && pagina <= totalPaginas) {
+      setPaginaActual(pagina);
+    }
   };
 
   const handleSubmit = async (e) => {
@@ -292,11 +296,25 @@ const MascotasAdmin = () => {
         />
         {/* Tabla de mascotas */}
        <TablaMascota 
-        mascotas={mascotasFiltradas} // Usamos las mascotas filtradas
-        handleEdit={handleEdit} 
-        handleCambiarEstado={handleCambiarEstado} 
-        handleVerMas={handleVerMas}
+        mascotasPaginados={mascotasPaginados}
+        handleEditar={handleEditar}
+        handleCambiarEstado={handleCambiarEstado}
+        handleVerMas={handleVerMas}        
       />
+
+      {/* Paginación */}
+      <div className="flex justify-between items-center mt-6">
+        <button onClick={() => handleCambiarPagina(paginaActual - 1)} disabled={paginaActual === 1} className="bg-[#dda15e] text-white px-6 py-2 rounded-lg disabled:opacity-50">
+          Anterior
+        </button>
+        <span className="text-gray-700">
+          Página {paginaActual} de {totalPaginas}
+        </span>
+        <button onClick={() => handleCambiarPagina(paginaActual + 1)} disabled={paginaActual === totalPaginas} className="bg-[#dda15e]  text-white px-6 py-2 rounded-lg disabled:opacity-50">
+          Siguiente
+        </button>
+      </div>
+
     </div>
   );
 };
