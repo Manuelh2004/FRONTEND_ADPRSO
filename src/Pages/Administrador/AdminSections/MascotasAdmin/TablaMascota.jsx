@@ -1,39 +1,11 @@
 import React, { useEffect, useState } from 'react';
-import { listarMascotas } from '../../../../services/mascota/mascotaAdmApi';  // Asegúrate de importar la función correctamente
 
-const TablaMascota = ({ handleEdit, handleCambiarEstado, handleVerMas }) => {
-  const [mascotas, setMascotas] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
+const TablaMascota = ({ mascotas, handleEdit, handleCambiarEstado, handleVerMas }) => {
   const [currentPage, setCurrentPage] = useState(1);
   const [mascotasPorPagina] = useState(10);
 
-  const token = localStorage.getItem('token');
-
-  // Verificar si el token existe y obtener datos
-  useEffect(() => {
-    const fetchData = async () => {
-      if (!token) {
-        setError('Token de autenticación es necesario');
-        setLoading(false);
-        return;
-      }
-
-      try {
-        const data = await listarMascotas(token);  // Obtener las mascotas
-        setMascotas(data.data);
-      } catch (error) {
-        setError(error.message || 'Error al cargar las mascotas.');
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchData();
-  }, [token]);
-
-  if (loading) return <div className="text-center">Cargando...</div>;
-  if (error) return <div className="text-center text-red-500">{error}</div>;
+  // Verifica si 'mascotas' es un array válido antes de hacer el slice
+  const mascotasAUsar = Array.isArray(mascotas) ? mascotas : [];
 
   // Función de cambio de página
   const handlePageChange = (pageNumber) => {
@@ -42,8 +14,8 @@ const TablaMascota = ({ handleEdit, handleCambiarEstado, handleVerMas }) => {
 
   const indexOfLastMascota = currentPage * mascotasPorPagina;
   const indexOfFirstMascota = indexOfLastMascota - mascotasPorPagina;
-  const mascotasActuales = mascotas.slice(indexOfFirstMascota, indexOfLastMascota);
-  const totalPages = Math.ceil(mascotas.length / mascotasPorPagina);
+  const mascotasActuales = mascotasAUsar.slice(indexOfFirstMascota, indexOfLastMascota);
+  const totalPages = Math.ceil(mascotasAUsar.length / mascotasPorPagina);
 
   return (
     <div>

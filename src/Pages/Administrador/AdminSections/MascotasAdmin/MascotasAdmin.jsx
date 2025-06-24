@@ -1,12 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import FormularioMascota from './FormularioMascota'; // Asegúrate de importar el componente
 import ApiService from '../../../../services/itemAdmApi'; 
-import { registrarMascota, obtenerMascotasPorEstado, buscarMascotasPorNombre } from '../../../../services/mascota/mascotaAdmApi';
+import { registrarMascota, listarMascotas, obtenerMascotasPorEstado, buscarMascotasPorNombre } from '../../../../services/mascota/mascotaAdmApi';
 import TablaMascota from './TablaMascota';
 import FiltroEstado from './FiltroEstado';  // Importar el filtro
 
 const MascotasAdmin = () => {
-  // Declaración de los estados
   const [formData, setFormData] = useState({
     masc_nombre: '',
     masc_fecha_nacimiento: '',
@@ -31,6 +30,7 @@ const MascotasAdmin = () => {
   const [gustosSeleccionados, setGustosSeleccionados] = useState([]);
 
   const [mascotas, setMascotas] = useState([]);
+  const [mascotasFiltradas, setMascotasFiltradas] = useState([]);  // Estado para las mascotas filtradas
   const [filtroEstado, setFiltroEstado] = useState("");  // Estado del filtro
   const [searchTerm, setSearchTerm] = useState("");  // Filtro por nombre
   const [loading, setLoading] = useState(true);
@@ -38,7 +38,6 @@ const MascotasAdmin = () => {
 
   const token = localStorage.getItem('token');
 
-  // Obtener las listas de items desde el servidor
   useEffect(() => {
     const fetchData = async () => {      
       if (!token) {
@@ -67,9 +66,10 @@ const MascotasAdmin = () => {
         setSexos(dataSexo);
         setGustos(dataGustos);
 
-        // Traer las mascotas con el filtro de estado
         const mascotasData = await obtenerMascotasPorEstado(filtroEstado, token);
         setMascotas(mascotasData.data);
+        setMascotasFiltradas(mascotasData.data); 
+        
       } catch (error) {
         console.error("Error al cargar las listas de items:", error);
         setError('Error al cargar las mascotas');
@@ -79,28 +79,79 @@ const MascotasAdmin = () => {
     };
 
     fetchData();
-  }, [filtroEstado, token]);  
+  }, [token]);
+
+  useEffect(() => {
+  const fetchMascotasPorEstado = async () => {
+    if (!token) return;
+    try {
+      const response = await obtenerMascotasPorEstado(filtroEstado, token);
+      setMascotas(response.data);
+      setMascotasFiltradas(response.data);
+    } catch (err) {
+      console.error("Error al filtrar mascotas por estado:", err);
+    }
+  };
+
+  fetchMascotasPorEstado();
+}, [filtroEstado, token]);
+
+   // Función para editar una mascota
+  const handleEdit = (mascota) => {
+    setFormData({
+      masc_nombre: mascota.masc_nombre || '',
+      masc_fecha_nacimiento: mascota.masc_fecha_nacimiento || '',
+      masc_historia: mascota.masc_historia || '',
+      masc_observacion: mascota.masc_observacion || '',
+      estadoSalud: mascota.estado_salud.estsa_id,
+      estadoVacuna: mascota.estado_vacuna.estva_id,
+      nivelEnergia: mascota.nivel_energia.nien_id,
+      tamanio: mascota.tamanio.tam_id,
+      tipoMascota: mascota.tipo_mascota.tipma_id,
+      sexo: mascota.sexo.sex_id
+    });
+  };  
+
+  // Función para cambiar el estado de una mascota
+  const handleCambiarEstado = async (id, estadoActual) => {
+    const nuevoEstado = estadoActual === 1 ? 0 : 1;
+    const token = localStorage.getItem('token');
+    try {
+      await cambiarEstadoMascota(token, id, nuevoEstado);
+      const mascotasData = await obtenerMascotasPorEstado(filtroEstado, token);
+      setMascotas(mascotasData.data);
+      setMascotasFiltradas(mascotasData.data); // Actualizamos también las mascotas filtradas
+    } catch (error) {
+      console.error('Error al cambiar estado', error);
+    }
+  };
+
+  // Función para ver más detalles de una mascota
+  const handleVerMas = async (mascota) => {
+    console.log('Ver más detalles de', mascota);
+    // Aquí podrías mostrar un modal con los detalles de la mascota si es necesario
+  };
+
+  // Función para aplicar el filtro por nombre
+  const handleSearchTermChange = (e) => {
+    setSearchTerm(e.target.value);
+  };
 
   // Función para aplicar el filtro por nombre
   useEffect(() => {
-    const applySearchFilter = () => {
-      if (searchTerm) {
-        const filteredMascotas = mascotas.filter((mascota) => 
-          mascota.masc_nombre.toLowerCase().includes(searchTerm.toLowerCase())
-        );
-        setMascotas(filteredMascotas);
-      } else {
-        // Si no hay término de búsqueda, volvemos a las mascotas originales filtradas por estado
-        const fetchMascotas = async () => {
-          const mascotasData = await obtenerMascotasPorEstado(filtroEstado, token);
-          setMascotas(mascotasData.data);
-        };
-        fetchMascotas();
-      }
-    };
+  const aplicarFiltroNombre = () => {
+    if (searchTerm.trim()) {
+      const filtradas = mascotas.filter(mascota =>
+        mascota.masc_nombre.toLowerCase().includes(searchTerm.toLowerCase())
+      );
+      setMascotasFiltradas(filtradas);
+    } else {
+      setMascotasFiltradas(mascotas);
+    }
+  };
 
-    applySearchFilter();
-  }, [searchTerm, mascotas, filtroEstado, token]);
+  aplicarFiltroNombre();
+}, [searchTerm, mascotas]);
 
   const handleChange = e => {
     const { name, value } = e.target;
@@ -181,13 +232,10 @@ const MascotasAdmin = () => {
     }
 
     try {
-      const response = await registrarMascota(token, mascotaDTO);  // Usamos el servicio aquí
+      const response = await registrarMascota(token, mascotaDTO);  
 
-      // Verificar si la respuesta fue exitosa
       if (response.code === 201) {
         console.log("Mascota registrada con éxito:", response.data);
-
-        // Limpiar los campos del formulario después del registro exitoso
         setFormData({
           masc_nombre: '',
           masc_fecha_nacimiento: '',
@@ -213,32 +261,42 @@ const MascotasAdmin = () => {
   };
 
   return (
-    <div>
-      <FormularioMascota
-        formData={formData}
-        handleChange={handleChange}
-        handleImageChange={handleImageChange}
-        handleImageRemove={handleImageRemove}
-        agregarCampoImagen={agregarCampoImagen}
-        handleGustoChange={handleGustoChange}
-        gustos={gustos}
-        gustosSeleccionados={gustosSeleccionados}
-        estadoSalud={estadoSalud}
-        estadoVacuna={estadoVacuna}
-        nivelEnergia={nivelEnergia}
-        tamanios={tamanios}
-        tipoMascota={tipoMascota}
-        sexos={sexos}
-        imagenes={imagenes}
-        handleSubmit={handleSubmit}
+    <div className="container mx-auto p-8 bg-gray-50 min-h-screen">
+      <h2 className="text-4xl font-semibold text-gray-800 mb-8">Gestión de Mascotas</h2>
+
+      {/* Formulario */}
+        <FormularioMascota
+          formData={formData}
+          handleChange={handleChange}
+          handleImageChange={handleImageChange}
+          handleImageRemove={handleImageRemove}
+          agregarCampoImagen={agregarCampoImagen}
+          handleGustoChange={handleGustoChange}
+          gustos={gustos}
+          gustosSeleccionados={gustosSeleccionados}
+          estadoSalud={estadoSalud}
+          estadoVacuna={estadoVacuna}
+          nivelEnergia={nivelEnergia}
+          tamanios={tamanios}
+          tipoMascota={tipoMascota}
+          sexos={sexos}
+          imagenes={imagenes}
+          handleSubmit={handleSubmit}
+        />
+        {/* Filtro por estado y búsqueda */}
+         <FiltroEstado 
+          filtroEstado={filtroEstado} 
+          setFiltroEstado={setFiltroEstado} 
+          searchTerm={searchTerm} 
+          setSearchTerm={handleSearchTermChange}
+        />
+        {/* Tabla de mascotas */}
+       <TablaMascota 
+        mascotas={mascotasFiltradas} // Usamos las mascotas filtradas
+        handleEdit={handleEdit} 
+        handleCambiarEstado={handleCambiarEstado} 
+        handleVerMas={handleVerMas}
       />
-      <FiltroEstado 
-        filtroEstado={filtroEstado} 
-        setFiltroEstado={setFiltroEstado} 
-        searchTerm={searchTerm} 
-        setSearchTerm={setSearchTerm}
-      />
-      <TablaMascota mascotas={mascotas} /> 
     </div>
   );
 };
