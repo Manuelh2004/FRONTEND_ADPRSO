@@ -2,7 +2,7 @@ const TablaEvento = ({ eventosPaginados, handleEditar, handleCambiarEstado, hand
   return (
     <div className="overflow-x-auto bg-white rounded-lg shadow-lg">
       <table className="w-full table-auto text-sm">
-        <thead className="bg-blue-600 text-white">
+        <thead className="bg-[#dda15e]  text-white">
           <tr>
             <th className="px-6 py-4 text-center">Nombre</th>
             <th className="px-6 py-4 text-center">Lugar</th>

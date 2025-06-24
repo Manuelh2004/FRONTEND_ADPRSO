@@ -80,7 +80,7 @@ export default function EventoDetalle() {
 
     if (hoy < fechaInicio) {
       const diffDias = Math.ceil((fechaInicio - hoy) / (1000 * 60 * 60 * 24));
-      return <p className="text-blue-600 font-medium">Faltan {diffDias} día{diffDias > 1 ? 's' : ''}</p>;
+      return <p className="text-bg-[#dda15e] font-medium">Faltan {diffDias} día{diffDias > 1 ? 's' : ''}</p>;
     } else if (hoy >= fechaInicio && hoy <= fechaFin) {
       const diffDias = Math.ceil((fechaFin - hoy) / (1000 * 60 * 60 * 24));
       return diffDias === 0
@@ -111,7 +111,7 @@ export default function EventoDetalle() {
           className="w-full h-64 object-cover rounded-md mb-4"
         />
       )}
-      <h2 className="text-3xl font-bold text-blue-900 mb-2">{evento.even_nombre}</h2>
+      <h2 className="text-3xl font-bold text-bg-[#dda15e]  mb-2">{evento.even_nombre}</h2>
       <p className="text-gray-700 mb-1">
         <strong>Ubicación:</strong> {evento.even_lugar}
       </p>

@@ -7,6 +7,7 @@ import Contacto from './Pages/Contacto/Contacto';
 import MascotaDetalle from './Pages/Adopta/MascotaDetalle';
 import Eventos from './Pages/Eventos/Eventos';
 import Login from './Login';
+import Registro from './Registro';
 import ProtectedRoute from './components/ProtectedRoute';
 import ListaEventos from './Pages/Eventos/ListaEventos';
 import EventoDetalle from './Pages/Eventos/EventoDetalle';
@@ -57,12 +58,20 @@ export const App = () => {
             {isAuthenticated ? (
               <UsuarioMenu />
             ) : (
-              <Link
-                to="/login"
-                className="text-white bg-[#bc6c25] px-4 py-2 rounded-full hover:bg-[#dda15e] transition duration-300 shadow-sm"
-              >
-                Iniciar sesión
-              </Link>
+              <>
+                <Link
+                  to="/login"
+                  className="text-white bg-[#bc6c25] px-4 py-2 rounded-full hover:bg-[#dda15e] transition duration-300 shadow-sm"
+                >
+                  Iniciar sesión
+                </Link>
+                <Link
+                  to="/registro"
+                  className="text-white bg-[#bc6c25] px-4 py-2 rounded-full hover:bg-[#dda15e] transition duration-300 shadow-sm"
+                >
+                  Registrarse
+                </Link>
+              </>
             )}
           </div>
 
@@ -87,6 +96,7 @@ export const App = () => {
 
         {/* RUTA DE LOGIN */}
         <Route path="/login" element={<Login />} />
+        <Route path="/registro" element={<Registro />} />
 
         {/* RUTAS PROTEGIDAS */}
         <Route

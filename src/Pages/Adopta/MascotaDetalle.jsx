@@ -117,7 +117,7 @@ const MascotaDetalle = () => {
         </button>
         <button
           onClick={() => navigate(-1)}
-          className="text-blue-600 text-sm underline"
+          className="text-bg-[#dda15e]  text-sm underline"
         >
           ← Volver
         </button>

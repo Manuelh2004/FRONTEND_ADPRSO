@@ -17,14 +17,14 @@ const FormularioEvento = ({ formData, setFormData, handleSubmit, editandoId }) =
               name={field}
               value={formData[field]}
               onChange={handleChange}
-              className="w-full border-2 border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="w-full border-2 border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-bg-[#dda15e] "
               required
             />
           </div>
         ))}
       </div>
 
-      <button type="submit" className="w-full bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700 transition duration-300">
+      <button type="submit" className="w-full bg-[#dda15e]  text-white py-2 rounded-lg hover:bg-[#dda15e]  transition duration-300">
         {editandoId ? 'Actualizar' : 'Registrar'} Evento
       </button>
     </form>
