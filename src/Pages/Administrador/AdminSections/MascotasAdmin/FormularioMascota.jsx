@@ -15,6 +15,7 @@ const FormularioMascota = ({
   sexos,
   imagenes,
   handleSubmit,
+  editandoId
 }) => {
   return (
     <div className="w-full mx-auto mt-10 p-6 bg-white shadow-lg rounded-xl">
@@ -229,7 +230,7 @@ const FormularioMascota = ({
             type="submit"
             className="bg-[#dda15e]  hover:bg-[#dda15e]  text-white font-semibold py-2 px-6 rounded"
           >
-            {formData.masc_nombre ? 'Guardar Cambios' : 'Registrar Mascota'}
+           {editandoId ? 'Actualizar' : 'Registrar'} Mascota
           </button>
         </div>
       </form>

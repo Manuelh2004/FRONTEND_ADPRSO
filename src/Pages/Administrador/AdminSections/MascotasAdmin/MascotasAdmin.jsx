@@ -114,10 +114,57 @@ const mascotasPaginados = Array.isArray(mascotas) && mascotas ? mascotas.slice(
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+  if (editandoId) {
+      // Prepara los datos en el formato correcto
+      const mascotaDTO = {
+        mascota: {
+          masc_nombre: formData.masc_nombre,
+          masc_fecha_nacimiento: formData.masc_fecha_nacimiento,
+          sexo: { sex_id: formData.sexo },
+          tamanio: { tam_id: formData.tamanio },
+          nivel_energia: { nien_id: formData.nivelEnergia },
+          tipo_mascota: { tipma_id: formData.tipoMascota },
+          estado_salud: { estsa_id: formData.estadoSalud },
+          estado_vacuna: { estva_id: formData.estadoVacuna },
+          masc_historia: formData.masc_historia,
+          masc_observacion: formData.masc_observacion,
+        },
+        imagenUrls: imagenes,  // Asegúrate de que las URLs de las imágenes estén correctamente definidas
+        newGustos: gustosSeleccionados  // Pasar los gustos seleccionados como un array de IDs
+      };
+      try {
+  const response = await actualizarMascota(token, editandoId, mascotaDTO);
 
-    if(editandoId){
-      await actualizarEvento(token, editandoId, formData);
-    }else{
+  // Verificar si la respuesta contiene los datos de la mascota (indicando que la actualización fue exitosa)
+  if (response && response.masc_id) {
+    console.log("Mascota actualizada con éxito:", response);
+    setFormData({
+      masc_nombre: '',
+      masc_fecha_nacimiento: '',
+      masc_historia: '',
+      masc_observacion: '',
+      estadoSalud: '',
+      estadoVacuna: '',
+      nivelEnergia: '',
+      tamanio: '',
+      tipoMascota: '',
+      sexo: ''
+    });
+    setImagenes(['']);
+    setGustosSeleccionados([]);
+  } else {
+    console.error('Error al actualizar mascota, respuesta no válida:', response);
+    alert('Error al actualizar mascota.');
+  }
+} catch (error) {
+  console.error("Error al actualizar mascota:", error);
+  alert('Hubo un error al actualizar la mascota.');
+}
+
+
+
+      
+  }else{
       // Validación de campos obligatorios
       const camposObligatorios = [
         formData.masc_nombre,
@@ -197,20 +244,27 @@ const mascotasPaginados = Array.isArray(mascotas) && mascotas ? mascotas.slice(
   };
 
   const handleEditar = (mascota) => {
-    setEditandoId(mascota.masc_id);
-    setFormData({
-      masc_nombre: mascota.masc_nombre || '',
-      masc_fecha_nacimiento: mascota.masc_fecha_nacimiento || '',
-      masc_historia: mascota.masc_historia || '',
-      masc_observacion: mascota.masc_observacion || '',
-      estadoSalud: mascota.estado_salud.estsa_id,
-      estadoVacuna: mascota.estado_vacuna.estva_id,
-      nivelEnergia: mascota.nivel_energia.nien_id,
-      tamanio: mascota.tamanio.tam_id,
-      tipoMascota: mascota.tipo_mascota.tipma_id,
-      sexo: mascota.sexo.sex_id
-    });
-  };  
+  setEditandoId(mascota.masc_id);
+  setFormData({
+    masc_nombre: mascota.masc_nombre || '',
+    masc_fecha_nacimiento: mascota.masc_fecha_nacimiento || '',
+    masc_historia: mascota.masc_historia || '',
+    masc_observacion: mascota.masc_observacion || '',
+    estadoSalud: mascota.estado_salud.estsa_id,
+    estadoVacuna: mascota.estado_vacuna.estva_id,
+    nivelEnergia: mascota.nivel_energia.nien_id,
+    tamanio: mascota.tamanio.tam_id,
+    tipoMascota: mascota.tipo_mascota.tipma_id,
+    sexo: mascota.sexo.sex_id
+  });
+
+  // Asigna los gustos seleccionados
+  setGustosSeleccionados(mascota.gustoNames ? mascota.gustoNames.map(gusto => gusto.id) : []);
+  
+  // Asigna las imágenes
+  setImagenes(mascota.imagenes ? mascota.imagenes.map(img => img.ima_url) : []);
+};
+
 
   const handleCambiarEstado = async (id, estadoActual) => {
     const nuevoEstado = estadoActual === 1 ? 0 : 1;
@@ -304,6 +358,7 @@ const mascotasPaginados = Array.isArray(mascotas) && mascotas ? mascotas.slice(
           sexos={sexos}
           imagenes={imagenes}
           handleSubmit={handleSubmit}
+          editandoId={editandoId}
         />
         {/* Filtro por estado y búsqueda */}
          <FiltroEstado 
