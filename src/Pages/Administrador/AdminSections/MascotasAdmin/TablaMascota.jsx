@@ -7,7 +7,6 @@ const TablaMascota = ({ mascotasPaginados, handleEditar, handleCambiarEstado, ha
     let edad = hoy.getFullYear() - nacimiento.getFullYear();
     const m = hoy.getMonth() - nacimiento.getMonth();
 
-    // Si no ha cumplido años este año, resta 1 a la edad
     if (m < 0 || (m === 0 && hoy.getDate() < nacimiento.getDate())) {
       edad--;
     }

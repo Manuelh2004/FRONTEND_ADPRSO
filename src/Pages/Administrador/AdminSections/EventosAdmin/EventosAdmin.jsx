@@ -3,7 +3,7 @@ import { fetchEventos, registrarEvento, actualizarEvento, cambiarEstadoEvento, o
 import FormularioEvento from './FormularioEvento';
 import FiltroEstado from './FiltroEstado';
 import TablaEvento from './TablaEvento';  
-import ModalEvento from './ModalEvento'; // Importar el nuevo componente del modal
+import ModalEvento from './ModalEvento';
 
 const EventosAdmin = () => {
   const [eventos, setEventos] = useState([]);
