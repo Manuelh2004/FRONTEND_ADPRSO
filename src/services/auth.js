@@ -5,12 +5,18 @@ export const loginRequest = async (email, password) => {
     body: JSON.stringify({ email, password }),
   });
 
-  const result = await response.json(); // Obtener la respuesta JSON
+  const result = await response.json(); // leer la respuesta del backend
 
-  // Validar status del backend (no solo el código HTTP)
   if (result.status !== 'success' || !result.data?.token) {
-    throw new Error(result.message || 'Credenciales incorrectas');
+    // 🚨 Lanzamos un error con estructura similar a Axios
+    throw {
+      response: {
+        data: {
+          message: result.message || 'Credenciales incorrectas'
+        }
+      }
+    };
   }
 
-  return result.data.token; // Login exitoso, devolver token
+  return result.data.token;
 };

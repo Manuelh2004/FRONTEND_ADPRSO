@@ -23,7 +23,7 @@ export const Nosotros = () => {
       <div className="bg-bg-[#dda15e] p-8 rounded-lg shadow-md">
         <h2 className="text-3xl font-semibold text-center text-yellow-200 mb-6">Nuestra Historia</h2>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
-          <p className="text-white font-medium">
+          <p className="text-black font-medium">
             Desde nuestra fundación, hemos trabajado incansablemente para mejorar la vida de miles de animales. 
             Con el apoyo de voluntarios y aliados estratégicos, hemos logrado esterilizar más de 14,000 animales y entregar más de 71 toneladas de comida.
           </p>

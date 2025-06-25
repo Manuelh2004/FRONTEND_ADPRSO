@@ -6,8 +6,8 @@ import Donaciones from './Pages/Donaciones/Donaciones';
 import Contacto from './Pages/Contacto/Contacto';
 import MascotaDetalle from './Pages/Adopta/MascotaDetalle';
 import Eventos from './Pages/Eventos/Eventos';
-import Login from './Login';
-import Registro from './Registro';
+import Login from './Pages/Auth/Login';
+import Registro from './Pages/Auth/Registro';
 import ProtectedRoute from './components/ProtectedRoute';
 import ListaEventos from './Pages/Eventos/ListaEventos';
 import EventoDetalle from './Pages/Eventos/EventoDetalle';
@@ -16,6 +16,9 @@ import Administrador from './Pages/Administrador/Administrador';
 import UsuarioMenu from './components/UsuarioMenu';
 import MisEventos from './Pages/Usuario/EventosUsuario/MisEventos';
 import MisAdopciones from './Pages/Usuario/AdopcionesUsuario/MisAdopciones';
+import VerificarCuenta from './Pages/Auth/VerificarCuenta';
+import CambiarPassword from './Pages/Auth/CambiarPassword';
+import RestablecerPassword from './Pages/Auth/RestablecerPassword';
 
 
 
@@ -97,6 +100,9 @@ export const App = () => {
         {/* RUTA DE LOGIN */}
         <Route path="/login" element={<Login />} />
         <Route path="/registro" element={<Registro />} />
+        <Route path="/verificar" element={<VerificarCuenta />} />
+        <Route path="/cambiar" element={<CambiarPassword />} />
+        <Route path="/restablecer" element={<RestablecerPassword />} />
 
         {/* RUTAS PROTEGIDAS */}
         <Route

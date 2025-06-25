@@ -1,8 +1,8 @@
 import React, { useState, useCallback } from 'react';
-import { useAuth } from './context/AuthContext'; // Asegúrate de que la ruta sea correcta
-import pawPrint from './Imagenes/huella.jpg'; 
-import dogSilhouette from './Imagenes/perrito-silueta.jpg'; 
-import { useNavigate } from 'react-router-dom';
+import { useAuth } from '../../context/AuthContext'; // Asegúrate de que la ruta sea correcta
+import pawPrint from '../../Imagenes/huella.jpg';
+import dogSilhouette from '../../Imagenes/perrito-silueta.jpg'; 
+import { useNavigate, Link } from 'react-router-dom';
 
 const Login = () => {
   const { login } = useAuth();
@@ -14,16 +14,23 @@ const Login = () => {
   const navigate = useNavigate();
 
   const handleSubmit = useCallback(async (e) => {
-    e.preventDefault();
-    setError('');
-    try {
-      await login(credentials.email, credentials.password);
-        navigate('/', { replace: true });
+  e.preventDefault();
+  setError('');
 
-    } catch (err) {
-      setError('Usuario o contraseña incorrecta');
+  try {
+    await login(credentials.email, credentials.password);
+    navigate('/', { replace: true });
+  } catch (err) {
+    const mensaje = err?.response?.data?.message || 'Usuario o contraseña incorrecta';
+
+    // Redirigir si es no verificado
+    if (mensaje.includes('verificar tu correo')) {
+      navigate('/verificar', { state: { email: credentials.email } });
+    } else {
+      setError(mensaje);
     }
-  }, [credentials, login]);
+  }
+}, [credentials, login, navigate]);
 
   const handleInputChange = useCallback((e) => {
     const { name, value } = e.target;
@@ -126,6 +133,15 @@ const Login = () => {
         {error && (
           <div className="mt-3 text-red-500 text-sm text-center">{error}</div>
         )}
+        <div className="mt-4 text-center text-sm text-amber-700">
+          ¿Olvidaste tu contraseña?{' '}
+           <Link
+              to="/restablecer"
+              className="underline text-amber-600 hover:text-amber-800"
+          >
+              Restablécela aquí
+            </Link>
+        </div>
         
         <div className="mt-4 text-center text-sm text-amber-700">
           ¿Problemas para ingresar? Contacta al administrador

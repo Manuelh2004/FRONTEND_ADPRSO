@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-import pawPrint from './Imagenes/huella.jpg'; 
-import dogSilhouette from './Imagenes/perrito-silueta.jpg'; 
+import pawPrint from '../../Imagenes/huella.jpg';
+import dogSilhouette from '../../Imagenes/perrito-silueta.jpg'; 
 import { useNavigate } from 'react-router-dom';
 
 // ... imports sin cambios
@@ -123,7 +123,7 @@ const validarCampos = () => {
     const response = await axios.post('http://localhost:8080/auth/crear_usuario', formData);
     setMensaje('Registro exitoso. Redirigiendo...');
     console.log(response.data);
-    setTimeout(() => navigate('/login'), 2000);
+    navigate('/verificar', { state: { email: formData.usr_email } });
   } catch (error) {
     const msg = error.response?.data?.message || 'Error al registrar usuario';
     setError(msg);
