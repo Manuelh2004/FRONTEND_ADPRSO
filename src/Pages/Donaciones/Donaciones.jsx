@@ -1,4 +1,3 @@
-//npm install swiper
 import React, { useState } from "react";
 import { Swiper, SwiperSlide } from 'swiper/react';
 import 'swiper/css';
@@ -13,9 +12,18 @@ import interbank from "../../Imagenes/interbank.png";
 import western_union from "../../Imagenes/Western-Union-Logo.png";
 import paypal from "../../Imagenes/PayPal.png";
 import bbva from "../../Imagenes/bbva.jpg";
+import { FaWhatsapp } from 'react-icons/fa'; // Importamos el ícono de WhatsApp
 
 const Donaciones = () => {
   const [mostrarModal, setMostrarModal] = useState(false);
+
+  // Reemplaza con tu número de WhatsApp y el mensaje que deseas enviar
+  const telefonoWhatsApp = "51922266310";  // Agrega tu número de WhatsApp aquí
+  const mensaje = "¡Hola! Quiero saber más sobre cómo puedo ayudar."; // Mensaje predeterminado
+
+  // Enlace a la API de WhatsApp
+  const enlaceWhatsApp = `https://wa.me/${telefonoWhatsApp}?text=${encodeURIComponent(mensaje)}`;
+
   return (
     <div className="px-8 py-10 space-y-16">
 
@@ -45,35 +53,35 @@ const Donaciones = () => {
       </section>
 
       {/* Donación libre */}
-    <section>
-      <h2 className="text-4xl font-extrabold text-center text-indigo-700 mb-10">Donación libre</h2>
-      
-      <div className="flex flex-col items-center gap-8">
+      <section>
+        <h2 className="text-4xl font-extrabold text-center text-indigo-700 mb-10">Donación libre</h2>
+        
+        <div className="flex flex-col items-center gap-8">
 
-        {/* Card de donación */}
-        <div className="bg-white rounded-2xl shadow-lg p-6 w-full max-w-md text-center space-y-4 hover:shadow-2xl transition-shadow">
-          <div className="w-48 h-48 bg-gray-300 mx-auto rounded-lg overflow-hidden">
-            {/* Reemplaza esto por una imagen real si tienes una */}
-            <img
-              src={perritoSilueta}
-              alt="Perrito en adopción"
-              className="w-full h-full object-cover"
-            />
-          </div>
-          <p className="text-gray-700 text-base">
-            Tu apoyo hace la diferencia. Con una donación libre, ayudas a que más perritos para que reciban alimento, cuidados médicos y una oportunidad de ser felices.
-          </p>
-          <button
-            onClick={() => setMostrarModal(true)}
-              className="bg-pink-500 hover:bg-pink-600 text-white font-semibold px-6 py-2 rounded-lg shadow"
-            >
+          {/* Card de donación */}
+          <div className="bg-white rounded-2xl shadow-lg p-6 w-full max-w-md text-center space-y-4 hover:shadow-2xl transition-shadow">
+            <div className="w-48 h-48 bg-gray-300 mx-auto rounded-lg overflow-hidden">
+              {/* Reemplaza esto por una imagen real si tienes una */}
+              <img
+                src={perritoSilueta}
+                alt="Perrito en adopción"
+                className="w-full h-full object-cover"
+              />
+            </div>
+            <p className="text-gray-700 text-base">
+              Tu apoyo hace la diferencia. Con una donación libre, ayudas a que más perritos para que reciban alimento, cuidados médicos y una oportunidad de ser felices.
+            </p>
+            <button
+              onClick={() => setMostrarModal(true)}
+                className="bg-pink-500 hover:bg-pink-600 text-white font-semibold px-6 py-2 rounded-lg shadow"
+              >
               Donar ahora
-          </button>
+            </button>
+          </div>
         </div>
-      </div>
-    </section>
+      </section>
 
-    {/* Modal con QR */}
+      {/* Modal con QR */}
       {mostrarModal && (
       <div className="fixed top-0 left-0 w-full h-screen bg-black bg-opacity-50 flex items-center justify-center z-50">
         <div className="bg-white rounded-xl p-6 max-w-sm w-full text-center shadow-2xl relative">
@@ -96,46 +104,57 @@ const Donaciones = () => {
 
       {/* Métodos de pago adicionales */}
       <section>
-      <h2 className="text-4xl font-extrabold text-center text-indigo-700 mb-10">
-        Otras formas de ayudar
-      </h2>
+        <h2 className="text-4xl font-extrabold text-center text-indigo-700 mb-10">
+          Otras formas de ayudar
+        </h2>
 
-      <Swiper
-        modules={[Navigation, Autoplay]}
-        spaceBetween={20}
-        slidesPerView={1}
-        navigation
-        autoplay={{ delay: 3000 }}
-        breakpoints={{
-          640: { slidesPerView: 2 },
-          768: { slidesPerView: 3 },
-          1024: { slidesPerView: 4 },
-        }}
-        className="px-4"
+        <Swiper
+          modules={[Navigation, Autoplay]}
+          spaceBetween={20}
+          slidesPerView={1}
+          navigation
+          autoplay={{ delay: 3000 }}
+          breakpoints={{
+            640: { slidesPerView: 2 },
+            768: { slidesPerView: 3 },
+            1024: { slidesPerView: 4 },
+          }}
+          className="px-4"
+        >
+          {[ 
+            { img: yape, alt: "Yape", info: ["922-266-310"] }, 
+            { img: plin, alt: "Plin", info: ["922-266-310"] }, 
+            { img: bcp, alt: "BCP", info: ["191-36249867-0-25", "CCI: 00219113624986702559"] },
+            { img: interbank, alt: "Interbank Soles", info: ["1543147371121"] }, 
+            { img: interbank, alt: "Interbank Dólares", info: ["8983170530579", "CCI: 00389801317053057948"] },
+            { img: bbva, alt: "BBVA", info: ["001108140221701416"] },
+            { img: western_union, alt: "Western Union", info: ["tephi.chris@gmail.com"] },
+            { img: paypal, alt: "PayPal", info: ["tephi.chris@gmail.com"] },
+          ].map((item, idx) => (
+              <SwiperSlide key={idx}>
+                <div className="bg-white rounded-xl p-4 shadow-md flex flex-col items-center text-center h-[250px] w-full">
+                  <img src={item.img} alt={item.alt} className="w-40 h-40 object-contain mb-2" />
+                  <div className="mt-auto space-y-1">
+                    {item.info.map((line, i) => (
+                      <p key={i} className="text-gray-700 text-lg">{line}</p>
+                    ))}
+                  </div>
+                </div>
+              </SwiperSlide>
+          ))}
+        </Swiper>
+      </section>
+
+      {/* Botón flotante de WhatsApp */}
+      <a
+        href={enlaceWhatsApp}
+        target="_blank"
+        rel="noopener noreferrer"
+        className="fixed bottom-5 right-5 bg-green-500 hover:bg-green-600 text-white p-4 rounded-full shadow-lg flex items-center justify-center transition z-50"
+        title="Enviar mensaje por WhatsApp"
       >
-        {[
-          { img: yape, alt: "Yape", info: ["922-266-310"] },
-          { img: plin, alt: "Plin", info: ["922-266-310"] },
-          { img: bcp, alt: "BCP", info: ["191-36249867-0-25", "CCI: 00219113624986702559"] },
-          { img: interbank, alt: "Interbank Soles", info: ["1543147371121"] },
-          { img: interbank, alt: "Interbank Dólares", info: ["8983170530579", "CCI: 00389801317053057948"] },
-          { img: bbva, alt: "BBVA", info: ["001108140221701416"] },
-          { img: western_union, alt: "Western Union", info: ["tephi.chris@gmail.com"] },
-          { img: paypal, alt: "PayPal", info: ["tephi.chris@gmail.com"] },
-        ].map((item, idx) => (
-            <SwiperSlide key={idx}>
-            <div className="bg-white rounded-xl p-4 shadow-md flex flex-col items-center text-center h-[250px] w-full">
-              <img src={item.img} alt={item.alt} className="w-40 h-40 object-contain mb-2" />
-              <div className="mt-auto space-y-1">
-                {item.info.map((line, i) => (
-                  <p key={i} className="text-gray-700 text-lg">{line}</p>
-                ))}
-              </div>
-            </div>
-          </SwiperSlide>
-        ))}
-      </Swiper>
-    </section>
+        <FaWhatsapp size={30} />
+      </a>
     </div>
   );
 };

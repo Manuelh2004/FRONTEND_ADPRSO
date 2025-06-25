@@ -1,8 +1,16 @@
 import React from "react";
 import facebook from "../../Imagenes/facebook.png";
 import instagram from "../../Imagenes/instagram.jfif";
+import { FaWhatsapp } from 'react-icons/fa'; // Importamos el ícono de WhatsApp
 
 const Contacto = () => {
+  // Reemplaza con tu número de WhatsApp y el mensaje que deseas enviar
+  const telefonoWhatsApp = "51922266310";  // Agrega tu número de WhatsApp aquí
+  const mensaje = "¡Hola! Necesito más información sobre el albergue."; // Mensaje predeterminado
+
+  // Enlace a la API de WhatsApp
+  const enlaceWhatsApp = `https://wa.me/${telefonoWhatsApp}?text=${encodeURIComponent(mensaje)}`;
+
   return (
     <div className="px-6 py-10 max-w-3xl mx-auto bg-white p-6 shadow-lg rounded-lg">
       <h2 className="text-3xl font-bold text-center text-indigo-700 mb-4">Contáctanos</h2>
@@ -32,9 +40,19 @@ const Contacto = () => {
           title="Mapa Albergue San Francisco"
         ></iframe>
       </div>
+
+      {/* Botón flotante de WhatsApp */}
+      <a
+        href={enlaceWhatsApp}
+        target="_blank"
+        rel="noopener noreferrer"
+        className="fixed bottom-5 right-5 bg-green-500 hover:bg-green-600 text-white p-4 rounded-full shadow-lg flex items-center justify-center transition z-50"
+        title="Enviar mensaje por WhatsApp"
+      >
+        <FaWhatsapp size={30} />
+      </a>
     </div>
   );
 };
 
 export default Contacto;
-
