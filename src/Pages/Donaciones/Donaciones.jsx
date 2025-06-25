@@ -1,5 +1,18 @@
+//npm install swiper
 import React, { useState } from "react";
+import { Swiper, SwiperSlide } from 'swiper/react';
+import 'swiper/css';
+import 'swiper/css/navigation';
+import { Navigation, Autoplay } from 'swiper/modules';
+
 import perritoSilueta from "../../Imagenes/perrito-silueta.jpg";
+import yape from "../../Imagenes/yape.png";
+import plin from "../../Imagenes/plin.png";
+import bcp from "../../Imagenes/bcp.jpg";
+import interbank from "../../Imagenes/interbank.png";
+import western_union from "../../Imagenes/Western-Union-Logo.png";
+import paypal from "../../Imagenes/PayPal.png";
+import bbva from "../../Imagenes/bbva.jpg";
 
 const Donaciones = () => {
   const [mostrarModal, setMostrarModal] = useState(false);
@@ -62,25 +75,67 @@ const Donaciones = () => {
 
     {/* Modal con QR */}
       {mostrarModal && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-          <div className="bg-white rounded-xl p-6 max-w-sm w-full text-center shadow-2xl relative">
-            <h3 className="text-xl font-semibold mb-4 text-gray-800">Escanea el código QR con Yape</h3>
-            <img
-              src="Imagenes/QR"
-              alt="QR Yape"
-              className="w-48 h-48 mx-auto object-contain rounded-md"
-            />
-            <p className="text-sm text-gray-600 mt-4">¡Gracias por todo tu apoyo!</p>
-            <button
-              onClick={() => setMostrarModal(false)}
-              className="mt-6 bg-gray-700 hover:bg-gray-800 text-white px-4 py-2 rounded-lg"
-            >
-              Cerrar
-            </button>
-          </div>
+      <div className="fixed top-0 left-0 w-full h-screen bg-black bg-opacity-50 flex items-center justify-center z-50">
+        <div className="bg-white rounded-xl p-6 max-w-sm w-full text-center shadow-2xl relative">
+          <h3 className="text-xl font-semibold mb-4 text-gray-800">Escanea el código QR con Yape</h3>
+          <img
+            src="Imagenes/QR"
+            alt="QR Yape"
+            className="w-48 h-48 mx-auto object-contain rounded-md"
+          />
+          <p className="text-sm text-gray-600 mt-4">¡Gracias por todo tu apoyo!</p>
+          <button
+            onClick={() => setMostrarModal(false)}
+            className="mt-6 bg-gray-700 hover:bg-gray-800 text-white px-4 py-2 rounded-lg"
+          >
+            Cerrar
+          </button>
         </div>
-      )}
+      </div>
+    )}
 
+      {/* Métodos de pago adicionales */}
+      <section>
+      <h2 className="text-4xl font-extrabold text-center text-indigo-700 mb-10">
+        Otras formas de ayudar
+      </h2>
+
+      <Swiper
+        modules={[Navigation, Autoplay]}
+        spaceBetween={20}
+        slidesPerView={1}
+        navigation
+        autoplay={{ delay: 3000 }}
+        breakpoints={{
+          640: { slidesPerView: 2 },
+          768: { slidesPerView: 3 },
+          1024: { slidesPerView: 4 },
+        }}
+        className="px-4"
+      >
+        {[
+          { img: yape, alt: "Yape", info: ["922-266-310"] },
+          { img: plin, alt: "Plin", info: ["922-266-310"] },
+          { img: bcp, alt: "BCP", info: ["191-36249867-0-25", "CCI: 00219113624986702559"] },
+          { img: interbank, alt: "Interbank Soles", info: ["1543147371121"] },
+          { img: interbank, alt: "Interbank Dólares", info: ["8983170530579", "CCI: 00389801317053057948"] },
+          { img: bbva, alt: "BBVA", info: ["001108140221701416"] },
+          { img: western_union, alt: "Western Union", info: ["tephi.chris@gmail.com"] },
+          { img: paypal, alt: "PayPal", info: ["tephi.chris@gmail.com"] },
+        ].map((item, idx) => (
+            <SwiperSlide key={idx}>
+            <div className="bg-white rounded-xl p-4 shadow-md flex flex-col items-center text-center h-[250px] w-full">
+              <img src={item.img} alt={item.alt} className="w-40 h-40 object-contain mb-2" />
+              <div className="mt-auto space-y-1">
+                {item.info.map((line, i) => (
+                  <p key={i} className="text-gray-700 text-lg">{line}</p>
+                ))}
+              </div>
+            </div>
+          </SwiperSlide>
+        ))}
+      </Swiper>
+    </section>
     </div>
   );
 };

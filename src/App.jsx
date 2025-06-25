@@ -7,6 +7,7 @@ import Contacto from './Pages/Contacto/Contacto';
 import MascotaDetalle from './Pages/Adopta/MascotaDetalle';
 import Eventos from './Pages/Eventos/Eventos';
 import Login from './Login';
+import Registro from './Registro';
 import ProtectedRoute from './components/ProtectedRoute';
 import ListaEventos from './Pages/Eventos/ListaEventos';
 import EventoDetalle from './Pages/Eventos/EventoDetalle';
@@ -15,6 +16,7 @@ import Administrador from './Pages/Administrador/Administrador';
 import UsuarioMenu from './components/UsuarioMenu';
 import MisEventos from './Pages/Usuario/EventosUsuario/MisEventos';
 import MisAdopciones from './Pages/Usuario/AdopcionesUsuario/MisAdopciones';
+import Perfil from './Pages/Usuario/PerfilUsuario/Perfil';
 
 
 
@@ -43,7 +45,7 @@ export const App = () => {
                 <Link to="/donaciones">Donaciones</Link>
               </li>
               <li className="hover:text-[#dda15e] transition duration-300">
-                <Link to="/contacto">Contacto</Link>
+                <Link to="/contacto">Contáctanos</Link>
               </li>
               {isAuthenticated && role === 'Administrador' && (
                 <li className="hover:text-[#dda15e] transition duration-300">
@@ -57,12 +59,20 @@ export const App = () => {
             {isAuthenticated ? (
               <UsuarioMenu />
             ) : (
-              <Link
-                to="/login"
-                className="text-white bg-[#bc6c25] px-4 py-2 rounded-full hover:bg-[#dda15e] transition duration-300 shadow-sm"
-              >
-                Iniciar sesión
-              </Link>
+              <>
+                <Link
+                  to="/login"
+                  className="text-white bg-[#bc6c25] px-4 py-2 rounded-full hover:bg-[#dda15e] transition duration-300 shadow-sm"
+                >
+                  Iniciar sesión
+                </Link>
+                <Link
+                  to="/registro"
+                  className="text-white bg-[#bc6c25] px-4 py-2 rounded-full hover:bg-[#dda15e] transition duration-300 shadow-sm"
+                >
+                  Registrarse
+                </Link>
+              </>
             )}
           </div>
 
@@ -87,6 +97,7 @@ export const App = () => {
 
         {/* RUTA DE LOGIN */}
         <Route path="/login" element={<Login />} />
+        <Route path="/registro" element={<Registro />} />
 
         {/* RUTAS PROTEGIDAS */}
         <Route
@@ -106,6 +117,12 @@ export const App = () => {
           path="/mis-adopciones"
           element={
             <ProtectedRoute allowedRoles={['Usuario', 'Administrador']} element={<MisAdopciones />} />
+          }
+        />
+        <Route
+          path="/mi-perfil"
+          element={
+            <ProtectedRoute allowedRoles={['Usuario', 'Administrador']} element={<Perfil />} />
           }
         />
       </Routes>

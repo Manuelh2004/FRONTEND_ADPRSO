@@ -31,6 +31,13 @@ export default function UsuarioMenu() {
       {menuOpen && (
         <div className="absolute right-0 mt-2 w-52 bg-white rounded-lg shadow-lg border border-gray-200 z-50 overflow-hidden">
           <Link
+            to="/mi-perfil"
+            className="block px-5 py-3 text-sm text-gray-700 hover:bg-gray-100 transition"
+            onClick={() => setMenuOpen(false)}
+          >
+            <i className="fa-solid fa-user"></i> Mi Perfil
+          </Link>
+          <Link
             to="/mis-adopciones"
             className="block px-5 py-3 text-sm text-gray-700 hover:bg-gray-100 transition"
             onClick={() => setMenuOpen(false)}
