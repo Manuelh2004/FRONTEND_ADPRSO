@@ -44,7 +44,7 @@ export const App = () => {
                 <Link to="/donaciones">Donaciones</Link>
               </li>
               <li className="hover:text-[#dda15e] transition duration-300">
-                <Link to="/contacto">Contacto</Link>
+                <Link to="/contacto">Contáctanos</Link>
               </li>
               {isAuthenticated && role === 'Administrador' && (
                 <li className="hover:text-[#dda15e] transition duration-300">
