@@ -15,7 +15,7 @@ const MascotaDetalle = () => {
 
   const [modalOpen, setModalOpen] = useState(false);
   const [motivoAdopcion, setMotivoAdopcion] = useState('');
-  const [mensajeModal, setMensajeModal] = useState(null);
+  const [mensajeModal, setMensajeModal] = useState({ mensaje: null, tipo: 'success' });
 
   useEffect(() => {
     getMascotaDetalle(id)
@@ -57,8 +57,8 @@ const MascotaDetalle = () => {
 
       setMensajeModal('¡Adopción registrada correctamente!');
     } catch (error) {
-      console.error(error);
-      setMensajeModal('Ocurrió un error al registrar la adopción.');
+      const mensaje = error.response?.data?.message || 'Ocurrió un error al registrar la adopción.';
+      setMensajeModal({ mensaje, tipo: 'error' });
     } finally {
       setModalOpen(false);
       setMotivoAdopcion('');
@@ -136,12 +136,12 @@ const MascotaDetalle = () => {
       />
 
       {/* Modal de mensaje (opcional si usas ModalMensaje aparte) */}
-      {mensajeModal && (
+      {mensajeModal.mensaje && (
         <ModalMensaje
-          visible={mensajeModal !== null}
-          mensaje={mensajeModal}
-          tipo={mensajeModal?.toLowerCase().includes('error') ? 'error' : 'success'}
-          onClose={() => setMensajeModal(null)}
+          visible={!!mensajeModal.mensaje}
+          mensaje={mensajeModal.mensaje}
+          tipo={mensajeModal.tipo}
+          onClose={() => setMensajeModal({ mensaje: null, tipo: 'success' })}
         />
       )}
     </div>

@@ -3,19 +3,27 @@ import logoFondo from "../../Imagenes/logo3.jpg";
 import ListaEventos from "./ListaEventos";
 import CarruselEventos from "./Carrusel";
 import 'react-responsive-carousel/lib/styles/carousel.min.css';
+import { FaWhatsapp } from 'react-icons/fa'; // Importamos el ícono de WhatsApp
 
 export default function Eventos() {
+  // Reemplaza con tu número de WhatsApp y el mensaje que deseas enviar
+  const telefonoWhatsApp = "51922266310";  // Agrega tu número de WhatsApp aquí
+  const mensaje = "¡Hola! Quiero saber más sobre los eventos y cómo ayudar."; // Mensaje predeterminado
+
+  // Enlace a la API de WhatsApp
+  const enlaceWhatsApp = `https://wa.me/${telefonoWhatsApp}?text=${encodeURIComponent(mensaje)}`;
+
   return (
     <>
       {/* --- Banner Hero (Imagen de fondo con overlay) --- */}
-        <section
-          className="relative h-96 md:h-screen max-h-[600px] flex items-center justify-center"
-          style={{
-            backgroundImage: `url(${logoFondo})`,  // ← backticks aquí
-            backgroundSize: 'cover',
-            backgroundPosition: 'center'
-          }}
-        >
+      <section
+        className="relative h-96 md:h-screen max-h-[600px] flex items-center justify-center"
+        style={{
+          backgroundImage: `url(${logoFondo})`,  // ← backticks aquí
+          backgroundSize: 'cover',
+          backgroundPosition: 'center'
+        }}
+      >
         {/* Overlay oscuro para mejorar legibilidad */}
         {/* <div className="absolute inset-0 bg-black opacity-50"></div>*/}
 
@@ -39,6 +47,17 @@ export default function Eventos() {
       <section className="bg-gray-100 py-10 px-4">
         <ListaEventos />
       </section> 
+
+      {/* --- Botón flotante de WhatsApp --- */}
+      <a
+        href={enlaceWhatsApp}
+        target="_blank"
+        rel="noopener noreferrer"
+        className="fixed bottom-5 right-5 bg-green-500 hover:bg-green-600 text-white p-4 rounded-full shadow-lg flex items-center justify-center transition z-50"
+        title="Enviar mensaje por WhatsApp"
+      >
+        <FaWhatsapp size={30} />
+      </a>
     </>
   );
 }
