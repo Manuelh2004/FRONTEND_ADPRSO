@@ -21,7 +21,8 @@ const FormularioEvento = ({ formData, setFormData, handleSubmit, editandoId }) =
               name={field}
               value={formData[field]}
               onChange={handleChange}
-              className="w-full border-2 border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-bg-[#dda15e] required"
+              className="w-full border-2 border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-bg-[#dda15e] "
+              required
             />
           </div>
         ))}
