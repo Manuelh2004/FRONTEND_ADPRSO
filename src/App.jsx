@@ -16,6 +16,7 @@ import Administrador from './Pages/Administrador/Administrador';
 import UsuarioMenu from './components/UsuarioMenu';
 import MisEventos from './Pages/Usuario/EventosUsuario/MisEventos';
 import MisAdopciones from './Pages/Usuario/AdopcionesUsuario/MisAdopciones';
+import Perfil from './Pages/Usuario/PerfilUsuario/Perfil';
 
 
 
@@ -116,6 +117,12 @@ export const App = () => {
           path="/mis-adopciones"
           element={
             <ProtectedRoute allowedRoles={['Usuario', 'Administrador']} element={<MisAdopciones />} />
+          }
+        />
+        <Route
+          path="/mi-perfil"
+          element={
+            <ProtectedRoute allowedRoles={['Usuario', 'Administrador']} element={<Perfil />} />
           }
         />
       </Routes>
