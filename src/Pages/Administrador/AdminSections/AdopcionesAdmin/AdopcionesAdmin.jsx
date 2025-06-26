@@ -122,22 +122,24 @@ const AdopcionesAdmin = () => {
 
       {/* Modal de confirmación */}
       {mostrarConfirmacionModal && (
-        <div className="fixed inset-0 bg-gray-600 bg-opacity-50 flex justify-center items-center">
-          <div className="bg-white p-6 rounded shadow-lg w-96">
-            <h3 className="text-xl font-bold mb-4">¿Estás seguro de que deseas cambiar el estado?</h3>
-            <div className="flex justify-between">
-              <button
-                className="bg-red-500 text-white px-4 py-2 rounded"
-                onClick={() => setMostrarConfirmacionModal(false)}
-              >
-                Cancelar
-              </button>
-              <button
-                className="bg-green-500 text-white px-4 py-2 rounded"
-                onClick={handleConfirmarCambioEstado}
-              >
-                Aceptar
-              </button>
+        <div className="fixed inset-0 flex justify-center items-center bg-black bg-opacity-50">
+          <div className="bg-white bg-opacity-90 p-8 rounded-lg shadow-2xl max-w-lg w-full">
+            <h3 className="text-2xl font-semibold text-gray-800 mb-4 text-center">¿Estás seguro de que deseas cambiar el estado?</h3>
+
+            <div className="space-y-4">
+              {/* Botones de confirmación */}
+              <div className="flex justify-between">
+                <button
+                  onClick={() => setMostrarConfirmacionModal(false)}
+                  className="bg-red-500 text-white py-2 px-6 rounded-lg hover:bg-red-400 transition duration-300 transform hover:scale-105">
+                  Cancelar
+                </button>
+                <button
+                  onClick={handleConfirmarCambioEstado}
+                  className="bg-green-500 text-white py-2 px-6 rounded-lg hover:bg-green-400 transition duration-300 transform hover:scale-105">
+                  Aceptar
+                </button>
+              </div>
             </div>
           </div>
         </div>
