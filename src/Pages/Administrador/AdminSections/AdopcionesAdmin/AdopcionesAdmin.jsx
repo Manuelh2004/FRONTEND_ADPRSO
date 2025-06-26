@@ -11,8 +11,8 @@ const AdopcionesAdmin = () => {
   const [estadoFiltro, setEstadoFiltro] = useState('');
   const [estadoAConfirmar, setEstadoAConfirmar] = useState(null);
   const [busqueda, setBusqueda] = useState('');
-  const [paginaActual, setPaginaActual] = useState(1); // Página actual
-  const [adopcionesPorPagina] = useState(10); // Número de adopciones por página
+  const [paginaActual, setPaginaActual] = useState(1);
+  const [adopcionesPorPagina] = useState(10);
 
   const token = localStorage.getItem('token');
 
@@ -73,20 +73,17 @@ const AdopcionesAdmin = () => {
     }
   };
 
-  // Filtrar adopciones por la búsqueda
   const adopcionesFiltradas = adopciones.filter((adopcion) =>
     adopcion.mascota.masc_nombre.toLowerCase().includes(busqueda.toLowerCase()) || 
     `${adopcion.usuario.usr_nombre} ${adopcion.usuario.usr_apellido}`.toLowerCase().includes(busqueda.toLowerCase())
   );
 
-  // Paginación: obtener adopciones correspondientes a la página actual
   const indexOfLastAdopcion = paginaActual * adopcionesPorPagina;
   const indexOfFirstAdopcion = indexOfLastAdopcion - adopcionesPorPagina;
   const adopcionesPaginadas = adopcionesFiltradas.slice(indexOfFirstAdopcion, indexOfLastAdopcion);
 
-  // Cambiar página
   const handlePaginaSiguiente = () => {
-    if (paginaActual < totalPages) {
+    if (paginaActual < Math.ceil(adopcionesFiltradas.length / adopcionesPorPagina)) {
       setPaginaActual(paginaActual + 1);
     }
   };
@@ -97,28 +94,22 @@ const AdopcionesAdmin = () => {
     }
   };
 
-  // Total de páginas
   const totalPages = Math.ceil(adopcionesFiltradas.length / adopcionesPorPagina);
-
-  // Desactivar botones de paginación
   const isNextDisabled = paginaActual === totalPages;
   const isPrevDisabled = paginaActual === 1;
 
-  if (loading) return <p className="text-center text-lg font-bold">Cargando...</p>;
-
+  if (loading) return <p className="text-center text-lg font-bold text-[#8b5a2b]">Cargando...</p>;
   if (error) return <p className="text-center text-lg font-bold text-red-500">Error: {error}</p>;
 
   return (
-    <div className="p-6 bg-gray-50 rounded-lg shadow-md">
-      <h2 className="text-3xl font-bold mb-6 text-center">Gestión de Adopciones</h2>
+    <div className="p-6 bg-[#f8f1e5] rounded-lg shadow-md min-h-screen">
+      <h2 className="text-3xl font-bold mb-6 text-center text-[#8b5a2b]">Gestión de Adopciones</h2>
 
-      {/* Filtro y Buscador en una sola línea */}
-      <div className="mb-6 flex justify-between items-center">
-        {/* Filtro por estado */}
+      <div className="mb-6 flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
         <div className="flex items-center">
-          <label className="mr-2 text-lg">Filtrar por estado:</label>
+          <label className="mr-2 text-lg text-[#8b5a2b]">Filtrar por estado:</label>
           <select
-            className="p-2 border rounded shadow-md"
+            className="p-2 border rounded shadow-md bg-white text-[#8b5a2b] border-[#dda15e]"
             value={estadoFiltro}
             onChange={(e) => setEstadoFiltro(e.target.value)}
           >
@@ -129,12 +120,11 @@ const AdopcionesAdmin = () => {
           </select>
         </div>
 
-        {/* Buscador */}
-        <div className="flex items-center">
-          <label className="mr-2 text-lg">Buscar:</label>
+        <div className="flex items-center w-full md:w-auto">
+          <label className="mr-2 text-lg text-[#8b5a2b]">Buscar:</label>
           <input
             type="text"
-            className="p-2 border rounded shadow-md"
+            className="p-2 border rounded shadow-md bg-white text-[#8b5a2b] border-[#dda15e] flex-grow md:flex-grow-0"
             value={busqueda}
             onChange={(e) => setBusqueda(e.target.value)}
             placeholder="Buscar por nombre de mascota o usuario"
@@ -142,35 +132,38 @@ const AdopcionesAdmin = () => {
         </div>
       </div>
 
-      {/* Tabla con adopciones */}
       <div className="overflow-x-auto bg-white shadow-md rounded-lg">
         <table className="min-w-full text-sm table-auto border-collapse">
-        <thead className="bg-[#dda15e] text-white">
+          <thead className="bg-[#dda15e] text-white">
             <tr>
               {['ID', 'Fecha', 'Estado', 'Mascota', 'Tipo', 'Usuario', 'Teléfono', 'Acciones'].map((header) => (
                 <th key={header} className="px-6 py-4 text-center font-medium">{header}</th>
               ))}
             </tr>
           </thead>
-          <tbody className="text-gray-700">
+          <tbody className="text-[#8b5a2b]">
             {adopcionesPaginadas.map((adopcion) => (
-              <tr key={adopcion.adop_id} className="border-t hover:bg-gray-100">
-                <td className="px-6 py-4">{adopcion.adop_id}</td>
-                <td className="px-6 py-4">{adopcion.adop_fecha}</td>
-                <td className="px-6 py-4">
+              <tr key={adopcion.adop_id} className="border-t hover:bg-gray-50 border-[#dda15e]">
+                <td className="px-6 py-4 text-center">{adopcion.adop_id}</td>
+                <td className="px-6 py-4 text-center">{new Date(adopcion.adop_fecha).toLocaleDateString()}</td>
+                <td className="px-6 py-4 text-center">
                   <span
-                    className={`inline-block py-1 px-3 rounded-full ${adopcion.adop_estado === 0 ? 'bg-yellow-200 text-yellow-800' : adopcion.adop_estado === 1 ? 'bg-green-200 text-green-800' : 'bg-red-200 text-red-800'}`}
+                    className={`inline-block py-1 px-3 rounded-full text-sm font-semibold ${
+                      adopcion.adop_estado === 0 ? 'bg-yellow-100 text-yellow-800' : 
+                      adopcion.adop_estado === 1 ? 'bg-green-100 text-green-800' : 
+                      'bg-red-100 text-red-800'
+                    }`}
                   >
                     {obtenerEstadoTexto(adopcion.adop_estado)}
                   </span>
                 </td>
-                <td className="px-6 py-4">{adopcion.mascota.masc_nombre}</td>
-                <td className="px-6 py-4">{adopcion.mascota.tipo_mascota.tipma_nombre}</td>
-                <td className="px-6 py-4">{adopcion.usuario.usr_nombre} {adopcion.usuario.usr_apellido}</td>
-                <td className="px-6 py-4">{adopcion.usuario.usr_telefono}</td>
-                <td className="px-6 py-4 text-center space-x-4">
+                <td className="px-6 py-4 text-center">{adopcion.mascota.masc_nombre}</td>
+                <td className="px-6 py-4 text-center">{adopcion.mascota.tipo_mascota.tipma_nombre}</td>
+                <td className="px-6 py-4 text-center">{adopcion.usuario.usr_nombre} {adopcion.usuario.usr_apellido}</td>
+                <td className="px-6 py-4 text-center">{adopcion.usuario.usr_telefono}</td>
+                <td className="px-6 py-4 text-center space-x-2">
                   <button
-                     className="bg-[#dda15e] text-white px-4 py-2 rounded hover:bg-[#bc6c25] transition duration-300"
+                    className="bg-[#dda15e] text-white px-3 py-1 rounded hover:bg-[#bc6c25] transition duration-300 text-sm"
                     onClick={() => handleVerMas(adopcion)}
                   >
                     Ver más
@@ -178,13 +171,13 @@ const AdopcionesAdmin = () => {
                   {adopcion.adop_estado === 0 && (
                     <>
                       <button
-                        className="bg-yellow-500 text-white px-4 py-2 rounded ml-2 hover:bg-yellow-600 transition duration-300"
+                        className="bg-green-600 text-white px-3 py-1 rounded ml-1 hover:bg-green-700 transition duration-300 text-sm"
                         onClick={() => solicitarCambioEstado(adopcion, 1)}
                       >
                         Aceptar
                       </button>
                       <button
-                        className="bg-red-500 text-white px-4 py-2 rounded ml-2 hover:bg-red-600 transition duration-300"
+                        className="bg-red-600 text-white px-3 py-1 rounded ml-1 hover:bg-red-700 transition duration-300 text-sm"
                         onClick={() => solicitarCambioEstado(adopcion, 2)}
                       >
                         Rechazar
@@ -193,7 +186,7 @@ const AdopcionesAdmin = () => {
                   )}
                   {adopcion.adop_estado === 1 && (
                     <button
-                      className="bg-red-500 text-white px-4 py-2 rounded ml-2 hover:bg-red-600 transition duration-300"
+                      className="bg-red-600 text-white px-3 py-1 rounded ml-1 hover:bg-red-700 transition duration-300 text-sm"
                       onClick={() => solicitarCambioEstado(adopcion, 2)}
                     >
                       Rechazar
@@ -201,7 +194,7 @@ const AdopcionesAdmin = () => {
                   )}
                   {adopcion.adop_estado === 2 && (
                     <button
-                      className="bg-green-500 text-white px-4 py-2 rounded ml-2 hover:bg-green-700 transition duration-300"
+                      className="bg-green-600 text-white px-3 py-1 rounded ml-1 hover:bg-green-700 transition duration-300 text-sm"
                       onClick={() => solicitarCambioEstado(adopcion, 1)}
                     >
                       Aceptar
@@ -214,17 +207,19 @@ const AdopcionesAdmin = () => {
         </table>
       </div>
 
-      {/* Paginación */}
       <div className="flex justify-between mt-4">
         <button
-           className="bg-[#dda15e] text-white px-4 py-2 rounded hover:bg-[#bc6c25]"
+          className={`bg-[#dda15e] text-white px-4 py-2 rounded hover:bg-[#bc6c25] transition duration-300 ${isPrevDisabled ? 'opacity-50 cursor-not-allowed' : ''}`}
           onClick={handlePaginaAnterior}
           disabled={isPrevDisabled}
         >
           Anterior
         </button>
+        <span className="text-[#8b5a2b] self-center">
+          Página {paginaActual} de {totalPages}
+        </span>
         <button
-           className="bg-[#dda15e] text-white px-4 py-2 rounded hover:bg-[#bc6c25]"
+          className={`bg-[#dda15e] text-white px-4 py-2 rounded hover:bg-[#bc6c25] transition duration-300 ${isNextDisabled ? 'opacity-50 cursor-not-allowed' : ''}`}
           onClick={handlePaginaSiguiente}
           disabled={isNextDisabled}
         >
@@ -232,42 +227,45 @@ const AdopcionesAdmin = () => {
         </button>
       </div>
 
-      {/* Modal de confirmación */}
       {mostrarConfirmacionModal && (
-        <div className="fixed inset-0 bg-gray-600 bg-opacity-50 flex justify-center items-center">
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
           <div className="bg-white p-6 rounded shadow-lg w-96">
-            <h3 className="text-xl font-bold mb-4">¿Estás seguro de que deseas cambiar el estado?</h3>
-            <div className="flex justify-between">
+            <h3 className="text-xl font-bold mb-4 text-[#8b5a2b]">Confirmar cambio</h3>
+            <p className="text-[#8b5a2b] mb-4">¿Estás seguro de que deseas cambiar el estado de esta adopción?</p>
+            <div className="flex justify-end space-x-3">
               <button
-                className="bg-red-500 text-white px-4 py-2 rounded"
+                className="bg-gray-400 text-white px-4 py-2 rounded hover:bg-gray-500 transition duration-300"
                 onClick={() => setMostrarConfirmacionModal(false)}
               >
                 Cancelar
               </button>
               <button
-                className="bg-green-500 text-white px-4 py-2 rounded"
+                className="bg-[#dda15e] text-white px-4 py-2 rounded hover:bg-[#bc6c25] transition duration-300"
                 onClick={handleConfirmarCambioEstado}
               >
-                Aceptar
+                Confirmar
               </button>
             </div>
           </div>
         </div>
       )}
 
-      {/* Modal para mostrar más detalles de la adopción */}
       {mostrarModal && adopcionSeleccionada && (
-        <div className="fixed inset-0 bg-gray-600 bg-opacity-50 flex justify-center items-center">
-          <div className="bg-white p-6 rounded shadow-lg w-96">
-            <h3 className="text-xl font-bold mb-4">Detalles de la adopción</h3>
-            <p><strong>Fecha de Adopción:</strong> {adopcionSeleccionada.adop_fecha}</p>
-            <p><strong>Estado:</strong> {obtenerEstadoTexto(adopcionSeleccionada.adop_estado)}</p>
-            <p><strong>Nombre de la Mascota:</strong> {adopcionSeleccionada.mascota.masc_nombre}</p>
-            <p><strong>Tipo de Mascota:</strong> {adopcionSeleccionada.mascota.tipo_mascota.tipma_nombre}</p>
-            <p><strong>Usuario:</strong> {adopcionSeleccionada.usuario.usr_nombre} {adopcionSeleccionada.usuario.usr_apellido}</p>
-            <p><strong>Teléfono del Usuario:</strong> {adopcionSeleccionada.usuario.usr_telefono}</p>
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
+          <div className="bg-white p-6 rounded shadow-lg w-11/12 md:w-96 max-h-[90vh] overflow-y-auto">
+            <h3 className="text-xl font-bold mb-4 text-[#8b5a2b]">Detalles de la adopción</h3>
+            <div className="space-y-3">
+              <p><span className="font-semibold text-[#8b5a2b]">ID:</span> {adopcionSeleccionada.adop_id}</p>
+              <p><span className="font-semibold text-[#8b5a2b]">Fecha:</span> {new Date(adopcionSeleccionada.adop_fecha).toLocaleDateString()}</p>
+              <p><span className="font-semibold text-[#8b5a2b]">Estado:</span> {obtenerEstadoTexto(adopcionSeleccionada.adop_estado)}</p>
+              <p><span className="font-semibold text-[#8b5a2b]">Mascota:</span> {adopcionSeleccionada.mascota.masc_nombre}</p>
+              <p><span className="font-semibold text-[#8b5a2b]">Tipo:</span> {adopcionSeleccionada.mascota.tipo_mascota.tipma_nombre}</p>
+              <p><span className="font-semibold text-[#8b5a2b]">Usuario:</span> {adopcionSeleccionada.usuario.usr_nombre} {adopcionSeleccionada.usuario.usr_apellido}</p>
+              <p><span className="font-semibold text-[#8b5a2b]">Teléfono:</span> {adopcionSeleccionada.usuario.usr_telefono}</p>
+              <p><span className="font-semibold text-[#8b5a2b]">Email:</span> {adopcionSeleccionada.usuario.usr_email}</p>
+            </div>
             <button
-              className="bg-red-500 text-white px-4 py-2 rounded mt-4"
+              className="mt-4 bg-[#dda15e] text-white px-4 py-2 rounded hover:bg-[#bc6c25] transition duration-300 w-full"
               onClick={cerrarModal}
             >
               Cerrar
