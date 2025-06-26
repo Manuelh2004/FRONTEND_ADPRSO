@@ -209,7 +209,7 @@ const FormularioMascota = ({
               <button
                 type="button"
                 onClick={() => handleImageRemove(index)} // Llamada a handleImageRemove
-                className="text-red-500 hover:text-red-700 text-sm font-medium"
+                className="text-red-500 hover:text-red-700 text-sm font-medium cursor-pointer"
               >
                 Eliminar
               </button>
@@ -218,7 +218,7 @@ const FormularioMascota = ({
           <button
             type="button"
             onClick={agregarCampoImagen}
-            className="text-bg-[#dda15e]  hover:text-bg-[#dda15e]  text-sm mt-1"
+            className="text-bg-[#dda15e]  hover:text-bg-[#dda15e]  text-sm mt-1 cursor-pointer"
           >
             + Agregar otra imagen
           </button>

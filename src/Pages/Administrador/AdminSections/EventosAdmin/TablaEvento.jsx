@@ -22,13 +22,13 @@ const TablaEvento = ({ eventosPaginados, handleEditar, handleCambiarEstado, hand
                 {evento.even_estado === 1 ? 'Activo' : 'Inactivo'}
               </td>
               <td className="px-6 py-4 space-x-4">
-                <button onClick={() => handleEditar(evento)} className="bg-amber-400 text-white px-4 py-2 rounded-lg hover:bg-amber-500 transition duration-300">
+                <button onClick={() => handleEditar(evento)} className="bg-amber-400 text-white px-4 py-2 rounded-lg hover:bg-amber-500 transition duration-300 cursor-pointer">
                   Editar
                 </button>
-                <button onClick={() => handleCambiarEstado(evento.even_id, evento.even_estado)} className="bg-red-600 text-white px-4 py-2 rounded-lg hover:bg-red-700 transition duration-300">
+                <button onClick={() => handleCambiarEstado(evento.even_id, evento.even_estado)} className="bg-red-600 text-white px-4 py-2 rounded-lg hover:bg-red-700 transition duration-300 cursor-pointer">
                   Cambiar estado
                 </button>
-                <button onClick={() => handleVerMas(evento)} className="bg-gray-600 text-white px-4 py-2 rounded-lg hover:bg-gray-700 transition duration-300">
+                <button onClick={() => handleVerMas(evento)} className="bg-gray-600 text-white px-4 py-2 rounded-lg hover:bg-gray-700 transition duration-300 cursor-pointer">
                   Ver más
                 </button>
               </td>

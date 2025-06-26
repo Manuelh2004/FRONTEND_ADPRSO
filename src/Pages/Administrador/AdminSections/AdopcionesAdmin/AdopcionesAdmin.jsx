@@ -1,6 +1,6 @@
 // AdopcionesAdmin.jsx
 import React, { useState, useEffect } from 'react';
-import { obtenerAdopcionesPorEstado, cambiarEstadoAdopcion } from '../../../../services/adopcion/adopcionAdmApi';
+import { obtenerAdopcionesPorEstado, cambiarEstadoAdopcion, buscarMascotasPorNombre} from '../../../../services/adopcion/adopcionAdmApi';
 import FiltroEstado from './FiltroEstado';
 import ModalAdopcion from './ModalAdopcion';
 import TablaAdopcion from './TablaAdopcion';
@@ -16,9 +16,9 @@ const AdopcionesAdmin = () => {
   const [estadoAConfirmar, setEstadoAConfirmar] = useState(null);
   const [busqueda, setBusqueda] = useState('');
   const [paginaActual, setPaginaActual] = useState(1); // Página actual
-  const [adopcionesPorPagina] = useState(10); // Número de adopciones por página
+  const [registrosPorPagina] = useState(10);
   const token = localStorage.getItem('token');
-
+  
   useEffect(() => {
     const fetchAdopciones = async () => {
       setLoading(true);
@@ -79,13 +79,17 @@ const AdopcionesAdmin = () => {
     `${adopcion.usuario.usr_nombre} ${adopcion.usuario.usr_apellido}`.toLowerCase().includes(busqueda.toLowerCase())
   );
 
-  const indexOfLastAdopcion = paginaActual * adopcionesPorPagina;
-  const indexOfFirstAdopcion = indexOfLastAdopcion - adopcionesPorPagina;
-  const adopcionesPaginadas = adopcionesFiltradas.slice(indexOfFirstAdopcion, indexOfLastAdopcion);
+  const adopcionesPaginados = Array.isArray(adopciones) && adopciones ? adopciones.slice(
+    (paginaActual - 1) * registrosPorPagina,
+    paginaActual * registrosPorPagina
+  ) : []; 
+  const totalPaginas = Math.ceil((Array.isArray(adopciones) ? adopciones.length : 0) / registrosPorPagina);
 
-  const totalPages = Math.ceil(adopcionesFiltradas.length / adopcionesPorPagina);
-  const isNextDisabled = paginaActual === totalPages;
-  const isPrevDisabled = paginaActual === 1;
+  const handleCambiarPagina = (pagina) => {
+    if (pagina >= 1 && pagina <= totalPaginas) {
+      setPaginaActual(pagina);
+    }
+  };  
 
   if (loading) return <p className="text-center text-lg font-bold">Cargando...</p>;
 
@@ -95,29 +99,30 @@ const AdopcionesAdmin = () => {
     <div className="p-6 bg-gray-50 rounded-lg shadow-md">
       <h2 className="text-3xl font-bold mb-6 text-center">Gestión de Adopciones</h2>
 
-      <FiltroEstado estadoFiltro={estadoFiltro} setEstadoFiltro={setEstadoFiltro} busqueda={busqueda} setBusqueda={setBusqueda} />
+      <FiltroEstado 
+        estadoFiltro={estadoFiltro} 
+        setEstadoFiltro={setEstadoFiltro} 
+        busqueda={busqueda} 
+        setBusqueda={setBusqueda} />
 
       <TablaAdopcion
-        adopcionesPaginadas={adopcionesPaginadas}
+        adopcionesPaginados={adopcionesPaginados}
         obtenerEstadoTexto={obtenerEstadoTexto}
         handleVerMas={handleVerMas}
         solicitarCambioEstado={solicitarCambioEstado}
+        paginaActual={paginaActual}
+        registrosPorPagina={registrosPorPagina}
       />
 
-      {/* Paginación */}
-      <div className="flex justify-between mt-4">
-        <button
-          className="bg-[#dda15e] text-white px-4 py-2 rounded hover:bg-[#bc6c25]"
-          onClick={() => setPaginaActual(paginaActual - 1)}
-          disabled={isPrevDisabled}
-        >
+       {/* Paginación */}
+      <div className="flex justify-between items-center mt-6">
+        <button onClick={() => handleCambiarPagina(paginaActual - 1)} disabled={paginaActual === 1} className="bg-[#dda15e] text-white px-6 py-2 rounded-lg disabled:opacity-50">
           Anterior
         </button>
-        <button
-          className="bg-[#dda15e] text-white px-4 py-2 rounded hover:bg-[#bc6c25]"
-          onClick={() => setPaginaActual(paginaActual + 1)}
-          disabled={isNextDisabled}
-        >
+        <span className="text-gray-700">
+          Página {paginaActual} de {totalPaginas}
+        </span>
+        <button onClick={() => handleCambiarPagina(paginaActual + 1)} disabled={paginaActual === totalPaginas} className="bg-[#dda15e]  text-white px-6 py-2 rounded-lg disabled:opacity-50">
           Siguiente
         </button>
       </div>

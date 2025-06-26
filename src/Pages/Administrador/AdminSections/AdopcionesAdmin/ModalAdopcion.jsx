@@ -1,6 +1,3 @@
-// ModalAdopcion.jsx
-import React from 'react';
-
 const ModalAdopcion = ({ adopcionSeleccionada, cerrarModal, obtenerEstadoTexto }) => {
   if (!adopcionSeleccionada) return null;
 

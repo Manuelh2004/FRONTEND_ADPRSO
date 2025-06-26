@@ -45,13 +45,13 @@ const TablaMascota = ({ mascotasPaginados, handleEditar, handleCambiarEstado, ha
                   {mascota.masc_estado === 1 ? 'Activo' : 'Inactivo'}
                 </td>
                 <td className="px-6 py-4 space-x-4">
-                  <button onClick={() => handleEditar(mascota)} className="bg-amber-400 text-white px-4 py-2 rounded-lg hover:bg-amber-500 transition duration-300">
+                  <button onClick={() => handleEditar(mascota)} className="bg-amber-400 text-white px-4 py-2 rounded-lg hover:bg-amber-500 transition duration-300 cursor-pointer">
                     Editar
                   </button>
-                  <button onClick={() => handleCambiarEstado(mascota.masc_id, mascota.masc_estado)} className="bg-red-600 text-white px-4 py-2 rounded-lg hover:bg-red-700 transition duration-300">
+                  <button onClick={() => handleCambiarEstado(mascota.masc_id, mascota.masc_estado)} className="bg-red-600 text-white px-4 py-2 rounded-lg hover:bg-red-700 transition duration-300 cursor-pointer">
                     Cambiar estado
                   </button>
-                  <button onClick={() => handleVerMas(mascota)} className="bg-gray-600 text-white px-4 py-2 rounded-lg hover:bg-gray-700 transition duration-300">
+                  <button onClick={() => handleVerMas(mascota)} className="bg-gray-600 text-white px-4 py-2 rounded-lg hover:bg-gray-700 transition duration-300 cursor-pointer">
                     Ver más
                   </button>
                 </td>

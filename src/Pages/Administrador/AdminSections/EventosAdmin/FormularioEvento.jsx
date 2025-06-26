@@ -30,7 +30,7 @@ const FormularioEvento = ({ formData, setFormData, handleSubmit, editandoId }) =
 
       <button
         type="submit"
-        className="w-full bg-[#dda15e] text-white py-2 rounded-lg hover:bg-[#dda15e] transition duration-300"
+        className="w-full bg-[#dda15e] text-white py-2 rounded-lg hover:bg-[#dda15e] transition duration-300 cursor-pointer"
       >
         {editandoId ? 'Actualizar' : 'Registrar'} Evento
       </button>

@@ -141,8 +141,7 @@ const EventosAdmin = () => {
 
   return (
     <div className="container mx-auto p-8 bg-gray-50 min-h-screen">
-      <h2 className="text-4xl font-semibold text-gray-800 mb-8">Gestión de Eventos</h2>
-
+    <h2 className="text-3xl font-bold mb-6 text-center">Gestión de Eventos</h2>
       {/* Formulario */}
       <FormularioEvento
         formData={formData}
