@@ -14,8 +14,9 @@ const AdopcionesAdmin = () => {
   const [estadoFiltro, setEstadoFiltro] = useState('');
   const [estadoAConfirmar, setEstadoAConfirmar] = useState(null);
   const [busqueda, setBusqueda] = useState('');
-  const [paginaActual, setPaginaActual] = useState(1); // Página actual
-  const [registrosPorPagina] = useState(10);
+  const [paginaActual, setPaginaActual] = useState(1);
+  const [adopcionesPorPagina] = useState(10);
+
   const token = localStorage.getItem('token');
   
   useEffect(() => {
@@ -81,16 +82,15 @@ const AdopcionesAdmin = () => {
   const handleCambiarPagina = (pagina) => {
     if (pagina >= 1 && pagina <= totalPaginas) {
       setPaginaActual(pagina);
-    }
+    }   
   };  
 
-  if (loading) return <p className="text-center text-lg font-bold">Cargando...</p>;
-
+  if (loading) return <p className="text-center text-lg font-bold text-[#8b5a2b]">Cargando...</p>;
   if (error) return <p className="text-center text-lg font-bold text-red-500">Error: {error}</p>;
 
   return (
-    <div className="p-6 bg-gray-50 rounded-lg shadow-md">
-      <h2 className="text-3xl font-bold mb-6 text-center">Gestión de Adopciones</h2>
+    <div className="p-6 bg-[#f8f1e5] rounded-lg shadow-md min-h-screen">
+      <h2 className="text-3xl font-bold mb-6 text-center text-[#8b5a2b]">Gestión de Adopciones</h2>
 
       <FiltroEstado 
         estadoFiltro={estadoFiltro} 
@@ -120,7 +120,6 @@ const AdopcionesAdmin = () => {
         </button>
       </div>
 
-      {/* Modal de confirmación */}
       {mostrarConfirmacionModal && (
         <div className="fixed inset-0 flex justify-center items-center bg-black bg-opacity-50">
           <div className="bg-white bg-opacity-90 p-8 rounded-lg shadow-2xl max-w-lg w-full">

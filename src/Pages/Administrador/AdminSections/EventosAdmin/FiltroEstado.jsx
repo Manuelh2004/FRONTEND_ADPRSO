@@ -1,4 +1,4 @@
-const FiltroEstado = ({ filtroEstado, setFiltroEstado, searchTerm, setSearchTerm }) => (
+const FiltroEstado = ({ filtroEstado, setFiltroEstado, searchTerm, setSearchTerm, onDescargarReporte }) => (
   <div className="bg-white p-8 rounded-lg shadow-lg space-y-6 mb-4">
     <h2 className="text-2xl font-bold mb-6 text-left text-gray-700">        
       Filtrar
@@ -30,7 +30,18 @@ const FiltroEstado = ({ filtroEstado, setFiltroEstado, searchTerm, setSearchTerm
         />
       </div>
     </div>
+
+    {/* Botón de descarga */}
+    <div className="lg:w-1/3 text-right">
+      <button
+        onClick={onDescargarReporte}
+        className="mt-2 lg:mt-0 bg-green-600 text-white px-6 py-2 rounded-lg hover:bg-green-700 w-full lg:w-auto"
+      >
+      <i class="fa-solid fa-download"></i> Reporte de eventos
+      </button>
+    </div>
   </div>
 );
+
 
 export default FiltroEstado;

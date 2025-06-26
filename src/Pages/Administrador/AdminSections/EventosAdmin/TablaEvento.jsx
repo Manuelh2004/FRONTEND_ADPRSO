@@ -3,6 +3,7 @@ const TablaEvento = ({
   handleEditar,
   handleCambiarEstado,
   handleVerMas,
+  handleDescargarUnEvento,
   paginaActual,
   registrosPorPagina,
 }) => {
@@ -60,8 +61,14 @@ const TablaEvento = ({
                     onClick={() => handleVerMas(evento)}
                     className="bg-gray-600 text-white px-4 py-2 rounded-lg hover:bg-gray-700 transition duration-300"
                   >
-                    Ver más
+                    Ver más                    
                   </button>
+                   <button
+                  onClick={() => handleDescargarUnEvento(evento.even_id)}
+                  className="bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 transition duration-300"
+                >
+                  <i class="fa-solid fa-download"></i> Reporte
+                </button>
                 </td>
               </tr>
             );
