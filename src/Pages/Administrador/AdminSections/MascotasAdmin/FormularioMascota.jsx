@@ -15,16 +15,30 @@ const FormularioMascota = ({
   sexos,
   imagenes,
   handleSubmit,
-  editandoId
+  editandoId,
+  handleCancelar
 }) => {
   return (
     <div className="w-full mx-auto mt-10 p-6 bg-white shadow-lg rounded-xl">
-      {/* Título dinámico */}
-      <h2 className="text-2xl font-bold mb-6 text-center text-gray-700">
-        {formData.masc_nombre ? 'Editar Mascota' : 'Registrar Mascota'}
-      </h2>
+      {/* Contenedor para el Título y el Botón de Cancelar */}
+      <div className="flex justify-between items-center mb-6">
+        <h2 className="text-2xl font-bold text-left text-gray-700">
+          {formData.masc_nombre ? 'Editar Mascota' : 'Registrar Mascota'}
+        </h2>
 
-       {/* Formulario */}
+        {/* Botón de Cancelar solo si estamos en edición */}
+        {editandoId && (
+          <button
+            type="button"
+            onClick={handleCancelar}
+            className="bg-gray-500 text-white py-1 px-4 rounded-lg hover:bg-gray-600 transition duration-300 cursor-pointer"
+          >
+            Cancelar
+          </button>
+        )}
+      </div>
+
+      {/* Formulario */}
       <form onSubmit={handleSubmit} className="grid grid-cols-1 md:grid-cols-2 gap-4">
         
         {/* Nombre */}
@@ -228,7 +242,7 @@ const FormularioMascota = ({
         <div className="md:col-span-2 text-center mt-4">
           <button
             type="submit"
-            className="bg-[#dda15e]  hover:bg-[#dda15e]  text-white font-semibold py-2 px-6 rounded"
+            className="w-full bg-[#dda15e] text-white py-2 rounded-lg hover:bg-[#dda15e] transition duration-300 cursor-pointer"
           >
            {editandoId ? 'Actualizar' : 'Registrar'} Mascota
           </button>

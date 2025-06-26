@@ -253,6 +253,23 @@ const mascotasPaginados = Array.isArray(mascotas) && mascotas ? mascotas.slice(
   setGustosSeleccionados(mascota.gustoNames ? mascota.gustoNames.map(gusto => gusto.id) : []);
   setImagenes(mascota.imagenes ? mascota.imagenes.map(img => img.ima_url) : []);
 };
+const handleCancelar = () => {
+  setFormData({
+    masc_nombre: '',
+    masc_fecha_nacimiento: '',
+    masc_historia: '',
+    masc_observacion: '',
+    estadoSalud: '',
+    estadoVacuna: '',
+    nivelEnergia: '',
+    tamanio: '',
+    tipoMascota: '',
+    sexo: ''
+  });
+  setImagenes(['']); 
+  setGustosSeleccionados([]); 
+  setEditandoId(null);  
+};
 
   const handleCambiarEstado = async (id, estadoActual) => {
     const nuevoEstado = estadoActual === 1 ? 0 : 1;
@@ -346,6 +363,7 @@ const mascotasPaginados = Array.isArray(mascotas) && mascotas ? mascotas.slice(
           imagenes={imagenes}
           handleSubmit={handleSubmit}
           editandoId={editandoId}
+          handleCancelar={handleCancelar}
         />
         {/* Filtro por estado y búsqueda */}
         <FiltroEstado 

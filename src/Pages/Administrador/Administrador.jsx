@@ -1,13 +1,10 @@
-import React, { useState } from 'react';
+import React from 'react';
 import MascotasAdmin from './AdminSections/MascotasAdmin/MascotasAdmin';
 import EventosAdmin from './AdminSections/EventosAdmin/EventosAdmin';
 import AdopcionesAdmin from './AdminSections/AdopcionesAdmin/AdopcionesAdmin';
-import UsuariosAdmin from './AdminSections/UsuariosAdmin/UsuariosAdmin';
-import ListarMascota from './AdminSections/MascotasAdmin/TablaMascota';  // Correcto
 
 const Administrador = () => {
-  const [seccionActiva, setSeccionActiva] = useState('mascotas');
-  const [subseccionActiva, setSubseccionActiva] = useState('registrar'); // Estado para manejar submódulos
+  const [seccionActiva, setSeccionActiva] = React.useState('mascotas');
 
   const renderContenido = () => {
     switch (seccionActiva) {
@@ -16,7 +13,7 @@ const Administrador = () => {
       case 'eventos':
         return <EventosAdmin />;
       case 'adopciones':
-        return <AdopcionesAdmin />;     
+        return <AdopcionesAdmin />;
       default:
         return <MascotasAdmin />;
     }
@@ -30,8 +27,11 @@ const Administrador = () => {
 
   return (
     <div className="flex min-h-screen bg-gray-50">
-      <aside className="w-64 bg-blue-800 text-white flex flex-col p-6">
-        <h2 className="text-2xl font-bold mb-10">Panel de Administración</h2>
+      {/* Panel lateral desplegable por hover */}
+      <aside className="group relative bg-[#dda15e] text-white transition-all duration-300 ease-in-out overflow-hidden w-16 hover:w-72 flex flex-col p-2 hover:p-6">
+        <h2 className="text-xl font-bold mb-6 opacity-0 group-hover:opacity-100 transition-opacity duration-300 whitespace-nowrap">
+          Panel de Administración
+        </h2>
         <nav className="flex flex-col gap-2">
           {botones.map(({ id, label }) => (
             <button
@@ -39,9 +39,9 @@ const Administrador = () => {
               onClick={() => setSeccionActiva(id)}
               className={`text-left px-4 py-2 rounded-lg transition-colors ${
                 seccionActiva === id
-                  ? 'bg-blue-600 font-semibold'
-                  : 'hover:bg-blue-700'
-              }`}
+                  ? 'bg-white/20 font-semibold'
+                  : 'hover:bg-white/10'
+              } whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity duration-300`}
             >
               {label}
             </button>
@@ -49,6 +49,7 @@ const Administrador = () => {
         </nav>
       </aside>
 
+      {/* Contenido principal */}
       <main className="flex-1 p-8 overflow-y-auto">
         {renderContenido()}
       </main>

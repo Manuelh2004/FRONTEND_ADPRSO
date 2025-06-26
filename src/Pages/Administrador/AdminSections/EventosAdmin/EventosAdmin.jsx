@@ -98,6 +98,11 @@ const EventosAdmin = () => {
     });
   };
 
+  const handleCancelar = () => {
+    setFormData({ nombre: '', descripcion: '', fecha_inicio: '', fecha_fin: '', lugar: '', imagen: '' });
+    setEditandoId(null);
+  };
+
   const handleCambiarEstado = async (id, estadoActual) => {
     const nuevoEstado = estadoActual === 1 ? 0 : 1;
     const token = localStorage.getItem('token');
@@ -148,6 +153,7 @@ const EventosAdmin = () => {
         setFormData={setFormData}
         handleSubmit={handleSubmit}
         editandoId={editandoId}
+        handleCancel={handleCancelar} 
       />
 
       {/* Filtro por estado y búsqueda */}
