@@ -1,0 +1,68 @@
+const TablaMascota = ({ mascotasPaginados, handleEditar, handleCambiarEstado, handleVerMas, paginaActual, registrosPorPagina }) => {
+  
+  // Función para calcular la edad
+  const calcularEdad = (fechaNacimiento) => {
+    const nacimiento = new Date(fechaNacimiento);
+    const hoy = new Date();
+    let edad = hoy.getFullYear() - nacimiento.getFullYear();
+    const m = hoy.getMonth() - nacimiento.getMonth();
+
+    // Si no ha cumplido años este año, resta 1 a la edad
+    if (m < 0 || (m === 0 && hoy.getDate() < nacimiento.getDate())) {
+      edad--;
+    }
+
+    return edad;
+  };
+
+  return (
+    <div className="overflow-x-auto bg-white rounded-lg shadow-lg">
+      <table className="w-full table-auto text-sm">
+        <thead className="bg-[#dda15e] text-white">
+          <tr>
+            <th className="px-6 py-4 text-center">#</th>
+            <th className="px-6 py-4 text-center">Nombre</th>
+            <th className="px-6 py-4 text-center">Tipo</th>
+            <th className="px-6 py-4 text-center">Edad</th>
+            <th className="px-6 py-4 text-center">Sexo</th>
+            <th className="px-6 py-4 text-center">Estado</th>
+            <th className="px-6 py-4 text-center">Acciones</th>
+          </tr>
+        </thead>
+        <tbody className="text-gray-700">
+          {mascotasPaginados.map((mascota, index) => {
+            const numeroRegistro = index + (paginaActual - 1) * registrosPorPagina;
+            const edad = calcularEdad(mascota.masc_fecha_nacimiento);
+
+            return (
+              <tr key={mascota.masc_id} className="border-t hover:bg-gray-50">
+                <td className="px-6 py-4 text-center">{numeroRegistro + 1}</td>
+                <td className="px-6 py-4">{mascota.masc_nombre}</td>
+                <td className="px-6 py-4">{mascota.tipo_mascota.tipma_nombre}</td>
+                <td className="px-6 py-4 text-center">{edad}</td>
+                <td className="px-6 py-4">{mascota.sexo.sex_nombre}</td>
+                <td className="px-6 py-4">
+                  <span className={`inline-block py-1 px-3 rounded-full ${mascota.masc_estado === 1 ? 'bg-green-200 text-green-800' : 'bg-red-200 text-red-800'}`} />
+                  {mascota.masc_estado === 1 ? 'Activo' : 'Inactivo'}
+                </td>
+                <td className="px-6 py-4 space-x-4">
+                  <button onClick={() => handleEditar(mascota)} className="bg-amber-400 text-white px-4 py-2 rounded-lg hover:bg-amber-500 transition duration-300">
+                    Editar
+                  </button>
+                  <button onClick={() => handleCambiarEstado(mascota.masc_id, mascota.masc_estado)} className="bg-red-600 text-white px-4 py-2 rounded-lg hover:bg-red-700 transition duration-300">
+                    Cambiar estado
+                  </button>
+                  <button onClick={() => handleVerMas(mascota)} className="bg-gray-600 text-white px-4 py-2 rounded-lg hover:bg-gray-700 transition duration-300">
+                    Ver más
+                  </button>
+                </td>
+              </tr>
+            );
+          })}
+        </tbody>
+      </table>
+    </div>
+  );
+};
+
+export default TablaMascota;

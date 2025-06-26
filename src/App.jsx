@@ -18,8 +18,6 @@ import MisEventos from './Pages/Usuario/EventosUsuario/MisEventos';
 import MisAdopciones from './Pages/Usuario/AdopcionesUsuario/MisAdopciones';
 import Perfil from './Pages/Usuario/PerfilUsuario/Perfil';
 
-
-
 export const App = () => {
   const { isAuthenticated, role, logout } = useAuth();
 
@@ -75,9 +73,7 @@ export const App = () => {
               </>
             )}
           </div>
-
         </nav>
-
 
       <Routes>
         {/* RUTA PÚBLICA */}
@@ -92,8 +88,6 @@ export const App = () => {
         <Route path="/eventos/lista" element={<ListaEventos />} />
         <Route path="/eventos/:id" element={<EventoDetalle />} />
        <Route path='/eventos' element={<Eventos/>}/> 
-
-
 
         {/* RUTA DE LOGIN */}
         <Route path="/login" element={<Login />} />

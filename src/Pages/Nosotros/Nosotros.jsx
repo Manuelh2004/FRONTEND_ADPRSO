@@ -1,6 +1,14 @@
 import React from 'react';
+import { FaWhatsapp } from 'react-icons/fa'; // Importamos el ícono de WhatsApp
 
 export const Nosotros = () => {
+  // Reemplaza con tu número de WhatsApp y el mensaje que deseas enviar
+  const telefonoWhatsApp = "51922266310";  // Agrega tu número de WhatsApp aquí
+  const mensaje = "¡Hola! Quiero saber más sobre la organización."; // Mensaje predeterminado
+
+  // Enlace a la API de WhatsApp
+  const enlaceWhatsApp = `https://wa.me/${telefonoWhatsApp}?text=${encodeURIComponent(mensaje)}`;
+
   return (
     <div className="p-8 space-y-12 bg-gray-50">
 
@@ -60,35 +68,35 @@ export const Nosotros = () => {
 
       {/* Nuestro Equipo */}
       <div className="text-center py-12 bg-gray-50">
-      <h2 className="text-3xl font-semibold text-blue-800 mb-8">Nuestro Equipo</h2>
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 justify-items-center">
-      {/* Miembro 1 */}
-      <div className="w-80 h-80 bg-white rounded-lg flex flex-col items-center justify-center p-6 transition-transform transform hover:scale-105 border-4 border-blue-900">
-      <img 
-        src="https://i.ibb.co/0j40Sdf9/Imagen-1.jpg" 
-        alt="Miembro del equipo 1"
-        className="w-56 h-56 rounded-lg object-cover mb-4"
-      />
-        <div className="text-center">
-          <p className="text-gray-800 font-semibold text-lg">Mary Velásquez</p>
-          <p className="text-sm text-gray-500">Coordinadora de Adopciones</p>
-        </div>
-      </div>
-
-      {/* Miembro 2 */}
-      <div className="w-80 h-80 bg-white rounded-lg flex flex-col items-center justify-center p-6 transition-transform transform hover:scale-105 border-4 border-blue-900">
-        <img 
-          src="https://i.ibb.co/23Tp2Xnt/Imagen-2.jpg" 
-          alt="Miembro del equipo 2"
-          className="w-56 h-56 rounded-lg object-cover mb-4"
-        />
-      <div className="text-center">
-        <p className="text-gray-800 font-semibold text-lg">Stephanie Mendoza</p>
-        <p className="text-sm text-gray-500">Coordinadora de Adopciones</p>
-      </div>
-      </div>
-        </div>
+        <h2 className="text-3xl font-semibold text-blue-800 mb-8">Nuestro Equipo</h2>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 justify-items-center">
+          {/* Miembro 1 */}
+          <div className="w-80 h-80 bg-white rounded-lg flex flex-col items-center justify-center p-6 transition-transform transform hover:scale-105 border-4 border-blue-900">
+            <img 
+              src="https://i.ibb.co/0j40Sdf9/Imagen-1.jpg" 
+              alt="Miembro del equipo 1"
+              className="w-56 h-56 rounded-lg object-cover mb-4"
+            />
+            <div className="text-center">
+              <p className="text-gray-800 font-semibold text-lg">Mary Velásquez</p>
+              <p className="text-sm text-gray-500">Coordinadora de Adopciones</p>
+            </div>
           </div>
+
+          {/* Miembro 2 */}
+          <div className="w-80 h-80 bg-white rounded-lg flex flex-col items-center justify-center p-6 transition-transform transform hover:scale-105 border-4 border-blue-900">
+            <img 
+              src="https://i.ibb.co/23Tp2Xnt/Imagen-2.jpg" 
+              alt="Miembro del equipo 2"
+              className="w-56 h-56 rounded-lg object-cover mb-4"
+            />
+            <div className="text-center">
+              <p className="text-gray-800 font-semibold text-lg">Stephanie Mendoza</p>
+              <p className="text-sm text-gray-500">Coordinadora de Adopciones</p>
+            </div>
+          </div>
+        </div>
+      </div>
 
       {/* Alianzas Estratégicas */}
       <div className="text-center py-8 bg-blue-50">
@@ -110,6 +118,16 @@ export const Nosotros = () => {
         </div>
       </div>
 
+      {/* --- Botón flotante de WhatsApp --- */}
+      <a
+        href={enlaceWhatsApp}
+        target="_blank"
+        rel="noopener noreferrer"
+        className="fixed bottom-5 right-5 bg-green-500 hover:bg-green-600 text-white p-4 rounded-full shadow-lg flex items-center justify-center transition z-50"
+        title="Enviar mensaje por WhatsApp"
+      >
+        <FaWhatsapp size={30} />
+      </a>
     </div>
   );
 };

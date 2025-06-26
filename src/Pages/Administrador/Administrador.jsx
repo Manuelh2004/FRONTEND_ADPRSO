@@ -3,7 +3,7 @@ import MascotasAdmin from './AdminSections/MascotasAdmin/MascotasAdmin';
 import EventosAdmin from './AdminSections/EventosAdmin/EventosAdmin';
 import AdopcionesAdmin from './AdminSections/AdopcionesAdmin/AdopcionesAdmin';
 import UsuariosAdmin from './AdminSections/UsuariosAdmin/UsuariosAdmin';
-import ListarMascota from './AdminSections/MascotasAdmin/ListarMascota';  // Correcto
+import ListarMascota from './AdminSections/MascotasAdmin/TablaMascota';  // Correcto
 
 const Administrador = () => {
   const [seccionActiva, setSeccionActiva] = useState('mascotas');
@@ -12,35 +12,7 @@ const Administrador = () => {
   const renderContenido = () => {
     switch (seccionActiva) {
       case 'mascotas':
-        return (
-          <div>
-            {/* Submódulos para la sección "Mascotas" */}
-            <nav className="flex gap-4 mb-6">
-              <button
-                onClick={() => setSubseccionActiva('registrar')}
-                className={`px-4 py-2 rounded-lg transition-colors ${
-                  subseccionActiva === 'registrar'
-                    ? 'bg-blue-600 font-semibold'
-                    : 'hover:bg-blue-700'
-                }`}
-              >
-                Registrar
-              </button>
-              <button
-                onClick={() => setSubseccionActiva('listar')}
-                className={`px-4 py-2 rounded-lg transition-colors ${
-                  subseccionActiva === 'listar'
-                    ? 'bg-blue-600 font-semibold'
-                    : 'hover:bg-blue-700'
-                }`}
-              >
-                Listar
-              </button>
-            </nav>
-            {/* Renderizar el contenido según el submódulo seleccionado */}
-            {subseccionActiva === 'registrar' ? <MascotasAdmin /> : <ListarMascota />}
-          </div>
-        );
+        return <MascotasAdmin />;
       case 'eventos':
         return <EventosAdmin />;
       case 'adopciones':

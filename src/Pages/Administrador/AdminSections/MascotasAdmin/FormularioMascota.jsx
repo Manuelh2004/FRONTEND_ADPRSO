@@ -17,13 +17,13 @@ const FormularioMascota = ({
   handleSubmit,
 }) => {
   return (
-    <div className="max-w-4xl mx-auto mt-10 p-6 bg-white shadow-lg rounded-xl">
+    <div className="w-full mx-auto mt-10 p-6 bg-white shadow-lg rounded-xl">
       {/* Título dinámico */}
       <h2 className="text-2xl font-bold mb-6 text-center text-gray-700">
         {formData.masc_nombre ? 'Editar Mascota' : 'Registrar Mascota'}
       </h2>
 
-      {/* Formulario */}
+       {/* Formulario */}
       <form onSubmit={handleSubmit} className="grid grid-cols-1 md:grid-cols-2 gap-4">
         
         {/* Nombre */}
