@@ -126,7 +126,7 @@ const Donaciones = () => {
             { img: plin, alt: "Plin", info: ["Plin","922-266-310"] }, 
             { img: bcp, alt: "BCP", info: ["BCP","191-36249867-0-25", "CCI: 00219113624986702559"] },
             { img: interbank, alt: "Interbank Soles", info: ["Interbank Soles","1543147371121"] }, 
-            { img: interbank, alt: "Interbank Dólares", info: ["Interbank Dolares", "8983170530579", "CCI: 00389801317053057948"] },
+            { img: interbank, alt: "Interbank Dólares", info: ["Interbank Dólares", "8983170530579", "CCI: 00389801317053057948"] },
             { img: bbva, alt: "BBVA", info: ["BBVA","001108140221701416"] },
             { img: western_union, alt: "Western Union", info: ["Western Union","tephi.chris@gmail.com"] },
             { img: paypal, alt: "PayPal", info: ["PayPal","tephi.chris@gmail.com"] },
