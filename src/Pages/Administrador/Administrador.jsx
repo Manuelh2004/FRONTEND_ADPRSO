@@ -1,10 +1,25 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import MascotasAdmin from './AdminSections/MascotasAdmin/MascotasAdmin';
 import EventosAdmin from './AdminSections/EventosAdmin/EventosAdmin';
 import AdopcionesAdmin from './AdminSections/AdopcionesAdmin/AdopcionesAdmin';
 
 const Administrador = () => {
   const [seccionActiva, setSeccionActiva] = React.useState('mascotas');
+  const [showScrollTop, setShowScrollTop] = useState(false);
+
+  // Función para mostrar el botón de "Subir" cuando se hace scroll
+  const handleScroll = () => {
+    if (window.scrollY > 200) {
+      setShowScrollTop(true);
+    } else {
+      setShowScrollTop(false);
+    }
+  };
+
+  useEffect(() => {
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
 
   const renderContenido = () => {
     switch (seccionActiva) {
@@ -24,6 +39,11 @@ const Administrador = () => {
     { id: 'eventos', label: '📅 Eventos' },
     { id: 'adopciones', label: '📋 Adopciones' },
   ];
+
+  // Función para scroll al inicio
+  const scrollToTop = () => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
 
   return (
     <div className="flex min-h-screen bg-gray-50">
@@ -53,6 +73,26 @@ const Administrador = () => {
       <main className="flex-1 p-8 overflow-y-auto">
         {renderContenido()}
       </main>
+
+      {/* Botón flotante para subir */}
+      {showScrollTop && (
+        <button
+          onClick={scrollToTop}
+          className="group fixed bottom-8 right-8 bg-[#dda15e] text-white p-4 rounded-full shadow-xl transition-transform transform hover:scale-110 hover:bg-[#b77f40] focus:outline-none"
+          title="Volver arriba"
+        >
+          <svg
+            className="w-6 h-6 transition-transform group-hover:-translate-y-1"
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+            strokeWidth={2}
+          >
+            <path strokeLinecap="round" strokeLinejoin="round" d="M5 15l7-7 7 7" />
+          </svg>
+        </button>
+      )}
     </div>
   );
 };

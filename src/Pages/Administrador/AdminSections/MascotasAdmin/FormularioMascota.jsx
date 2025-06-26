@@ -19,7 +19,7 @@ const FormularioMascota = ({
   handleCancelar
 }) => {
   return (
-    <div className="w-full mx-auto mt-10 p-6 bg-white shadow-lg rounded-xl">
+    <div className="w-full mx-auto mt-10 p-6 bg-white shadow-lg rounded-xl mb-4">
       {/* Contenedor para el Título y el Botón de Cancelar */}
       <div className="flex justify-between items-center mb-6">
         <h2 className="text-2xl font-bold text-left text-gray-700">

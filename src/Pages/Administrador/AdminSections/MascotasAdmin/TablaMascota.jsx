@@ -15,8 +15,8 @@ const TablaMascota = ({ mascotasPaginados, handleEditar, handleCambiarEstado, ha
   };
 
   return (
-    <div className="overflow-x-auto bg-white rounded-lg shadow-lg">
-      <table className="w-full table-auto text-sm">
+    <div className="bg-white p-8 rounded-lg shadow-lg space-y-6 mb-8">
+      <table className="min-w-full text-sm table-auto border-collapse">
         <thead className="bg-[#dda15e] text-white">
           <tr>
             <th className="px-6 py-4 text-center">#</th>
@@ -36,15 +36,22 @@ const TablaMascota = ({ mascotasPaginados, handleEditar, handleCambiarEstado, ha
             return (
               <tr key={mascota.masc_id} className="border-t hover:bg-gray-50">
                 <td className="px-6 py-4 text-center">{numeroRegistro + 1}</td>
-                <td className="px-6 py-4">{mascota.masc_nombre}</td>
-                <td className="px-6 py-4">{mascota.tipo_mascota.tipma_nombre}</td>
+                <td className="px-6 py-4 text-center">{mascota.masc_nombre}</td>
+                <td className="px-6 py-4 text-center">{mascota.tipo_mascota.tipma_nombre}</td>
                 <td className="px-6 py-4 text-center">{edad}</td>
-                <td className="px-6 py-4">{mascota.sexo.sex_nombre}</td>
-                <td className="px-6 py-4">
-                  <span className={`inline-block py-1 px-3 rounded-full ${mascota.masc_estado === 1 ? 'bg-green-200 text-green-800' : 'bg-red-200 text-red-800'}`} />
-                  {mascota.masc_estado === 1 ? 'Activo' : 'Inactivo'}
+                <td className="px-6 py-4 text-center">{mascota.sexo.sex_nombre}</td>
+                <td className="px-4 py-3 text-center">
+                  <span
+                    className={`inline-block py-1 px-3 rounded-full ${
+                      mascota.masc_estado === 1
+                        ? 'bg-green-200 text-green-800'
+                        : 'bg-red-200 text-red-800'
+                    }`}
+                  >
+                    {mascota.masc_estado === 1 ? 'Activo' : 'Inactivo'}
+                  </span>
                 </td>
-                <td className="px-6 py-4 space-x-4">
+                <td className="px-6 py-4 space-x-4 text-center">
                   <button onClick={() => handleEditar(mascota)} className="bg-amber-400 text-white px-4 py-2 rounded-lg hover:bg-amber-500 transition duration-300 cursor-pointer">
                     Editar
                   </button>

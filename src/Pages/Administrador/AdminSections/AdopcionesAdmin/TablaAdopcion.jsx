@@ -20,7 +20,7 @@ const TablaAdopcion = ({ adopcionesPaginados, obtenerEstadoTexto, handleVerMas, 
 
             return (
               <tr key={adopcion.adop_id} className="border-t hover:bg-gray-100">
-                <td className="px-6 py-4 text-center">{numeroRegistro + 1}</td> {/* Número de fila incremental */}
+                <td className="px-6 py-4 text-center">{numeroRegistro + 1}</td>
                 <td className="px-6 py-4 text-center">{adopcion.adop_fecha}</td>
                 <td className="px-6 py-4 text-center">
                   <span

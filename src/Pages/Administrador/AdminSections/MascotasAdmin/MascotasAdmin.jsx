@@ -395,7 +395,7 @@ const handleCancelar = () => {
         </button>
       </div>
 
-      {/* Mostrar el modal si se ha seleccionado un evento */}
+      {/* Mostrar el modal si se ha seleccionado una mascota */}
       {mascotaSeleccionada && (
         <ModalMascota 
           mascotaSeleccionada={mascotaSeleccionada} 

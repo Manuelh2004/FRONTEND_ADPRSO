@@ -10,7 +10,6 @@ const AdopcionesAdmin = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [adopcionSeleccionada, setAdopcionSeleccionada] = useState(null);
-  const [mostrarModal, setMostrarModal] = useState(false);
   const [mostrarConfirmacionModal, setMostrarConfirmacionModal] = useState(false);
   const [estadoFiltro, setEstadoFiltro] = useState('');
   const [estadoAConfirmar, setEstadoAConfirmar] = useState(null);
@@ -36,12 +35,6 @@ const AdopcionesAdmin = () => {
 
   const handleVerMas = (adopcion) => {
     setAdopcionSeleccionada(adopcion);
-    setMostrarModal(true);
-  };
-
-  const cerrarModal = () => {
-    setMostrarModal(false);
-    setAdopcionSeleccionada(null);
   };
 
   const solicitarCambioEstado = (adopcion, nuevoEstado) => {
@@ -151,11 +144,10 @@ const AdopcionesAdmin = () => {
       )}
 
       {/* Modal para mostrar más detalles de la adopción */}
-      {mostrarModal && adopcionSeleccionada && (
+      {adopcionSeleccionada  && (
         <ModalAdopcion
           adopcionSeleccionada={adopcionSeleccionada}
-          cerrarModal={cerrarModal}
-          obtenerEstadoTexto={obtenerEstadoTexto}
+          setAdopcionSeleccionada={setAdopcionSeleccionada}
         />
       )}
     </div>

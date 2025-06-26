@@ -170,6 +170,9 @@ const EventosAdmin = () => {
         handleEditar={handleEditar}
         handleCambiarEstado={handleCambiarEstado}
         handleVerMas={handleVerMas}
+        paginaActual={paginaActual}
+        registrosPorPagina={registrosPorPagina}
+
       />
 
       {/* Paginación */}
