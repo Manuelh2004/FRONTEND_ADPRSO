@@ -1,8 +1,8 @@
 const FiltroEstado = ({ filtroEstado, setFiltroEstado, searchTerm, setSearchTerm, onDescargarReporte }) => (
   <div className="bg-white p-8 rounded-lg shadow-lg space-y-6 mb-4">
-    <h2 className="text-2xl font-bold mb-6 text-left text-gray-700">        
-      Filtrar
-    </h2>
+    <h2 className="text-2xl font-bold mb-6 text-left text-gray-700">Filtrar</h2>
+
+    {/* Filtros: Estado y Búsqueda */}
     <div className="flex flex-col md:flex-row gap-6">
       {/* Filtro por Estado */}
       <div className="w-full md:w-1/2">
@@ -37,11 +37,10 @@ const FiltroEstado = ({ filtroEstado, setFiltroEstado, searchTerm, setSearchTerm
         onClick={onDescargarReporte}
         className="mt-2 lg:mt-0 bg-green-600 text-white px-6 py-2 rounded-lg hover:bg-green-700 w-full lg:w-auto"
       >
-      <i class="fa-solid fa-download"></i> Reporte de eventos
+        <i className="fa-solid fa-download"></i> Reporte de eventos
       </button>
     </div>
   </div>
 );
-
 
 export default FiltroEstado;
