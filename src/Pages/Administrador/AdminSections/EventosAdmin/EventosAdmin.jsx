@@ -1,9 +1,10 @@
 import { useEffect, useState } from 'react';
-import { fetchEventos, registrarEvento, actualizarEvento, cambiarEstadoEvento, obtenerEventosPorEstado, buscarEventosPorNombre } from '../../../../services/evento/eventoAdmApi';
+import { fetchEventos, registrarEvento, actualizarEvento, cambiarEstadoEvento, obtenerEventosPorEstado, buscarEventosPorNombre, descargarReporteFiltrado } from '../../../../services/evento/eventoAdmApi';
 import FormularioEvento from './FormularioEvento';
 import FiltroEstado from './FiltroEstado';
-import TablaEvento from './TablaEvento';  
+import TablaEvento from './TablaEvento';
 import ModalEvento from './ModalEvento'; // Importar el nuevo componente del modal
+import ModalMensaje from '../../../../components/ModalMensaje';
 
 const EventosAdmin = () => {
   const [eventos, setEventos] = useState([]);
@@ -21,6 +22,9 @@ const EventosAdmin = () => {
   const [registrosPorPagina] = useState(10);
   const [filtroEstado, setFiltroEstado] = useState("");
   const [searchTerm, setSearchTerm] = useState('');
+  const [modalVisible, setModalVisible] = useState(false);
+  const [modalMensaje, setModalMensaje] = useState('');
+  const [modalTipo, setModalTipo] = useState('info');
 
   useEffect(() => {
     const token = localStorage.getItem('token');
@@ -139,6 +143,51 @@ const EventosAdmin = () => {
     }
   };
 
+  const handleDescargarReporte = async () => {
+  const token = localStorage.getItem('token');
+  const idsEvento = eventos.length > 0 ? eventos.map(e => e.even_id) : [];
+
+  if (idsEvento.length === 0) {
+    setModalTipo("info");
+    setModalMensaje("No hay eventos que coincidan con los filtros.");
+    setModalVisible(true);
+    return;
+  }
+
+  try {
+    const blob = await descargarReporteFiltrado(token, idsEvento);
+    const url = window.URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'reporte_inscripciones.xlsx';
+    a.click();
+    a.remove();
+  } catch (error) {
+    console.error('Error al descargar el reporte:', error);
+    setModalTipo("error");
+    setModalMensaje("No se pudo descargar el reporte.");
+    setModalVisible(true);
+  }
+};
+
+const handleDescargarUnEvento = async (eventoId) => {
+  const token = localStorage.getItem('token');
+  try {
+    const blob = await descargarReporteFiltrado(token, [eventoId]);
+    const url = window.URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `reporte_evento_${eventoId}.xlsx`;
+    a.click();
+    a.remove();
+  } catch (error) {
+    console.error('Error al descargar el reporte del evento:', error);
+    setModalTipo("error");
+    setModalMensaje("No se pudo descargar el reporte del evento.");
+    setModalVisible(true);
+  }
+};
+
   return (
     <div className="container mx-auto p-8 bg-gray-50 min-h-screen">
       <h2 className="text-4xl font-semibold text-gray-800 mb-8">Gestión de Eventos</h2>
@@ -157,6 +206,7 @@ const EventosAdmin = () => {
         setFiltroEstado={setFiltroEstado} 
         searchTerm={searchTerm} 
         setSearchTerm={setSearchTerm}
+        onDescargarReporte={handleDescargarReporte} 
       />
 
       {/* Tabla de eventos */}
@@ -165,6 +215,7 @@ const EventosAdmin = () => {
         handleEditar={handleEditar}
         handleCambiarEstado={handleCambiarEstado}
         handleVerMas={handleVerMas}
+        handleDescargarUnEvento={handleDescargarUnEvento}
       />
 
       {/* Paginación */}
@@ -187,6 +238,13 @@ const EventosAdmin = () => {
           setEventoSeleccionado={setEventoSeleccionado} 
         />
       )}
+
+      <ModalMensaje
+        visible={modalVisible}
+        tipo={modalTipo}
+        mensaje={modalMensaje}
+        onClose={() => setModalVisible(false)}
+      />
     </div>
   );
 };

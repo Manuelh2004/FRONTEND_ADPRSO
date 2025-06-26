@@ -133,3 +133,18 @@ export const obtenerUsuariosPorEvento = async (token, eventoId) => {
     throw error;
   }
 };
+
+export const descargarReporteFiltrado = async (token, idsEvento) => {
+  const response = await fetch('http://localhost:8080/admin/api/evento/reporte-inscripciones', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${token}`,
+    },
+    body: JSON.stringify(idsEvento),
+  });
+
+  if (!response.ok) throw new Error('Error al descargar');
+
+  return await response.blob();
+};
