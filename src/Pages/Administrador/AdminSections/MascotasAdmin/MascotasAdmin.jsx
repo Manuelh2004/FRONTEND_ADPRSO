@@ -2,8 +2,8 @@ import React, { useEffect, useState } from 'react';
 import { fetchMascotas, registrarMascota, actualizarMascota, cambiarEstadoMascota, obtenerMascotasPorEstado, buscarMascotasPorNombre } from '../../../../services/mascota/mascotaAdmApi';
 import ApiService from '../../../../services/itemAdmApi'; 
 import TablaMascota from './TablaMascota';
-import FiltroEstado from './FiltroEstado';  // Importar el filtro
-import FormularioMascota from './FormularioMascota'; // Asegúrate de importar el componente
+import FiltroEstado from './FiltroEstado';  
+import FormularioMascota from './FormularioMascota'; 
 import ModalMascota from './ModalMascota';
 
 const MascotasAdmin = () => {
@@ -35,8 +35,8 @@ const MascotasAdmin = () => {
   const [editandoId, setEditandoId] = useState(null);
   const [paginaActual, setPaginaActual] = useState(1);
   const [registrosPorPagina] = useState(10);
-  const [filtroEstado, setFiltroEstado] = useState("");  // Estado del filtro
-  const [searchTerm, setSearchTerm] = useState("");  // Filtro por nombre
+  const [filtroEstado, setFiltroEstado] = useState("");  
+  const [searchTerm, setSearchTerm] = useState(""); 
   const token = localStorage.getItem('token');
 
   useEffect(() => {
@@ -114,11 +114,51 @@ const mascotasPaginados = Array.isArray(mascotas) && mascotas ? mascotas.slice(
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    if (editandoId) {      
+        const mascotaDTO = {
+          mascota: {
+            masc_nombre: formData.masc_nombre,
+            masc_fecha_nacimiento: formData.masc_fecha_nacimiento,
+            sexo: { sex_id: formData.sexo },
+            tamanio: { tam_id: formData.tamanio },
+            nivel_energia: { nien_id: formData.nivelEnergia },
+            tipo_mascota: { tipma_id: formData.tipoMascota },
+            estado_salud: { estsa_id: formData.estadoSalud },
+            estado_vacuna: { estva_id: formData.estadoVacuna },
+            masc_historia: formData.masc_historia,
+            masc_observacion: formData.masc_observacion,
+          },
+          imagenUrls: imagenes,  
+          newGustos: gustosSeleccionados  
+        };
+        try {
+    const response = await actualizarMascota(token, editandoId, mascotaDTO);
 
-    if(editandoId){
-      await actualizarEvento(token, editandoId, formData);
-    }else{
-      // Validación de campos obligatorios
+    if (response && response.masc_id) {
+      console.log("Mascota actualizada con éxito:", response);
+      setFormData({
+        masc_nombre: '',
+        masc_fecha_nacimiento: '',
+        masc_historia: '',
+        masc_observacion: '',
+        estadoSalud: '',
+        estadoVacuna: '',
+        nivelEnergia: '',
+        tamanio: '',
+        tipoMascota: '',
+        sexo: ''
+      });
+      setImagenes(['']);
+      setGustosSeleccionados([]);
+    } else {
+      console.error('Error al actualizar mascota, respuesta no válida:', response);
+      alert('Error al actualizar mascota.');
+    }
+  } catch (error) {
+    console.error("Error al actualizar mascota:", error);
+    alert('Hubo un error al actualizar la mascota.');
+  }      
+  }else{
       const camposObligatorios = [
         formData.masc_nombre,
         formData.masc_fecha_nacimiento,
@@ -165,7 +205,6 @@ const mascotasPaginados = Array.isArray(mascotas) && mascotas ? mascotas.slice(
 
       try {
         const response = await registrarMascota(token, mascotaDTO);  
-
         if (response.code === 201) {
           console.log("Mascota registrada con éxito:", response.data);
           setFormData({
@@ -197,20 +236,40 @@ const mascotasPaginados = Array.isArray(mascotas) && mascotas ? mascotas.slice(
   };
 
   const handleEditar = (mascota) => {
-    setEditandoId(mascota.masc_id);
-    setFormData({
-      masc_nombre: mascota.masc_nombre || '',
-      masc_fecha_nacimiento: mascota.masc_fecha_nacimiento || '',
-      masc_historia: mascota.masc_historia || '',
-      masc_observacion: mascota.masc_observacion || '',
-      estadoSalud: mascota.estado_salud.estsa_id,
-      estadoVacuna: mascota.estado_vacuna.estva_id,
-      nivelEnergia: mascota.nivel_energia.nien_id,
-      tamanio: mascota.tamanio.tam_id,
-      tipoMascota: mascota.tipo_mascota.tipma_id,
-      sexo: mascota.sexo.sex_id
-    });
-  };  
+  setEditandoId(mascota.masc_id);
+  setFormData({
+    masc_nombre: mascota.masc_nombre || '',
+    masc_fecha_nacimiento: mascota.masc_fecha_nacimiento || '',
+    masc_historia: mascota.masc_historia || '',
+    masc_observacion: mascota.masc_observacion || '',
+    estadoSalud: mascota.estado_salud.estsa_id,
+    estadoVacuna: mascota.estado_vacuna.estva_id,
+    nivelEnergia: mascota.nivel_energia.nien_id,
+    tamanio: mascota.tamanio.tam_id,
+    tipoMascota: mascota.tipo_mascota.tipma_id,
+    sexo: mascota.sexo.sex_id
+  });
+
+  setGustosSeleccionados(mascota.gustoNames ? mascota.gustoNames.map(gusto => gusto.id) : []);
+  setImagenes(mascota.imagenes ? mascota.imagenes.map(img => img.ima_url) : []);
+};
+const handleCancelar = () => {
+  setFormData({
+    masc_nombre: '',
+    masc_fecha_nacimiento: '',
+    masc_historia: '',
+    masc_observacion: '',
+    estadoSalud: '',
+    estadoVacuna: '',
+    nivelEnergia: '',
+    tamanio: '',
+    tipoMascota: '',
+    sexo: ''
+  });
+  setImagenes(['']); 
+  setGustosSeleccionados([]); 
+  setEditandoId(null);  
+};
 
   const handleCambiarEstado = async (id, estadoActual) => {
     const nuevoEstado = estadoActual === 1 ? 0 : 1;
@@ -268,7 +327,7 @@ const mascotasPaginados = Array.isArray(mascotas) && mascotas ? mascotas.slice(
 
   const handleImageRemove = (index) => {
     const newImagenes = [...imagenes];
-    newImagenes.splice(index, 1); // Elimina el campo de imagen en la posición index
+    newImagenes.splice(index, 1); 
     setImagenes(newImagenes);
   };
 
@@ -284,8 +343,7 @@ const mascotasPaginados = Array.isArray(mascotas) && mascotas ? mascotas.slice(
 
   return (
     <div className="container mx-auto p-8 bg-gray-50 min-h-screen">
-      <h2 className="text-4xl font-semibold text-gray-800 mb-8">Gestión de Mascotas</h2>
-
+    <h2 className="text-3xl font-bold mb-6 text-center">Gestión de Mascotas</h2>
       {/* Formulario */}
         <FormularioMascota
           formData={formData}
@@ -304,9 +362,11 @@ const mascotasPaginados = Array.isArray(mascotas) && mascotas ? mascotas.slice(
           sexos={sexos}
           imagenes={imagenes}
           handleSubmit={handleSubmit}
+          editandoId={editandoId}
+          handleCancelar={handleCancelar}
         />
         {/* Filtro por estado y búsqueda */}
-         <FiltroEstado 
+        <FiltroEstado 
           filtroEstado={filtroEstado} 
           setFiltroEstado={setFiltroEstado} 
           searchTerm={searchTerm} 
@@ -335,7 +395,7 @@ const mascotasPaginados = Array.isArray(mascotas) && mascotas ? mascotas.slice(
         </button>
       </div>
 
-      {/* Mostrar el modal si se ha seleccionado un evento */}
+      {/* Mostrar el modal si se ha seleccionado una mascota */}
       {mascotaSeleccionada && (
         <ModalMascota 
           mascotaSeleccionada={mascotaSeleccionada} 
@@ -346,5 +406,4 @@ const mascotasPaginados = Array.isArray(mascotas) && mascotas ? mascotas.slice(
     </div>
   );
 };
-
 export default MascotasAdmin;

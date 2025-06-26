@@ -102,6 +102,11 @@ const EventosAdmin = () => {
     });
   };
 
+  const handleCancelar = () => {
+    setFormData({ nombre: '', descripcion: '', fecha_inicio: '', fecha_fin: '', lugar: '', imagen: '' });
+    setEditandoId(null);
+  };
+
   const handleCambiarEstado = async (id, estadoActual) => {
     const nuevoEstado = estadoActual === 1 ? 0 : 1;
     const token = localStorage.getItem('token');
@@ -190,14 +195,14 @@ const handleDescargarUnEvento = async (eventoId) => {
 
   return (
     <div className="container mx-auto p-8 bg-gray-50 min-h-screen">
-      <h2 className="text-4xl font-semibold text-gray-800 mb-8">Gestión de Eventos</h2>
-
+    <h2 className="text-3xl font-bold mb-6 text-center">Gestión de Eventos</h2>
       {/* Formulario */}
       <FormularioEvento
         formData={formData}
         setFormData={setFormData}
         handleSubmit={handleSubmit}
         editandoId={editandoId}
+        handleCancel={handleCancelar} 
       />
 
       {/* Filtro por estado y búsqueda */}
@@ -216,6 +221,9 @@ const handleDescargarUnEvento = async (eventoId) => {
         handleCambiarEstado={handleCambiarEstado}
         handleVerMas={handleVerMas}
         handleDescargarUnEvento={handleDescargarUnEvento}
+        paginaActual={paginaActual}
+        registrosPorPagina={registrosPorPagina}
+
       />
 
       {/* Paginación */}
