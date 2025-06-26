@@ -8,7 +8,7 @@ const FormularioEvento = ({ formData, setFormData, handleSubmit, editandoId, han
     <form onSubmit={handleSubmit} className="bg-white p-8 rounded-lg shadow-lg space-y-6 mb-4">
       <div className="flex justify-between items-center mb-6">
         <h2 className="text-2xl font-bold text-left text-gray-700">
-          {editandoId ? 'Editar' : 'Registrar'} Evento
+          {editandoId ? 'Editar' : 'Registrar'}
         </h2>
 
         {/* Botón de Cancelar solo si estamos en edición */}

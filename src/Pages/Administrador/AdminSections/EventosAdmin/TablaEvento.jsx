@@ -1,10 +1,17 @@
-const TablaEvento = ({ eventosPaginados, handleEditar, handleCambiarEstado, handleVerMas, paginaActual, registrosPorPagina }) => {
+const TablaEvento = ({
+  eventosPaginados,
+  handleEditar,
+  handleCambiarEstado,
+  handleVerMas,
+  paginaActual,
+  registrosPorPagina,
+}) => {
   return (
-    <div className="bg-white p-8 rounded-lg shadow-lg space-y-6 mb-8">
+    <div className="overflow-x-auto bg-white shadow-md rounded-lg p-6 space-y-6 mb-8">
       <h2 className="text-2xl font-bold mb-6 text-left text-gray-700">
-        Tabla de Eventos
+        Tabla
       </h2>
-      <table className="w-full table-auto text-sm">
+      <table className="min-w-full text-sm table-auto border-collapse">
         <thead className="bg-[#dda15e] text-white">
           <tr>
             <th className="px-6 py-4 text-center">#</th>
@@ -36,7 +43,7 @@ const TablaEvento = ({ eventosPaginados, handleEditar, handleCambiarEstado, hand
                     {evento.even_estado === 1 ? 'Activo' : 'Inactivo'}
                   </span>
                 </td>
-                <td className="px-4 py-3 text-center space-x-2">
+                <td className="px-4 py-3 text-center flex justify-center space-x-4">
                   <button
                     onClick={() => handleEditar(evento)}
                     className="bg-amber-400 text-white px-4 py-2 rounded-lg hover:bg-amber-500 transition duration-300"

@@ -1,5 +1,11 @@
-const TablaMascota = ({ mascotasPaginados, handleEditar, handleCambiarEstado, handleVerMas, paginaActual, registrosPorPagina }) => {
-  
+const TablaMascota = ({
+  mascotasPaginados,
+  handleEditar,
+  handleCambiarEstado,
+  handleVerMas,
+  paginaActual,
+  registrosPorPagina,
+}) => {
   // Función para calcular la edad
   const calcularEdad = (fechaNacimiento) => {
     const nacimiento = new Date(fechaNacimiento);
@@ -15,7 +21,10 @@ const TablaMascota = ({ mascotasPaginados, handleEditar, handleCambiarEstado, ha
   };
 
   return (
-    <div className="bg-white p-8 rounded-lg shadow-lg space-y-6 mb-8">
+    <div className="overflow-x-auto bg-white p-8 rounded-lg shadow-lg space-y-6 mb-8">
+      <h2 className="text-2xl font-bold mb-6 text-left text-gray-700">
+        Tabla
+      </h2>
       <table className="min-w-full text-sm table-auto border-collapse">
         <thead className="bg-[#dda15e] text-white">
           <tr>
@@ -23,8 +32,8 @@ const TablaMascota = ({ mascotasPaginados, handleEditar, handleCambiarEstado, ha
             <th className="px-6 py-4 text-center">Nombre</th>
             <th className="px-6 py-4 text-center">Tipo</th>
             <th className="px-6 py-4 text-center">Edad</th>
-            <th className="px-6 py-4 text-center">Sexo</th>
             <th className="px-6 py-4 text-center">Estado</th>
+            <th className="px-6 py-4 text-center">Sexo</th>
             <th className="px-6 py-4 text-center">Acciones</th>
           </tr>
         </thead>
@@ -39,7 +48,6 @@ const TablaMascota = ({ mascotasPaginados, handleEditar, handleCambiarEstado, ha
                 <td className="px-6 py-4 text-center">{mascota.masc_nombre}</td>
                 <td className="px-6 py-4 text-center">{mascota.tipo_mascota.tipma_nombre}</td>
                 <td className="px-6 py-4 text-center">{edad}</td>
-                <td className="px-6 py-4 text-center">{mascota.sexo.sex_nombre}</td>
                 <td className="px-4 py-3 text-center">
                   <span
                     className={`inline-block py-1 px-3 rounded-full ${
@@ -51,14 +59,24 @@ const TablaMascota = ({ mascotasPaginados, handleEditar, handleCambiarEstado, ha
                     {mascota.masc_estado === 1 ? 'Activo' : 'Inactivo'}
                   </span>
                 </td>
-                <td className="px-6 py-4 space-x-4 text-center">
-                  <button onClick={() => handleEditar(mascota)} className="bg-amber-400 text-white px-4 py-2 rounded-lg hover:bg-amber-500 transition duration-300 cursor-pointer">
+                <td className="px-6 py-4 text-center">{mascota.sexo.sex_nombre}</td>
+                <td className="px-6 py-4 text-center flex justify-center space-x-4">
+                  <button
+                    onClick={() => handleEditar(mascota)}
+                    className="bg-amber-400 text-white px-4 py-2 rounded-lg hover:bg-amber-500 transition duration-300 cursor-pointer"
+                  >
                     Editar
                   </button>
-                  <button onClick={() => handleCambiarEstado(mascota.masc_id, mascota.masc_estado)} className="bg-red-600 text-white px-4 py-2 rounded-lg hover:bg-red-700 transition duration-300 cursor-pointer">
+                  <button
+                    onClick={() => handleCambiarEstado(mascota.masc_id, mascota.masc_estado)}
+                    className="bg-red-600 text-white px-4 py-2 rounded-lg hover:bg-red-700 transition duration-300 cursor-pointer"
+                  >
                     Cambiar estado
                   </button>
-                  <button onClick={() => handleVerMas(mascota)} className="bg-gray-600 text-white px-4 py-2 rounded-lg hover:bg-gray-700 transition duration-300 cursor-pointer">
+                  <button
+                    onClick={() => handleVerMas(mascota)}
+                    className="bg-gray-600 text-white px-4 py-2 rounded-lg hover:bg-gray-700 transition duration-300 cursor-pointer"
+                  >
                     Ver más
                   </button>
                 </td>

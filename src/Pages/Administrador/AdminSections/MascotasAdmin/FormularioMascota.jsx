@@ -23,7 +23,7 @@ const FormularioMascota = ({
       {/* Contenedor para el Título y el Botón de Cancelar */}
       <div className="flex justify-between items-center mb-6">
         <h2 className="text-2xl font-bold text-left text-gray-700">
-          {formData.masc_nombre ? 'Editar Mascota' : 'Registrar Mascota'}
+          {formData.masc_nombre ? 'Editar' : 'Registrar'}
         </h2>
 
         {/* Botón de Cancelar solo si estamos en edición */}

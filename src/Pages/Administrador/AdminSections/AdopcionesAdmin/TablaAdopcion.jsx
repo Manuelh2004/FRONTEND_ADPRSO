@@ -1,4 +1,11 @@
-const TablaAdopcion = ({ adopcionesPaginados, obtenerEstadoTexto, handleVerMas, solicitarCambioEstado, paginaActual, registrosPorPagina }) => {
+const TablaAdopcion = ({
+  adopcionesPaginados,
+  obtenerEstadoTexto,
+  handleVerMas,
+  solicitarCambioEstado,
+  paginaActual,
+  registrosPorPagina,
+}) => {
   return (
     <div className="overflow-x-auto bg-white shadow-md rounded-lg">
       <table className="min-w-full text-sm table-auto border-collapse">
@@ -32,7 +39,7 @@ const TablaAdopcion = ({ adopcionesPaginados, obtenerEstadoTexto, handleVerMas, 
                 <td className="px-6 py-4 text-center">{adopcion.mascota.masc_nombre}</td>
                 <td className="px-6 py-4 text-center">{adopcion.mascota.tipo_mascota.tipma_nombre}</td>
                 <td className="px-6 py-4 text-center">{adopcion.usuario.usr_nombre} {adopcion.usuario.usr_apellido}</td>
-                <td className="px-6 py-4 text-center space-x-4">
+                <td className="px-6 py-4 text-center flex justify-center space-x-4">
                   <button
                     className="bg-[#dda15e] text-white px-4 py-2 rounded hover:bg-[#bc6c25] transition duration-300 cursor-pointer"
                     onClick={() => handleVerMas(adopcion)}
@@ -42,7 +49,7 @@ const TablaAdopcion = ({ adopcionesPaginados, obtenerEstadoTexto, handleVerMas, 
                   {adopcion.adop_estado === 0 && (
                     <>
                       <button
-                        className="bg-yellow-500 text-white px-4 py-2 rounded-lg ml-2 hover:bg-yellow-600 transition duration-300 cursor-pointer"
+                        className="bg-yellow-500 text-white px-4 py-2 rounded-lg hover:bg-yellow-600 transition duration-300 cursor-pointer"
                         onClick={() => solicitarCambioEstado(adopcion, 1)}
                       >
                         Aceptar
@@ -65,7 +72,7 @@ const TablaAdopcion = ({ adopcionesPaginados, obtenerEstadoTexto, handleVerMas, 
                   )}
                   {adopcion.adop_estado === 2 && (
                     <button
-                      className="bg-green-500 text-white px-4 py-2 rounded ml-2 hover:bg-green-700 transition duration-300 cursor-pointer"
+                      className="bg-green-600 text-white px-4 py-2 rounded ml-2 hover:bg-green-700 transition duration-300 cursor-pointer"
                       onClick={() => solicitarCambioEstado(adopcion, 1)}
                     >
                       Aceptar

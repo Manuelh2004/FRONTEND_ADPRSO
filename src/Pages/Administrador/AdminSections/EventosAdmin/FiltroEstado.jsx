@@ -1,7 +1,7 @@
 const FiltroEstado = ({ filtroEstado, setFiltroEstado, searchTerm, setSearchTerm }) => (
   <div className="bg-white p-8 rounded-lg shadow-lg space-y-6 mb-4">
     <h2 className="text-2xl font-bold mb-6 text-left text-gray-700">        
-      Filtros
+      Filtrar
     </h2>
     <div className="flex flex-col md:flex-row gap-6">
       {/* Filtro por Estado */}
