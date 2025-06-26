@@ -2,6 +2,21 @@ import axios from 'axios';
 
 const API_URL = 'http://localhost:8080/admin/api/mascota';  // Asegúrate de tener la URL correcta
 
+
+export const fetchMascotas = async (token) => {
+  try {
+    const response = await axios.get(`${API_URL}/listar_mascota`, {
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    });
+    return response.data.data;
+  } catch (error) {
+    console.error('Error al listar mascotas', error);
+    throw error;
+  }
+};
+
 // Función para obtener todas las mascotas
 export const listarMascotas = async (token) => {
   // Verificar si el token existe
@@ -60,18 +75,54 @@ export const actualizarMascota = async (token, id, mascotaData) => {
   }
 };
 
-// Función para cambiar el estado de una mascota
 export const cambiarEstadoMascota = async (token, id, nuevoEstado) => {
   try {
-    const response = await axios.put(`${API_URL}/${id}/estado`, null, {
-      params: { nuevoEstado },
+    await axios.put(
+      `${API_URL}/${id}/estado?nuevoEstado=${nuevoEstado}`,
+      null,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      }
+    );
+  } catch (error) {
+    console.error('Error cambiando estado', error);
+    throw error;
+  }  
+};
+
+
+// Función para buscar mascotas por nombre
+export const buscarMascotasPorNombre = async (token, nombre) => {
+  try {
+    const response = await axios.get(`${API_URL}/buscar`, {
+      params: { nombre },
       headers: {
         'Authorization': `Bearer ${token}`,
       }
     });
     return response.data;
   } catch (error) {
-    console.error('Error al cambiar estado de la mascota:', error);
-    throw error;
+    console.error('Error al buscar mascota:', error);
+    throw new Error(error.response ? error.response.data.message : 'Error al buscar mascota.');
+  }
+};
+
+export const obtenerMascotasPorEstado = async (estadoFiltro, token) => {
+  const headers = { 'Authorization': `Bearer ${token}` };
+  let url = `${API_URL}/listar_mascota`;  // URL predeterminada
+
+  if (estadoFiltro === 'activo') {
+    url = `${API_URL}/activos`;
+  } else if (estadoFiltro === 'inactivo') {
+    url = `${API_URL}/inactivos`;  
+  }
+
+  try {
+    const response = await axios.get(url, { headers });
+    return response.data.data;
+  } catch (error) {
+    throw new Error('Error al cargar las mascotas');
   }
 };
