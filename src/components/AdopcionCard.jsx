@@ -35,7 +35,7 @@ export default function AdopcionCard({ adopcion }) {
   return (
     <div className="bg-white rounded-lg shadow p-4 border border-gray-200 flex gap-4">
       <img
-        src={mascota?.imagenes?.[0]?.ima_url || '/sin-imagen.jpg'}
+        src={mascota?.imagenes?.[0]?.imaUrl || '/sin-imagen.jpg'}
         alt={mascota?.masc_nombre}
         className="w-24 h-24 object-cover rounded"
       />

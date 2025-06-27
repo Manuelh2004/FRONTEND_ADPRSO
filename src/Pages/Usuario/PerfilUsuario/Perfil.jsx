@@ -14,7 +14,7 @@ const Perfil = () => {
   useEffect(() => {
     const fetchPerfil = async () => {
       try {
-        const response = await axios.get('http://localhost:8080/user/api/usuario/perfil', {
+        const response = await axios.get('http://localhost:8080/api/usuario/perfil', {
           headers: { Authorization: `Bearer ${token}` },
         });
         setUsuario(response.data.data);
@@ -52,7 +52,7 @@ const Perfil = () => {
   try {
     setGuardando(true);
     const response = await axios.put(
-      'http://localhost:8080/user/api/usuario/perfil',
+      'http://localhost:8080/api/usuario/perfil',
       usuario,
       {
         headers: { Authorization: `Bearer ${token}` },

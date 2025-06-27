@@ -211,24 +211,61 @@ const FormularioMascota = ({
         {/* Imágenes */}
         <div className="md:col-span-2">
           <label className="block font-medium text-gray-700 mb-1">Imágenes:</label>
-          {imagenes.map((img, index) => (
-            <div key={index} className="flex items-center space-x-2 mb-2">
-              <input
-                type="text"
-                value={img}
-                onChange={(e) => handleImageChange(index, e.target.value)} // Llamada a handleImageChange
-                placeholder={`URL de imagen ${index + 1}`}
-                className="w-full border border-gray-300 rounded px-3 py-2"
-              />
-              <button
-                type="button"
-                onClick={() => handleImageRemove(index)} // Llamada a handleImageRemove
-                className="text-red-500 hover:text-red-700 text-sm font-medium cursor-pointer"
-              >
-                Eliminar
-              </button>
-            </div>
-          ))}
+          {imagenes.map((img, index) => {
+  // Si es una imagen ya existente (del backend)
+  if (img && typeof img === 'object' && img.imaUrl) {
+    return (
+      <div key={index} className="flex items-center space-x-3 mb-2">
+        <img src={img.imaUrl} alt={`Imagen-${index}`} className="w-20 h-20 object-cover rounded" />
+        <button
+          type="button"
+          onClick={() => handleImageRemove(index)}
+          className="bg-red-500 text-white text-sm px-2 py-1 rounded hover:bg-red-600"
+        >
+          ✕
+        </button>
+      </div>
+    );
+  }
+
+  // Si es una nueva imagen tipo File (pendiente de subir)
+  if (img instanceof File) {
+    return (
+      <div key={index} className="flex items-center space-x-3 mb-2">
+        <span className="text-gray-700 text-sm">{img.name}</span>
+        <button
+          type="button"
+          onClick={() => handleImageRemove(index)}
+          className="text-red-500 hover:text-red-700 text-sm font-medium cursor-pointer"
+        >
+          Eliminar
+        </button>
+      </div>
+    );
+  }
+
+  // Campo de carga para nueva imagen vacía
+  return (
+    <div key={index} className="flex items-center space-x-3 mb-2">
+      <input
+        type="file"
+        accept="image/*"
+        onChange={(e) => handleImageChange(index, e.target.files[0])}
+        className="border border-gray-300 px-2 py-1 rounded"
+      />
+      <button
+        type="button"
+        onClick={() => handleImageRemove(index)}
+        className="text-red-500 hover:text-red-700 text-sm font-medium cursor-pointer"
+      >
+        Eliminar
+      </button>
+    </div>
+  );
+})}
+
+
+
           <button
             type="button"
             onClick={agregarCampoImagen}

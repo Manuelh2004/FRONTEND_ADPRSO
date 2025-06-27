@@ -18,56 +18,59 @@ export const fetchEventos = async (token) => {
 };
 
 export const registrarEvento = async (token, eventoData) => {
+  const formData = new FormData();
+  formData.append("evento", new Blob([JSON.stringify({
+    even_nombre: eventoData.nombre,
+    even_descripcion: eventoData.descripcion,
+    even_fecha_inicio: eventoData.fecha_inicio,
+    even_fecha_fin: eventoData.fecha_fin,
+    even_lugar: eventoData.lugar
+  })], { type: "application/json" }));
+
+  formData.append("imagen", eventoData.imagen);
+
   try {
-    const response = await axios.post(
-      `${API_URL}/registrar_evento`,
-      {
-        even_nombre: eventoData.nombre,
-        even_descripcion: eventoData.descripcion,
-        even_fecha_inicio: eventoData.fecha_inicio,
-        even_fecha_fin: eventoData.fecha_fin,
-        even_lugar: eventoData.lugar,
-        even_imagen: eventoData.imagen
-      },
-      {
-        headers: {
-          Authorization: `Bearer ${token}`,
-          'Content-Type': 'application/json'
-        }
+    const response = await axios.post(`${API_URL}/registrar-evento-imagen`, formData, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+        "Content-Type": "multipart/form-data"
       }
-    );
+    });
     return response.data;
   } catch (error) {
-    console.error('Error registrando evento', error);
+    console.error("Error registrando evento con imagen", error);
     throw error;
   }
 };
 
 export const actualizarEvento = async (token, id, eventoData) => {
+  const formData = new FormData();
+  formData.append("evento", new Blob([JSON.stringify({
+    even_nombre: eventoData.nombre,
+    even_descripcion: eventoData.descripcion,
+    even_fecha_inicio: eventoData.fecha_inicio,
+    even_fecha_fin: eventoData.fecha_fin,
+    even_lugar: eventoData.lugar
+  })], { type: "application/json" }));
+
+  if (eventoData.imagen && eventoData.imagen instanceof File) {
+    formData.append("imagen", eventoData.imagen);
+  }
+
   try {
-    const response = await axios.put(
-      `${API_URL}/${id}`,
-      {
-        even_nombre: eventoData.nombre,
-        even_descripcion: eventoData.descripcion,
-        even_fecha_inicio: eventoData.fecha_inicio,
-        even_fecha_fin: eventoData.fecha_fin,
-        even_lugar: eventoData.lugar,
-        even_imagen: eventoData.imagen
-      },
-      {
-        headers: {
-          Authorization: `Bearer ${token}`,
-          'Content-Type': 'application/json'
-        }
+    const response = await axios.put(`${API_URL}/${id}/actualizar-evento`, formData, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+        "Content-Type": "multipart/form-data"
       }
-    );
+    });
     return response.data;
   } catch (error) {
-    console.error('Error actualizando evento', error);
+    console.error("Error actualizando evento con imagen", error);
     throw error;
   }
 };
+
 
 export const cambiarEstadoEvento = async (token, id, nuevoEstado) => {
   try {

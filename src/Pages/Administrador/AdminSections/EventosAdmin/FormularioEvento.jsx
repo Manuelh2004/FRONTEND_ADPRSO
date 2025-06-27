@@ -1,7 +1,12 @@
+import { useRef } from 'react';
+
 const FormularioEvento = ({ formData, setFormData, handleSubmit, editandoId, handleCancel }) => {
+  const inputFileRef = useRef(null);
+
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData(prev => ({ ...prev, [name]: value }));
+    inputFileRef.current.value = null;
   };
 
   return (
@@ -24,7 +29,7 @@ const FormularioEvento = ({ formData, setFormData, handleSubmit, editandoId, han
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-        {['nombre', 'fecha_inicio', 'descripcion', 'fecha_fin', 'lugar', 'imagen'].map((field) => (
+        {['nombre', 'fecha_inicio', 'descripcion', 'fecha_fin', 'lugar'].map((field) => (
           <div key={field}>
             <label className="block text-gray-700 font-semibold">
               {field.charAt(0).toUpperCase() + field.slice(1).replace('_', ' ') + ":"}
@@ -33,12 +38,41 @@ const FormularioEvento = ({ formData, setFormData, handleSubmit, editandoId, han
               type={field.includes('fecha') ? 'date' : 'text'}
               name={field}
               value={formData[field]}
-              onChange={handleChange}
+              onChange={(e) => setFormData(prev => ({ ...prev, [e.target.name]: e.target.value }))}
               className="w-full border border-gray-300 rounded px-3 py-2"
               required
             />
           </div>
         ))}
+
+        {/* Mostrar imagen previa si estás editando */}
+        <div>
+  <label className="block text-gray-700 font-semibold">Imagen:</label>
+
+  {/* Mostrar imagen previa si estamos en modo edición */}
+
+
+  <input
+    type="file"
+    accept="image/*"
+    ref={inputFileRef}
+    onChange={(e) => setFormData(prev => ({ ...prev, imagen: e.target.files[0] }))}
+    className="w-full border border-gray-300 rounded px-3 py-2"
+    required={!editandoId}
+  />
+</div>
+  {editandoId && formData.imagen && typeof formData.imagen === 'string' && (
+    <div className="mb-2">
+      <p className="text-sm text-gray-500 mb-1">Imagen actual:</p>
+      <img
+        src={formData.imagen}
+        alt="Imagen actual"
+        className="w-40 h-32 object-cover rounded border"
+      />
+    </div>
+  )}
+
+
       </div>
 
       <button
