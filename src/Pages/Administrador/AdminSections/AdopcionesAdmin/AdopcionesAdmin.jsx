@@ -33,6 +33,32 @@ const AdopcionesAdmin = () => {
     fetchAdopciones();
   }, [estadoFiltro, token]);
 
+   const volverAPendiente = async (adopId) => {
+    try {
+      const response = await fetch(`http://localhost:8080/admin/api/adopciones/volver-a-pendiente/${adopId}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`,
+        },
+      });
+
+      if (response.ok) {
+        // Actualiza el estado de adopciones en la interfaz de usuario
+        const updatedAdopcion = await response.json();
+        setAdopciones((prevAdopciones) =>
+          prevAdopciones.map((item) =>
+            item.adop_id === adopId ? updatedAdopcion : item
+          )
+        );
+      } else {
+        setError("Error al cambiar el estado de la adopción");
+      }
+    } catch (err) {
+      setError("Error de conexión");
+    }
+  };
+
   const handleVerMas = (adopcion) => {
     setAdopcionSeleccionada(adopcion);
   };
@@ -105,6 +131,7 @@ const AdopcionesAdmin = () => {
         solicitarCambioEstado={solicitarCambioEstado}
         paginaActual={paginaActual}
         registrosPorPagina={registrosPorPagina}
+        volverAPendiente={volverAPendiente}  // Pasamos la función aquí
       />
 
        {/* Paginación */}

@@ -4,7 +4,7 @@ const ModalAdopcion = ({ adopcionSeleccionada, setAdopcionSeleccionada }) => {
   return (
     <div className="fixed inset-0 flex justify-center items-center bg-transparent">
       <div className="bg-white bg-opacity-90 p-8 rounded-lg shadow-2xl max-w-lg w-full overflow-y-auto max-h-[80vh]">
-        <h3 className="text-2xl font-semibold text-gray-800 mb-4">Detalles de la Adopción</h3>
+        <h3 className="text-2xl font-semibold text-gray-800 mb-4">Detalles de la Postulación de Adopción</h3>
 
         <div className="space-y-4">
           {/* Motivo de la adopción */}
