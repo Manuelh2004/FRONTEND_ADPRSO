@@ -18,8 +18,7 @@ const Login = () => {
     setError('');
     try {
       await login(credentials.email, credentials.password);
-        navigate('/', { replace: true });
-
+      navigate('/', { replace: true });
     } catch (err) {
       setError('Usuario o contraseña incorrecta');
     }
@@ -32,6 +31,11 @@ const Login = () => {
       [name]: value
     }));
   }, []);
+
+  const handleForgotPassword = () => {
+    // Aquí redirigimos al usuario a la página de recuperación de contraseña
+    navigate('/forgot-password');  // Asegúrate de que la ruta esté configurada en React Router
+  };
 
   return (
     <div 
@@ -71,41 +75,41 @@ const Login = () => {
         
         <div className="mb-4">
           <div className="relative">
-          <input
-            id="email"
-            type="mail"
-            name="email"
-            placeholder="Usuario"
-            value={credentials.email}
-            onChange={handleInputChange}
-            className="w-full p-3 border-2 border-amber-200 rounded-lg focus:border-amber-400 focus:ring-2 focus:ring-amber-100 pl-10"
-            required
-            autoComplete="email"
-            aria-required="true"
-          />
-          <span className="absolute left-3 top-4 text-amber-500">
+            <input
+              id="email"
+              type="email"
+              name="email"
+              placeholder="Usuario"
+              value={credentials.email}
+              onChange={handleInputChange}
+              className="w-full p-3 border-2 border-amber-200 rounded-lg focus:border-amber-400 focus:ring-2 focus:ring-amber-100 pl-10"
+              required
+              autoComplete="email"
+              aria-required="true"
+            />
+            <span className="absolute left-3 top-4 text-amber-500">
               <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
                 <path fillRule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clipRule="evenodd" />
               </svg>
-          </span>
+            </span>
           </div>
         </div>
         
         <div className="mb-4">
           <div className="relative">
-          <input
-            id="password"
-            type="password"
-            name="password"
-            placeholder="Contraseña"
-            value={credentials.password}
-            onChange={handleInputChange}
-            className="w-full p-3 border-2 border-amber-200 rounded-lg focus:border-amber-400 focus:ring-2 focus:ring-amber-100 pl-10"
-            required
-            autoComplete="current-password"
-            aria-required="true"
-          />
-        <span className="absolute left-3 top-4 text-amber-500">
+            <input
+              id="password"
+              type="password"
+              name="password"
+              placeholder="Contraseña"
+              value={credentials.password}
+              onChange={handleInputChange}
+              className="w-full p-3 border-2 border-amber-200 rounded-lg focus:border-amber-400 focus:ring-2 focus:ring-amber-100 pl-10"
+              required
+              autoComplete="current-password"
+              aria-required="true"
+            />
+            <span className="absolute left-3 top-4 text-amber-500">
               <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
                 <path fillRule="evenodd" d="M5 9V7a5 5 0 0110 0v2a2 2 0 012 2v5a2 2 0 01-2 2H5a2 2 0 01-2-2v-5a2 2 0 012-2zm8-2v2H7V7a3 3 0 016 0z" clipRule="evenodd" />
               </svg>
@@ -126,9 +130,16 @@ const Login = () => {
         {error && (
           <div className="mt-3 text-red-500 text-sm text-center">{error}</div>
         )}
-        
+
         <div className="mt-4 text-center text-sm text-amber-700">
-          ¿Problemas para ingresar? Contacta al administrador
+          ¿Problemas para ingresar?{' '}
+          <button
+            type="button"
+            onClick={handleForgotPassword}
+            className="text-amber-600 hover:text-amber-700 underline"
+          >
+            Recuperar contraseña
+          </button>
         </div>
       </form>
     </div>

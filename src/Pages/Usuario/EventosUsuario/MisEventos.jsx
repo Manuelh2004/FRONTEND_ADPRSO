@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useAuth } from "../../../context/AuthContext";
 import { Link } from "react-router-dom";
 import EventoCard from "../../../components/EventoCard";
+import { fetchMisEventos, getEventosActivos } from "../../../services/evento/eventoApi"; // ← importa los servicios
 
 export default function MisEventos() {
   const { token } = useAuth();
@@ -11,38 +12,28 @@ export default function MisEventos() {
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    const fetchMisEventos = async () => {
+    if (!token) return;
+
+    const cargarEventos = async () => {
       try {
-        const response = await fetch("http://localhost:8080/api/evento/mis_eventos", {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        });
+        const resEventos = await fetchMisEventos(token);
+        const listaEventos = resEventos.data.data || [];
+        setEventos(listaEventos);
 
-        const data = await response.json();
-
-        if (response.ok && data.status === "success") {
-          setEventos(data.data || []);
-
-          if ((data.data || []).length === 0) {
-            // Si no hay eventos, obtener sugerencias
-            const sugerenciasRes = await fetch("http://localhost:8080/api/evento/activos/public");
-            const sugerenciasData = await sugerenciasRes.json();
-            if (sugerenciasRes.ok && sugerenciasData.status === "success") {
-              setSugerencias(sugerenciasData.data.slice(0, 3));
-            }
-          }
-        } else {
-          throw new Error(data.message || "Error al obtener eventos");
+        if (listaEventos.length === 0) {
+          const resSugerencias = await getEventosActivos();
+          const listaSugerencias = resSugerencias.data.data || [];
+          setSugerencias(listaSugerencias.slice(0, 3));
         }
       } catch (err) {
-        setError(err.message);
+        console.error("Error al obtener eventos:", err);
+        setError(err.response?.data?.message || err.message);
       } finally {
         setLoading(false);
       }
     };
 
-    fetchMisEventos();
+    cargarEventos();
   }, [token]);
 
   if (loading) return <p className="text-center mt-10">Cargando eventos...</p>;
@@ -56,7 +47,6 @@ export default function MisEventos() {
           Únete a nuestros eventos de voluntariado y marca la diferencia en la vida de muchos animales.
         </p>
 
-        {/* Sugerencias de eventos */}
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 mt-6">
           {sugerencias.map((evento) => (
             <EventoCard key={evento.even_id} evento={evento} />
