@@ -52,7 +52,7 @@ const Perfil = () => {
   try {
     setGuardando(true);
     const response = await axios.put(
-      'http://localhost:8080/user/api/usuario/actualizar',
+      'http://localhost:8080/user/api/usuario/perfil',
       usuario,
       {
         headers: { Authorization: `Bearer ${token}` },
