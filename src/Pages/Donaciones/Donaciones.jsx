@@ -122,17 +122,17 @@ const Donaciones = () => {
           className="px-4"
         >
           {[ 
-            { img: yape, alt: "Yape", info: ["922-266-310"] }, 
-            { img: plin, alt: "Plin", info: ["922-266-310"] }, 
-            { img: bcp, alt: "BCP", info: ["191-36249867-0-25", "CCI: 00219113624986702559"] },
-            { img: interbank, alt: "Interbank Soles", info: ["1543147371121"] }, 
-            { img: interbank, alt: "Interbank Dólares", info: ["8983170530579", "CCI: 00389801317053057948"] },
-            { img: bbva, alt: "BBVA", info: ["001108140221701416"] },
-            { img: western_union, alt: "Western Union", info: ["tephi.chris@gmail.com"] },
-            { img: paypal, alt: "PayPal", info: ["tephi.chris@gmail.com"] },
+            { img: yape, alt: "Yape", info: ["Yape","922-266-310"] }, 
+            { img: plin, alt: "Plin", info: ["Plin","922-266-310"] }, 
+            { img: bcp, alt: "BCP", info: ["BCP","191-36249867-0-25", "CCI: 00219113624986702559"] },
+            { img: interbank, alt: "Interbank Soles", info: ["Interbank Soles","1543147371121"] }, 
+            { img: interbank, alt: "Interbank Dólares", info: ["Interbank Dólares", "8983170530579", "CCI: 00389801317053057948"] },
+            { img: bbva, alt: "BBVA", info: ["BBVA","001108140221701416"] },
+            { img: western_union, alt: "Western Union", info: ["Western Union","tephi.chris@gmail.com"] },
+            { img: paypal, alt: "PayPal", info: ["PayPal","tephi.chris@gmail.com"] },
           ].map((item, idx) => (
               <SwiperSlide key={idx}>
-                <div className="bg-white rounded-xl p-4 shadow-md flex flex-col items-center text-center h-[250px] w-full">
+                <div className="bg-white rounded-xl p-4 shadow-md flex flex-col items-center text-center h-[270px] w-full">
                   <img src={item.img} alt={item.alt} className="w-40 h-40 object-contain mb-2" />
                   <div className="mt-auto space-y-1">
                     {item.info.map((line, i) => (
