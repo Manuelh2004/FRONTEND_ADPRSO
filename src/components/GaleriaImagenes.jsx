@@ -15,7 +15,7 @@ const GaleriaImagenes = ({ imagenes }) => {
       <div className="w-full aspect-[16/9] bg-gray-100 rounded-lg overflow-hidden shadow">
         {imagenPrincipal ? (
           <img
-            src={imagenPrincipal.ima_url}
+            src={imagenPrincipal.imaUrl}
             alt="Principal"
             className="w-full h-full object-cover"
           />
@@ -32,11 +32,11 @@ const GaleriaImagenes = ({ imagenes }) => {
             {imagenes.map((img, idx) => (
             <img
                 key={idx}
-                src={img.ima_url}
+                src={img.imaUrl}
                 alt={`Miniatura-${idx}`}
                 onClick={() => setImagenPrincipal(img)}
                 className={`w-24 h-24 object-cover rounded shadow cursor-pointer transition-transform duration-200 ${
-                imagenPrincipal?.ima_url === img.ima_url
+                imagenPrincipal?.imaUrl === img.imaUrl
                     ? 'ring-2 ring-[#bc6c25] scale-105'
                     : 'hover:scale-105'
                 }`}

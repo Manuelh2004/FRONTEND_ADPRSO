@@ -116,7 +116,7 @@ const AdopcionesAdmin = () => {
 
   return (
     <div className="p-6 bg-gray-50 rounded-lg shadow-md">
-      <h2 className="text-3xl font-bold mb-6 text-center">Gestión de Adopciones</h2>
+      <h2 className="text-3xl font-bold mb-6 text-center text-[#a68b5b]">Gestión de Adopciones</h2>
 
       <FiltroEstado 
         estadoFiltro={estadoFiltro} 

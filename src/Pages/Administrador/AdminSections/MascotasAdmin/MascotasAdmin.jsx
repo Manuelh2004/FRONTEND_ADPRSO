@@ -9,6 +9,7 @@ import ModalMascota from './ModalMascota';
 const MascotasAdmin = () => {
   const [mascotas, setMascotas] = useState([]);
   const [mascotaSeleccionada, setMascotaSeleccionada] = useState(null);
+  const [imagenesAEliminar, setImagenesAEliminar] = useState([]);
   const [formData, setFormData] = useState({
     masc_nombre: '',
     masc_fecha_nacimiento: '',
@@ -29,7 +30,7 @@ const MascotasAdmin = () => {
   const [tipoMascota, setTipoMascota] = useState([]);
   const [sexos, setSexos] = useState([]);
   const [gustos, setGustos] = useState([]);
-  const [imagenes, setImagenes] = useState(['']);
+  const [imagenes, setImagenes] = useState([]);
   const [gustosSeleccionados, setGustosSeleccionados] = useState([]);
 
   const [editandoId, setEditandoId] = useState(null);
@@ -152,25 +153,48 @@ const mascotasPaginados = Array.isArray(mascotas) && mascotas ? mascotas.slice(
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (editandoId) {      
-        const mascotaDTO = {
-          mascota: {
-            masc_nombre: formData.masc_nombre,
-            masc_fecha_nacimiento: formData.masc_fecha_nacimiento,
-            sexo: { sex_id: formData.sexo },
-            tamanio: { tam_id: formData.tamanio },
-            nivel_energia: { nien_id: formData.nivelEnergia },
-            tipo_mascota: { tipma_id: formData.tipoMascota },
-            estado_salud: { estsa_id: formData.estadoSalud },
-            estado_vacuna: { estva_id: formData.estadoVacuna },
-            masc_historia: formData.masc_historia,
-            masc_observacion: formData.masc_observacion,
-          },
-          imagenUrls: imagenes,  
-          newGustos: gustosSeleccionados  
-        };
+    if (editandoId) {     
+      const formDataToSend = new FormData();
+
+      // Mascota como JSON string
+      formDataToSend.append(
+        "mascota",
+        new Blob([JSON.stringify({
+          masc_nombre: formData.masc_nombre,
+          masc_fecha_nacimiento: formData.masc_fecha_nacimiento,
+          sexo: { sex_id: formData.sexo },
+          tamanio: { tam_id: formData.tamanio },
+          nivel_energia: { nien_id: formData.nivelEnergia },
+          tipo_mascota: { tipma_id: formData.tipoMascota },
+          estado_salud: { estsa_id: formData.estadoSalud },
+          estado_vacuna: { estva_id: formData.estadoVacuna },
+          masc_historia: formData.masc_historia,
+          masc_observacion: formData.masc_observacion
+        })], { type: "application/json" })
+      ); 
+              // Gustos como JSON
+        formDataToSend.append(
+          "gustos",
+          new Blob([JSON.stringify(gustosSeleccionados)], { type: "application/json" })
+        );
+
+        // Archivos
+         imagenes.forEach((img) => {
+          if (img instanceof File) {
+            formDataToSend.append("imagenes", img);
+          }
+        });
+
+        // Agregar imágenes a eliminar
+        if (imagenesAEliminar.length > 0) {
+          formDataToSend.append(
+            "imagenesAEliminar",
+            new Blob([JSON.stringify(imagenesAEliminar)], { type: "application/json" })
+          );
+        }
         try {
-    const response = await actualizarMascota(token, editandoId, mascotaDTO);
+
+    const response = await actualizarMascota(token, editandoId, formDataToSend); 
 
     if (response && response.masc_id) {
       console.log("Mascota actualizada con éxito:", response);
@@ -186,7 +210,7 @@ const mascotasPaginados = Array.isArray(mascotas) && mascotas ? mascotas.slice(
         tipoMascota: '',
         sexo: ''
       });
-      setImagenes(['']);
+      setImagenes([]);
       setGustosSeleccionados([]);
     } else {
       console.error('Error al actualizar mascota, respuesta no válida:', response);
@@ -195,7 +219,8 @@ const mascotasPaginados = Array.isArray(mascotas) && mascotas ? mascotas.slice(
   } catch (error) {
     console.error("Error al actualizar mascota:", error);
     alert('Hubo un error al actualizar la mascota.');
-  }      
+  } 
+  setImagenesAEliminar([]);     
   }else{
       const camposObligatorios = [
         formData.masc_nombre,
@@ -218,8 +243,12 @@ const mascotasPaginados = Array.isArray(mascotas) && mascotas ? mascotas.slice(
         return;
       }
 
-      const mascotaDTO = {
-        mascota: {
+      const formDataToSend = new FormData();
+
+      // Mascota como JSON string
+      formDataToSend.append(
+        "mascota",
+        new Blob([JSON.stringify({
           masc_nombre: formData.masc_nombre,
           masc_fecha_nacimiento: formData.masc_fecha_nacimiento,
           sexo: { sex_id: formData.sexo },
@@ -230,10 +259,20 @@ const mascotasPaginados = Array.isArray(mascotas) && mascotas ? mascotas.slice(
           estado_vacuna: { estva_id: formData.estadoVacuna },
           masc_historia: formData.masc_historia,
           masc_observacion: formData.masc_observacion
-        },
-        gustosIds: gustosSeleccionados,
-        imagenUrls: imagenes
-      };
+        })], { type: "application/json" })
+      ); 
+              // Gustos como JSON
+        formDataToSend.append(
+          "gustos",
+          new Blob([JSON.stringify(gustosSeleccionados)], { type: "application/json" })
+        );
+
+        // Archivos
+        imagenes.forEach((imagen) => {
+          if (imagen instanceof File) {
+            formDataToSend.append("imagenes", imagen);
+          }
+        });
 
       const token = localStorage.getItem('token');
       if (!token) {
@@ -242,7 +281,7 @@ const mascotasPaginados = Array.isArray(mascotas) && mascotas ? mascotas.slice(
       }
 
       try {
-        const response = await registrarMascota(token, mascotaDTO);  
+        const response = await registrarMascota(token, formDataToSend); 
         if (response.code === 201) {
           console.log("Mascota registrada con éxito:", response.data);
           setFormData({
@@ -257,7 +296,7 @@ const mascotasPaginados = Array.isArray(mascotas) && mascotas ? mascotas.slice(
             tipoMascota: '',
             sexo: ''
           });
-          setImagenes(['']);
+          setImagenes([]);
           setGustosSeleccionados([]);
         } else {
           console.error('Error al registrar mascota:', response);
@@ -289,7 +328,11 @@ const mascotasPaginados = Array.isArray(mascotas) && mascotas ? mascotas.slice(
   });
 
   setGustosSeleccionados(mascota.gustoNames ? mascota.gustoNames.map(gusto => gusto.id) : []);
-  setImagenes(mascota.imagenes ? mascota.imagenes.map(img => img.ima_url) : []);
+  setImagenes(mascota.imagenes ? mascota.imagenes.map(img => ({
+  imaUrl: img.imaUrl ?? img.ima_url,
+  imaPublicId: img.imaPublicId ?? img.ima_public_id,
+  imaId: img.imaId ?? img.ima_id
+})) : []);
 };
 const handleCancelar = () => {
   setFormData({
@@ -304,9 +347,10 @@ const handleCancelar = () => {
     tipoMascota: '',
     sexo: ''
   });
-  setImagenes(['']); 
+  setImagenes([]);
   setGustosSeleccionados([]); 
   setEditandoId(null);  
+  setImagenesAEliminar([]);
 };
 
   const handleCambiarEstado = async (id, estadoActual) => {
@@ -357,17 +401,22 @@ const handleCancelar = () => {
     }));
   };
 
-  const handleImageChange = (index, value) => {
-    const newImagenes = [...imagenes];
-    newImagenes[index] = value;
-    setImagenes(newImagenes);
-  };
+  const handleImageChange = (index, file) => {
+  const newImagenes = [...imagenes];
+  newImagenes[index] = file;
+  setImagenes(newImagenes);
+};
 
-  const handleImageRemove = (index) => {
-    const newImagenes = [...imagenes];
-    newImagenes.splice(index, 1); 
-    setImagenes(newImagenes);
-  };
+
+const handleImageRemove = (index) => {
+  const imagenRemovida = imagenes[index];
+
+  // Si es una imagen ya existente (de tipo objeto con imaPublicId)
+  if (typeof imagenRemovida === 'object' && imagenRemovida.imaPublicId) {
+    setImagenesAEliminar(prev => [...prev, imagenRemovida.imaPublicId]);
+  }
+  setImagenes(prev => prev.filter((_, i) => i !== index));
+};
 
   const agregarCampoImagen = () => {
     setImagenes([...imagenes, '']);
@@ -381,7 +430,7 @@ const handleCancelar = () => {
 
   return (
     <div style={{ backgroundColor: '#F5F5DC' }} className="container mx-auto p-8 bg-gray-50 min-h-screen">
-    <h2 className="text-3xl font-bold mb-6 text-center">Gestión de Mascotas</h2>
+    <h2 className="text-3xl font-bold mb-6 text-center text-[#a68b5b]">Gestión de Mascotas</h2>
       {/* Formulario */}
         <FormularioMascota
           formData={formData}

@@ -29,7 +29,7 @@ export default function Eventos() {
           <h1 className="text-4xl md:text-6xl font-bold mb-6">
             ¡<span className="text-amber-400">Salva una vida</span> hoy!
           </h1>
-          <p className="text-xl md:text-2xl mb-8 max-w-2xl mx-auto">
+          <p className="text-xl md:text-2xl mb-8 max-w-2xl mx-auto font-bold">
             Cada pequeño esfuerzo cuenta. Adopta, dona o únete como voluntario para cambiar destinos.
           </p>
         </div>

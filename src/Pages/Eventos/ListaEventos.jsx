@@ -38,7 +38,15 @@ export default function ListaEventos () {
     const fecha = new Date(fechaString + 'T00:00:00');
     return fecha;
   };
-
+  if (eventos.length === 0) {
+    return (
+      <div className="text-center mt-10 text-xl font-semibold text-white">
+        <p className="col-span-full text-center text-gray-500">
+          Por el momento no hay eventos disponibles.
+        </p>
+      </div>
+    );
+  }
   return (
     <div className="max-w-6xl mx-auto p-4" style={{ backgroundColor: '#9A6C3B', color: '#F5F5DC' }}>
       <h2 className="text-3xl font-bold mb-6">Eventos</h2>

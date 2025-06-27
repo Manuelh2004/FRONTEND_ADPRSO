@@ -71,28 +71,28 @@ export const Nosotros = () => {
         <h2 className="text-3xl font-semibold text-blue-800 mb-8" style={{ color: '#F5F5DC' }}>Nuestro Equipo</h2>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4 justify-items-center">
           {/* Miembro 1 */}
-          <div className="w-80 h-80 bg-white rounded-lg flex flex-col items-center justify-center p-6 transition-transform transform hover:scale-105 border-4 border-blue-900">
+          <div className="w-80 h-80 bg-white rounded-lg flex flex-col items-center justify-center p-6 transition-transform transform hover:scale-105 border-4 border-beige-900">
             <img 
               src="https://i.ibb.co/0j40Sdf9/Imagen-1.jpg" 
               alt="Miembro del equipo 1" 
               className="w-56 h-56 rounded-lg object-cover mb-4"
             />
             <div className="text-center">
-              <p className="text-gray-800 font-semibold text-lg">Mary Velásquez</p>
-              <p className="text-sm text-gray-500">Coordinadora de Adopciones</p>
+              <p className="text-gray-800 font-semibold text-lg text-[#a68b5b]">Mary Velásquez</p>
+              <p className="text-sm text-beige-500">Coordinadora de Adopciones</p>
             </div>
           </div>
 
           {/* Miembro 2 */}
-          <div className="w-80 h-80 bg-white rounded-lg flex flex-col items-center justify-center p-6 transition-transform transform hover:scale-105 border-4 border-blue-900">
+          <div className="w-80 h-80 bg-white rounded-lg flex flex-col items-center justify-center p-6 transition-transform transform hover:scale-105 border-4 border-beige-900">
             <img 
               src="https://i.ibb.co/23Tp2Xnt/Imagen-2.jpg" 
               alt="Miembro del equipo 2"
               className="w-56 h-56 rounded-lg object-cover mb-4"
             />
             <div className="text-center">
-              <p className="text-gray-800 font-semibold text-lg">Stephanie Mendoza</p>
-              <p className="text-sm text-gray-500">Coordinadora de Adopciones</p>
+              <p className="text-gray-800 font-semibold text-lg text-[#a68b5b]">Stephanie Mendoza</p>
+              <p className="text-sm text-beige-500">Coordinadora de Adopciones</p>
             </div>
           </div>
         </div>

@@ -45,11 +45,12 @@ export const listarMascotas = async (token) => {
 };
 
 // Función para registrar una nueva mascota
-export const registrarMascota = async (token, mascotaData) => {
+export const registrarMascota = async (token, formData) => {
   try {
-    const response = await axios.post(`${API_URL}/registrar_mascota`, mascotaData, {
+    const response = await axios.post(`${API_URL}/registrar_mascota`, formData, {
       headers: {
-        'Authorization': `Bearer ${token}`,
+        Authorization: `Bearer ${token}`,
+        'Content-Type': 'multipart/form-data',
       }
     });
     return response.data;
@@ -60,13 +61,13 @@ export const registrarMascota = async (token, mascotaData) => {
 };
 
 // Función para actualizar los datos de una mascota
-export const actualizarMascota = async (token, id, mascotaData) => {
+export const actualizarMascota = async (token, id, formData) => {
   try {
-    const response = await axios.put(`${API_URL}/${id}`, mascotaData, {
+    const response = await axios.put(`${API_URL}/${id}`, formData, {
       headers: {
-        'Authorization': `Bearer ${token}`,
-        'Content-Type': 'application/json',
-      }
+        Authorization: `Bearer ${token}`,
+        'Content-Type': 'multipart/form-data',
+      },
     });
     return response.data;
   } catch (error) {
