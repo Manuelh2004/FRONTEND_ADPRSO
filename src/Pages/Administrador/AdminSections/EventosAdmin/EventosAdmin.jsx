@@ -81,14 +81,25 @@ const EventosAdmin = () => {
       } else {
         await registrarEvento(token, formData);
       }
+
       setFormData({ nombre: '', descripcion: '', fecha_inicio: '', fecha_fin: '', lugar: '', imagen: '' });
       setEditandoId(null);
       const data = await fetchEventos(token);
       setEventos(data);
+
+      // Mostrar el modal solo después de la acción exitosa
+      setModalTipo('success');
+      setModalMensaje('Evento registrado/actualizado correctamente');
+      setModalVisible(true);
+
     } catch (error) {
-      console.error('Error al guardar evento', error);
+      console.error('Error al guardar evento:', error);
+      setModalTipo('error');
+      setModalMensaje('Hubo un error al registrar/actualizar el evento.');
+      setModalVisible(true);
     }
   };
+
 
   const handleEditar = (evento) => {
     setEditandoId(evento.even_id);

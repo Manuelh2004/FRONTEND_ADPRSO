@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 
 const FormularioEvento = ({ formData, setFormData, handleSubmit, editandoId, handleCancel }) => {
   const [errorFecha, setErrorFecha] = useState('');
@@ -37,8 +37,15 @@ const FormularioEvento = ({ formData, setFormData, handleSubmit, editandoId, han
     }
   }, [formData.fecha_inicio, formData.fecha_fin]);
 
+  const handleFormSubmit = async (e) => {
+    e.preventDefault();
+    
+    // Aquí manejamos el registro o edición, la lógica la maneja el handleSubmit de EventosAdmin
+    await handleSubmit(e); // Delegamos el submit al componente padre
+  };
+
   return (
-    <form onSubmit={handleSubmit} className="bg-white p-8 rounded-lg shadow-lg space-y-6 mb-4">
+    <form onSubmit={handleFormSubmit} className="bg-white p-8 rounded-lg shadow-lg space-y-6 mb-4">
       <div className="flex justify-between items-center mb-6">
         <h2 className="text-2xl font-bold text-left text-gray-700">
           {editandoId ? 'Editar' : 'Registrar'}
@@ -64,10 +71,7 @@ const FormularioEvento = ({ formData, setFormData, handleSubmit, editandoId, han
               type={field.includes('fecha') ? 'date' : 'text'}
               name={field}
               value={formData[field]}
-             onChange={(e) => {
-                handleChange(e); 
-                setFormData(prev => ({ ...prev, [e.target.name]: e.target.value })); 
-              }}
+              onChange={(e) => handleChange(e)} // No es necesario setFormData aquí porque ya lo hace handleChange
               className="w-full border border-gray-300 rounded px-3 py-2"
               required
             />
@@ -77,34 +81,17 @@ const FormularioEvento = ({ formData, setFormData, handleSubmit, editandoId, han
           </div>
         ))}
 
-        {/* Mostrar imagen previa si estás editando */}
         <div>
-  <label className="block text-gray-700 font-semibold">Imagen:</label>
-
-  {/* Mostrar imagen previa si estamos en modo edición */}
-
-
-  <input
-    type="file"
-    accept="image/*"
-    ref={inputFileRef}
-    onChange={(e) => setFormData(prev => ({ ...prev, imagen: e.target.files[0] }))}
-    className="w-full border border-gray-300 rounded px-3 py-2"
-    required={!editandoId}
-  />
-</div>
-  {editandoId && formData.imagen && typeof formData.imagen === 'string' && (
-    <div className="mb-2">
-      <p className="text-sm text-gray-500 mb-1">Imagen actual:</p>
-      <img
-        src={formData.imagen}
-        alt="Imagen actual"
-        className="w-40 h-32 object-cover rounded border"
-      />
-    </div>
-  )}
-
-
+          <label className="block text-gray-700 font-semibold">Imagen:</label>
+          <input
+            type="file"
+            accept="image/*"
+            ref={inputFileRef}
+            onChange={(e) => setFormData(prev => ({ ...prev, imagen: e.target.files[0] }))}
+            className="w-full border border-gray-300 rounded px-3 py-2"
+            required={!editandoId}
+          />
+        </div>
       </div>
 
       <button
