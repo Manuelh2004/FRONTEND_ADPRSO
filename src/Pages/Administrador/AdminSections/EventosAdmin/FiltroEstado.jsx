@@ -35,7 +35,7 @@ const FiltroEstado = ({ filtroEstado, setFiltroEstado, searchTerm, setSearchTerm
     <div className="lg:w-1/3 text-right">
       <button
         onClick={onDescargarReporte}
-        className="mt-2 lg:mt-0 bg-green-600 text-white px-6 py-2 rounded-lg hover:bg-green-700 w-full lg:w-auto"
+        className="mt-2 lg:mt-0 bg-green-600 text-white px-6 py-2 rounded-lg hover:bg-green-700 w-full lg:w-auto cursor-pointer"
       >
         <i className="fa-solid fa-download"></i> Reporte de eventos
       </button>

@@ -122,7 +122,7 @@ const AdopcionesAdmin = () => {
 
       {/* Modal de confirmación */}
       {mostrarConfirmacionModal && (
-        <div className="fixed inset-0 flex justify-center items-center bg-black bg-opacity-50">
+      <div className="fixed inset-0 flex justify-center items-center bg-transparent">
           <div className="bg-white bg-opacity-90 p-8 rounded-lg shadow-2xl max-w-lg w-full">
             <h3 className="text-2xl font-semibold text-gray-800 mb-4 text-center">¿Estás seguro de que deseas cambiar el estado?</h3>
 

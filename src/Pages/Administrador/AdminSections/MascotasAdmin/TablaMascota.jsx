@@ -63,19 +63,19 @@ const TablaMascota = ({
                 <td className="px-6 py-4 text-center flex justify-center space-x-4">
                   <button
                     onClick={() => handleEditar(mascota)}
-                    className="bg-amber-400 text-white px-4 py-2 rounded-lg hover:bg-amber-500 transition duration-300 cursor-pointer"
+                    className="bg-amber-400 text-white px-4 py-2 rounded-lg hover:bg-amber-600 transition duration-300 cursor-pointer"
                   >
                     Editar
                   </button>
                   <button
                     onClick={() => handleCambiarEstado(mascota.masc_id, mascota.masc_estado)}
-                    className="bg-red-600 text-white px-4 py-2 rounded-lg hover:bg-red-700 transition duration-300 cursor-pointer"
+                    className="bg-red-500 text-white px-4 py-2 rounded-lg hover:bg-red-700 transition duration-300 cursor-pointer"
                   >
                     Cambiar estado
                   </button>
                   <button
                     onClick={() => handleVerMas(mascota)}
-                    className="bg-gray-600 text-white px-4 py-2 rounded-lg hover:bg-gray-700 transition duration-300 cursor-pointer"
+                    className="bg-gray-600 text-white px-4 py-2 rounded-lg hover:bg-gray-900 transition duration-300 cursor-pointer"
                   >
                     Ver más
                   </button>
