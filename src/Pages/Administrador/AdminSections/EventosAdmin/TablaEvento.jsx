@@ -67,7 +67,7 @@ const TablaEvento = ({
                   onClick={() => handleDescargarUnEvento(evento.even_id)}
                   className="bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 transition duration-300 cursor-pointer"
                 >
-                  <i class="fa-solid fa-download"></i> Reporte
+                  <i className="fa-solid fa-download"></i> Reporte
                 </button>
                 </td>
               </tr>
