@@ -41,7 +41,7 @@ const TablaAdopcion = ({
                 <td className="px-6 py-4 text-center">{adopcion.usuario.usr_nombre} {adopcion.usuario.usr_apellido}</td>
                 <td className="px-6 py-4 text-center flex justify-center space-x-4">
                   <button
-                    className="bg-[#dda15e] text-white px-4 py-2 rounded hover:bg-[#bc6c25] transition duration-300 cursor-pointer"
+                    className="bg-gray-600 text-white px-4 py-2 rounded hover:bg-gray-900 transition duration-300 cursor-pointer"
                     onClick={() => handleVerMas(adopcion)}
                   >
                     Ver más
@@ -49,13 +49,13 @@ const TablaAdopcion = ({
                   {adopcion.adop_estado === 0 && (
                     <>
                       <button
-                        className="bg-yellow-500 text-white px-4 py-2 rounded-lg hover:bg-yellow-600 transition duration-300 cursor-pointer"
+                        className="bg-yellow-400 text-white px-4 py-2 rounded-lg hover:bg-yellow-600 transition duration-300 cursor-pointer"
                         onClick={() => solicitarCambioEstado(adopcion, 1)}
                       >
                         Aceptar
                       </button>
                       <button
-                        className="bg-red-500 text-white px-4 py-2 rounded ml-2 hover:bg-red-600 transition duration-300 cursor-pointer"
+                        className="bg-red-500 text-white px-4 py-2 rounded ml-2 hover:bg-red-700 transition duration-300 cursor-pointer"
                         onClick={() => solicitarCambioEstado(adopcion, 2)}
                       >
                         Rechazar

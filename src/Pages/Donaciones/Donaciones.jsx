@@ -132,7 +132,7 @@ const Donaciones = () => {
             { img: paypal, alt: "PayPal", info: ["PayPal","tephi.chris@gmail.com"] },
           ].map((item, idx) => (
               <SwiperSlide key={idx}>
-                <div className="bg-white rounded-xl p-4 shadow-md flex flex-col items-center text-center h-[270px] w-full">
+                <div className="bg-white rounded-xl p-4 shadow-md flex flex-col items-center text-center h-[290px] w-full">
                   <img src={item.img} alt={item.alt} className="w-40 h-40 object-contain mb-2" />
                   <div className="mt-auto space-y-1">
                     {item.info.map((line, i) => (

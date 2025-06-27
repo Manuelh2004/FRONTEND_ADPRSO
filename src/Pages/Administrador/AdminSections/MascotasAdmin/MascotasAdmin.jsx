@@ -101,6 +101,44 @@ const MascotasAdmin = () => {
   obtnerMascotasPorNombre();
 }, [searchTerm, filtroEstado]);
 
+ // Función para descargar el reporte de mascotas
+ const handleDescargarReporte = async () => {
+  const token = localStorage.getItem('token'); // Obtener el token de localStorage
+
+  if (!token) {
+    alert('No estás autenticado. Por favor, inicia sesión.');
+    return;
+  }
+
+  console.log('Token:', token); // Registra el token en la consola para asegurarte de que se está obteniendo correctamente.
+
+  try {
+    const response = await fetch('http://localhost:8080/admin/api/mascota/exportar-excel', {
+      method: 'GET',
+      headers: {
+        'Authorization': `Bearer ${token}`, // Enviar el token en el encabezado
+      },
+    });
+
+    if (response.ok) {
+      // Crear un enlace temporal para descargar el archivo
+      const blob = await response.blob();
+      const link = document.createElement('a');
+      link.href = URL.createObjectURL(blob);
+      link.download = 'mascotas.xlsx';  // Nombre del archivo a descargar
+      link.click();
+    } else {
+      const errorMessage = await response.text();
+      alert(`Error al generar el reporte de mascotas: ${errorMessage}`);
+    }
+  } catch (error) {
+    console.error('Error al descargar el reporte:', error);
+    alert('Hubo un error al generar el reporte.');
+  }
+};
+
+
+
 const mascotasPaginados = Array.isArray(mascotas) && mascotas ? mascotas.slice(
     (paginaActual - 1) * registrosPorPagina,
     paginaActual * registrosPorPagina
@@ -392,7 +430,7 @@ const handleImageRemove = (index) => {
 
   return (
     <div style={{ backgroundColor: '#F5F5DC' }} className="container mx-auto p-8 bg-gray-50 min-h-screen">
-    <h2 className="text-3xl font-bold mb-6 text-center">Gestión de Mascotas</h2>
+    <h2 className="text-3xl font-bold mb-6 text-center text-[#a68b5b]">Gestión de Mascotas</h2>
       {/* Formulario */}
         <FormularioMascota
           formData={formData}
@@ -420,6 +458,7 @@ const handleImageRemove = (index) => {
           setFiltroEstado={setFiltroEstado} 
           searchTerm={searchTerm} 
           setSearchTerm={setSearchTerm}
+          onDescargarReporte={handleDescargarReporte}  // Pasa la función aquí
         />
         {/* Tabla de mascotas */}
        <TablaMascota 

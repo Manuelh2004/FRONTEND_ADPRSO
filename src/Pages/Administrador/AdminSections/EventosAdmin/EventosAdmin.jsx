@@ -195,7 +195,7 @@ const handleDescargarUnEvento = async (eventoId) => {
 
   return (
     <div style={{ backgroundColor: '#F5F5DC' }} className="container mx-auto p-8 bg-gray-50 min-h-screen">
-    <h2 className="text-3xl font-bold mb-6 text-center">Gestión de Eventos</h2>
+    <h2 className="text-3xl font-bold mb-6 text-center text-[#a68b5b]">Gestión de Eventos</h2>
       {/* Formulario */}
       <FormularioEvento
         formData={formData}
