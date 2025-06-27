@@ -139,8 +139,6 @@ export const App = () => {
       >
           <p>© 2025   Albergue San Francisco. Todos los derechos reservados.</p>
         </footer>
-        </div>
     </Router>
-    
   );
 };
