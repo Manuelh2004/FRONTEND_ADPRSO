@@ -70,7 +70,7 @@ const Administrador = () => {
       </aside>
 
       {/* Contenido principal */}
-      <main className="flex-1 p-8 overflow-y-auto">
+      <main style={{ backgroundColor: '#F5F5DC' }} className="flex-1 p-8 overflow-y-auto">
         {renderContenido()}
       </main>
 

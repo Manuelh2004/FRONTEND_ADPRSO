@@ -18,12 +18,14 @@ import MisEventos from './Pages/Usuario/EventosUsuario/MisEventos';
 import MisAdopciones from './Pages/Usuario/AdopcionesUsuario/MisAdopciones';
 import Perfil from './Pages/Usuario/PerfilUsuario/Perfil';
 
+
 export const App = () => {
   const { isAuthenticated, role, logout } = useAuth();
 
   return (
     <Router>
-    <nav className="flex items-center justify-between px-6 py-4 bg-white shadow-lg border-b border-blue-100 transition-all duration-300 sticky top-0 z-50">
+      <div style={{ display: 'flex', flexDirection: 'column', minHeight: '100vh' }}>
+        <nav className="flex items-center justify-between px-6 py-4 bg-white shadow-lg border-b border-blue-100 transition-all duration-300 sticky top-0 z-50">
           <div className="flex items-center space-x-6">
             <div className="bg-[#bc6c25] text-white font-extrabold text-2xl px-6 py-2 rounded-full shadow-md hover:scale-105 transform transition duration-300">
               <span className="tracking-wider">San Francisco</span>
@@ -75,6 +77,7 @@ export const App = () => {
           </div>
         </nav>
 
+      <div style={{ flex: 1 }}>
       <Routes>
         {/* RUTA PÚBLICA */}
         <Route index element={<Navigate to="/nosotros" replace />} />
@@ -120,6 +123,19 @@ export const App = () => {
           }
         />
       </Routes>
+      </div>
+      <footer
+        style={{
+        backgroundColor: '#9A6C3B', // marrón oscuro
+        color: '#FFFFFF',
+        textAlign: 'center',
+        padding: '1.5rem',
+        }}
+      >
+          <p>© 2025   Albergue San Francisco. Todos los derechos reservados.</p>
+        </footer>
+        </div>
     </Router>
+    
   );
 };

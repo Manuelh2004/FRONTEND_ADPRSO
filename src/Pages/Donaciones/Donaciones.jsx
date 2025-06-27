@@ -29,7 +29,7 @@ const Donaciones = () => {
 
       {/* Explicación de fondos*/}
       <section>
-        <h1 className="text-4xl font-extrabold text-center text-indigo-700 mb-10">¿A dónde va tu ayuda?</h1>
+        <h1 style={{ color: '#9A6C3B' }} className="text-4xl font-extrabold text-center text-indigo-700 mb-10">¿A dónde va tu ayuda?</h1>
         <p className="text-center text-lg text-gray-600 max-w-3xl mx-auto mb-12">
           Cada sol que donas cambia vidas. Con tu ayuda, podemos rescatar, alimentar, y dar una segunda oportunidad a animales que lo necesitan.
         </p>
@@ -54,7 +54,7 @@ const Donaciones = () => {
 
       {/* Donación libre */}
       <section>
-        <h2 className="text-4xl font-extrabold text-center text-indigo-700 mb-10">Donación libre</h2>
+        <h2 style={{ color: '#9A6C3B' }} className="text-4xl font-extrabold text-center text-indigo-700 mb-10">Donación libre</h2>
         
         <div className="flex flex-col items-center gap-8">
 
@@ -104,7 +104,7 @@ const Donaciones = () => {
 
       {/* Métodos de pago adicionales */}
       <section>
-        <h2 className="text-4xl font-extrabold text-center text-indigo-700 mb-10">
+        <h2 style={{ color: '#9A6C3B' }} className="text-4xl font-extrabold text-center text-indigo-700 mb-10">
           Otras formas de ayudar
         </h2>
 

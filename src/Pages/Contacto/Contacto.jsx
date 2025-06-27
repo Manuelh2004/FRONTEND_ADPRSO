@@ -12,8 +12,8 @@ const Contacto = () => {
   const enlaceWhatsApp = `https://wa.me/${telefonoWhatsApp}?text=${encodeURIComponent(mensaje)}`;
 
   return (
-    <div className="px-6 py-10 max-w-3xl mx-auto bg-white p-6 shadow-lg rounded-lg">
-      <h2 className="text-3xl font-bold text-center text-indigo-700 mb-4">Contáctanos</h2>
+    <div style={{ backgroundColor: '#F5F5DC' }} className="px-6 py-10 max-w-3xl mx-auto p-6 shadow-lg rounded-lg">
+      <h2 style={{ color: '#9A6C3B' }} className="text-3xl font-bold text-center text-indigo-700 mb-4">Contáctanos</h2>
       <p className="text-center text-gray-600 mb-6">
         Estamos aquí para ayudarte. Puedes comunicarte con nosotros a través de los siguientes medios:
       </p>

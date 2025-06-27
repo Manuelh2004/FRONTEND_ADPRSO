@@ -5,6 +5,7 @@ import CarruselEventos from "./Carrusel";
 import 'react-responsive-carousel/lib/styles/carousel.min.css';
 import { FaWhatsapp } from 'react-icons/fa'; // Importamos el ícono de WhatsApp
 
+
 export default function Eventos() {
   // Reemplaza con tu número de WhatsApp y el mensaje que deseas enviar
   const telefonoWhatsApp = "51922266310";  // Agrega tu número de WhatsApp aquí
@@ -12,21 +13,17 @@ export default function Eventos() {
 
   // Enlace a la API de WhatsApp
   const enlaceWhatsApp = `https://wa.me/${telefonoWhatsApp}?text=${encodeURIComponent(mensaje)}`;
-
   return (
-    <>
+    <div style={{ backgroundColor: '#dbc7ad' }}>
       {/* --- Banner Hero (Imagen de fondo con overlay) --- */}
-      <section
-        className="relative h-96 md:h-screen max-h-[600px] flex items-center justify-center"
-        style={{
-          backgroundImage: `url(${logoFondo})`,  // ← backticks aquí
-          backgroundSize: 'cover',
-          backgroundPosition: 'center'
-        }}
-      >
-        {/* Overlay oscuro para mejorar legibilidad */}
-        {/* <div className="absolute inset-0 bg-black opacity-50"></div>*/}
-
+        <section
+          className="relative h-96 md:h-screen max-h-[600px] flex items-center justify-center"
+          style={{
+            backgroundImage: `url(${logoFondo})`,
+            backgroundSize: 'cover',
+            backgroundPosition: 'center',
+          }}
+        >
         {/* Contenido del banner */}
         <div className="relative z-10 text-center px-4 text-white">
           <h1 className="text-4xl md:text-6xl font-bold mb-6">
@@ -39,25 +36,24 @@ export default function Eventos() {
       </section>
 
       {/* --- Carrusel de eventos anteriores --- */}
-      <section className="bg-gray-100 py-10 px-4">
+      <section  className="py-10 px-0">
         <CarruselEventos/>
       </section>  
 
       {/* --- Lista de Eventos Activos --- */}
-      <section className="bg-gray-100 py-10 px-4">
+      <section className="py-10 px-4">
         <ListaEventos />
-      </section> 
-
-      {/* --- Botón flotante de WhatsApp --- */}
-      <a
-        href={enlaceWhatsApp}
-        target="_blank"
-        rel="noopener noreferrer"
-        className="fixed bottom-5 right-5 bg-green-500 hover:bg-green-600 text-white p-4 rounded-full shadow-lg flex items-center justify-center transition z-50"
-        title="Enviar mensaje por WhatsApp"
-      >
-        <FaWhatsapp size={30} />
-      </a>
-    </>
+      </section>
+        {/* --- Botón flotante de WhatsApp --- */}
+          <a
+            href={enlaceWhatsApp}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="fixed bottom-5 right-5 bg-green-500 hover:bg-green-600 text-white p-4 rounded-full shadow-lg flex items-center justify-center transition z-50"
+            title="Enviar mensaje por WhatsApp"
+          >
+            <FaWhatsapp size={30} />
+          </a> 
+    </div>
   );
 }
