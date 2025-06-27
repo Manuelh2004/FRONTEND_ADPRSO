@@ -1,4 +1,4 @@
-import React from 'react';
+import { React, useState } from "react";
 import { BrowserRouter as Router, Routes, Route, Link, Navigate } from 'react-router-dom';
 import Nosotros from './Pages/Nosotros/Nosotros';
 import Adopta from './Pages/Adopta/Adopta';
