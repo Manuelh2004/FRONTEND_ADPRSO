@@ -1,3 +1,4 @@
+
 import { React, useState } from "react";
 import { BrowserRouter as Router, Routes, Route, Link, Navigate } from 'react-router-dom';
 import Nosotros from './Pages/Nosotros/Nosotros';
@@ -26,7 +27,7 @@ export const App = () => {
 
   return (
     <Router>
-      <div style={{ display: 'flex', flexDirection: 'column', minHeight: '100vh' }}>
+      <div className="flex flex-col min-h-screen">
       <nav className="flex items-center justify-between px-6 py-4 bg-white shadow-lg border-b border-blue-100 transition-all duration-300 sticky top-0 z-50">
         <div className="flex items-center space-x-6">
           <div className="bg-[#bc6c25] text-white font-extrabold text-2xl px-6 py-2 rounded-full shadow-md hover:scale-105 transform transition duration-300">
@@ -79,7 +80,7 @@ export const App = () => {
         </div>
       </nav>
 
-      <div style={{ flex: 1 }}>
+      <div className="flex-1">
       <Routes>
         {/* RUTA PÚBLICA */}
         <Route index element={<Navigate to="/nosotros" replace />} />
@@ -103,45 +104,17 @@ export const App = () => {
         <Route path="/forgot-password" element={<ForgotPassword />} /> {/* Agregada la ruta para forgot-password */}
 
         {/* RUTAS PROTEGIDAS */}
-        <Route
-          path="/admin-only"
-          element={
-            <ProtectedRoute allowedRoles={['Administrador']} element={<Administrador/>} />
-          }
-        />
-        <Route
-          path="/mis-eventos"
-          element={
-            <ProtectedRoute allowedRoles={['Usuario', 'Administrador']} element={<MisEventos />} />
-          }
-        />
-
-        <Route
-          path="/mis-adopciones"
-          element={
-            <ProtectedRoute allowedRoles={['Usuario', 'Administrador']} element={<MisAdopciones />} />
-          }
-        />
-        <Route
-          path="/mi-perfil"
-          element={
-            <ProtectedRoute allowedRoles={['Usuario', 'Administrador']} element={<Perfil />} />
-          }
-        />
+        <Route path="/admin-only" element={<ProtectedRoute allowedRoles={['Administrador']} element={<Administrador/>} />}/>
+        <Route path="/mis-eventos" element={<ProtectedRoute allowedRoles={['Usuario', 'Administrador']} element={<MisEventos />} />}/>
+        <Route path="/mis-adopciones" element={<ProtectedRoute allowedRoles={['Usuario', 'Administrador']} element={<MisAdopciones />} />}/>
+        <Route path="/mi-perfil" element={<ProtectedRoute allowedRoles={['Usuario', 'Administrador']} element={<Perfil />} />}/>
       </Routes>
       </div>
       {/* FOOTER */}
-      <footer
-        style={{
-        backgroundColor: '#9A6C3B',
-        color: '#FFFFFF',
-        textAlign: 'center',
-        padding: '1.5rem',
-        }}
-      >
-          <p>© 2025   Albergue San Francisco. Todos los derechos reservados.</p>
-        </footer>
-        </div>
+      <footer className="bg-[#9A6C3B] text-white text-center py-6">
+        <p>© 2025 Albergue San Francisco. Todos los derechos reservados.</p>
+      </footer>
+      </div>
     </Router>
   );
 };
