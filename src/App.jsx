@@ -26,6 +26,7 @@ export const App = () => {
 
   return (
     <Router>
+      <div style={{ display: 'flex', flexDirection: 'column', minHeight: '100vh' }}>
       <nav className="flex items-center justify-between px-6 py-4 bg-white shadow-lg border-b border-blue-100 transition-all duration-300 sticky top-0 z-50">
         <div className="flex items-center space-x-6">
           <div className="bg-[#bc6c25] text-white font-extrabold text-2xl px-6 py-2 rounded-full shadow-md hover:scale-105 transform transition duration-300">
@@ -129,9 +130,10 @@ export const App = () => {
         />
       </Routes>
       </div>
+      {/* FOOTER */}
       <footer
         style={{
-        backgroundColor: '#9A6C3B', // marrón oscuro
+        backgroundColor: '#9A6C3B',
         color: '#FFFFFF',
         textAlign: 'center',
         padding: '1.5rem',
@@ -139,6 +141,7 @@ export const App = () => {
       >
           <p>© 2025   Albergue San Francisco. Todos los derechos reservados.</p>
         </footer>
+        </div>
     </Router>
   );
 };
