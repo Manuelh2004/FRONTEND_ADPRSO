@@ -3,7 +3,6 @@ import { useState, useEffect } from 'react';
 const FormularioEvento = ({ formData, setFormData, handleSubmit, editandoId, handleCancel }) => {
   const [errorFecha, setErrorFecha] = useState('');
   const [isValid, setIsValid] = useState(true);
-
   const inputFileRef = useRef(null);
 
   const handleChange = (e) => {
@@ -65,7 +64,10 @@ const FormularioEvento = ({ formData, setFormData, handleSubmit, editandoId, han
               type={field.includes('fecha') ? 'date' : 'text'}
               name={field}
               value={formData[field]}
-              onChange={(e) => setFormData(prev => ({ ...prev, [e.target.name]: e.target.value }))}
+             onChange={(e) => {
+                handleChange(e); 
+                setFormData(prev => ({ ...prev, [e.target.name]: e.target.value })); 
+              }}
               className="w-full border border-gray-300 rounded px-3 py-2"
               required
             />
