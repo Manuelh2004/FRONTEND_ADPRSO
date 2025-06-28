@@ -11,9 +11,9 @@ const AdopcionesAdmin = () => {
   const [error, setError] = useState(null);
   const [adopcionSeleccionada, setAdopcionSeleccionada] = useState(null);
   const [mostrarConfirmacionModal, setMostrarConfirmacionModal] = useState(false);
-  const [estadoFiltro, setEstadoFiltro] = useState('');
+  const [filtroEstado, setFiltroEstado] = useState('');
   const [estadoAConfirmar, setEstadoAConfirmar] = useState(null);
-  const [busqueda, setBusqueda] = useState('');
+  const [searchTerm, setSearchTerm] = useState('');
   const [paginaActual, setPaginaActual] = useState(1); // Página actual
   const [registrosPorPagina] = useState(10);
   const token = localStorage.getItem('token');
@@ -22,7 +22,7 @@ const AdopcionesAdmin = () => {
     const fetchAdopciones = async () => {
       setLoading(true);
       try {
-        const data = await obtenerAdopcionesPorEstado(estadoFiltro, token);
+        const data = await obtenerAdopcionesPorEstado(filtroEstado, token);
         setAdopciones(data);
         setLoading(false);
       } catch (err) {
@@ -31,7 +31,7 @@ const AdopcionesAdmin = () => {
       }
     };
     fetchAdopciones();
-  }, [estadoFiltro, token]);
+  }, [filtroEstado, token]);
 
    const volverAPendiente = async (adopId) => {
     try {
@@ -91,12 +91,7 @@ const AdopcionesAdmin = () => {
       case 2: return "Rechazada";
       default: return "Desconocido";
     }
-  };
-
-  const adopcionesFiltradas = adopciones.filter((adopcion) =>
-    adopcion.mascota.masc_nombre.toLowerCase().includes(busqueda.toLowerCase()) || 
-    `${adopcion.usuario.usr_nombre} ${adopcion.usuario.usr_apellido}`.toLowerCase().includes(busqueda.toLowerCase())
-  );
+  }; 
 
   const adopcionesPaginados = Array.isArray(adopciones) && adopciones ? adopciones.slice(
     (paginaActual - 1) * registrosPorPagina,
@@ -119,10 +114,10 @@ const AdopcionesAdmin = () => {
       <h2 className="text-3xl font-bold mb-6 text-center text-[#a68b5b]">Gestión de Adopciones</h2>
 
       <FiltroEstado 
-        estadoFiltro={estadoFiltro} 
-        setEstadoFiltro={setEstadoFiltro} 
-        busqueda={busqueda} 
-        setBusqueda={setBusqueda} />
+        filtroEstado={filtroEstado} 
+        setFiltroEstado={setFiltroEstado} 
+        searchTerm={searchTerm} 
+        setSearchTerm={setSearchTerm} />
 
       <TablaAdopcion
         adopcionesPaginados={adopcionesPaginados}

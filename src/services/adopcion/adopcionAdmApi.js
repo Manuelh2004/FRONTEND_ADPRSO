@@ -39,7 +39,7 @@ export const cambiarEstadoAdopcion = async (adop_id, nuevoEstado, token) => {
 };
 
 // Buscar mascotas por nombre
-export const buscarMascotasPorNombre = async (nombre, token) => {
+export const buscarMascotasPorNombre = async (token, nombre) => {
   const headers = { 'Authorization': `Bearer ${token}` };
   try {
     const response = await axios.get(`${API_URL}/buscar?nombre=${nombre}`, { headers });
