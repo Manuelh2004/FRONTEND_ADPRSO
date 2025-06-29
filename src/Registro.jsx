@@ -122,7 +122,7 @@ const validarCampos = () => {
   try {
     const response = await axios.post('http://localhost:8080/auth/crear_usuario', formData);
     setMensaje('Registro exitoso. Redirigiendo...');
-    console.log(response.data);
+    // console.log(response.data);
     setTimeout(() => navigate('/login'), 2000);
   } catch (error) {
     const msg = error.response?.data?.message || 'Error al registrar usuario';
