@@ -61,7 +61,7 @@ export default function EventoDetalle() {
       }
     } catch (error) {
       setModalTipo("error");
-      setModalMensaje(`Error: ${error.message}`);
+      setModalMensaje(`${error.message}`);
     } finally {
       setModalVisible(true);
     }

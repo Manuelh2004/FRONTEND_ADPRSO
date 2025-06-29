@@ -21,13 +21,13 @@ const ModalAdopcion = ({ adopcionSeleccionada, setAdopcionSeleccionada }) => {
           </div>
 
           {/* Imagen de la mascota */}
-          <div className="mt-4">
+          {/*<div className="mt-4">
             <img
               src={adopcionSeleccionada.mascota.imagenes[0]?.ima_url}
               alt={`Imagen de ${adopcionSeleccionada.mascota.masc_nombre}`}
               className="w-full h-auto rounded-lg shadow-md"
             />
-          </div>
+          </div>*/}
 
           {/* Información del usuario */}
           <div>

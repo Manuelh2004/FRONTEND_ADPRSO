@@ -111,6 +111,7 @@ const EventosAdmin = () => {
       lugar: evento.even_lugar || '',
       imagen: evento.even_imagen || ''
     });
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
   const handleCancelar = () => {

@@ -25,13 +25,13 @@ const ModalEvento = ({ eventoSeleccionado, setEventoSeleccionado }) => {
           </div>
 
           {/* Imagen del evento */}
-          <div className="mt-4">
+          {/*<div className="mt-4">
             <img
               src={eventoSeleccionado.even_imagen || 'ruta/default-imagen.jpg'}  // Validación en caso de imagen vacía
               alt={`Imagen del evento ${eventoSeleccionado.even_nombre}`}  // Corregido el alt
               className="w-full h-auto rounded-lg shadow-md"
             />
-          </div>
+          </div>*/}
         </div>
 
         {/* Botón para cerrar el modal */}

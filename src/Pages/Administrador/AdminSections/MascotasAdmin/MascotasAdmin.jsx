@@ -5,6 +5,7 @@ import TablaMascota from './TablaMascota';
 import FiltroEstado from './FiltroEstado';  
 import FormularioMascota from './FormularioMascota'; 
 import ModalMascota from './ModalMascota';
+import ModalMensaje from '../../../../components/ModalMensaje';
 
 const MascotasAdmin = () => {
   const [mascotas, setMascotas] = useState([]);
@@ -21,7 +22,11 @@ const MascotasAdmin = () => {
     tamanio: '',
     tipoMascota: '',
     sexo: ''
-  });  
+  }); 
+  
+  const [modalVisible, setModalVisible] = useState(false);
+  const [modalMensaje, setModalMensaje] = useState("");
+  const [modalTipo, setModalTipo] = useState("success");
 
   const [estadoSalud, setEstadoSalud] = useState([]);
   const [estadoVacuna, setEstadoVacuna] = useState([]);
@@ -197,7 +202,7 @@ const mascotasPaginados = Array.isArray(mascotas) && mascotas ? mascotas.slice(
     const response = await actualizarMascota(token, editandoId, formDataToSend); 
 
     if (response && response.masc_id) {
-      console.log("Mascota actualizada con éxito:", response);
+      mostrarModal("Mascota actualizada con éxito", "success");
       setFormData({
         masc_nombre: '',
         masc_fecha_nacimiento: '',
@@ -213,12 +218,10 @@ const mascotasPaginados = Array.isArray(mascotas) && mascotas ? mascotas.slice(
       setImagenes([]);
       setGustosSeleccionados([]);
     } else {
-      console.error('Error al actualizar mascota, respuesta no válida:', response);
-      alert('Error al actualizar mascota.');
+      mostrarModal("Error al actualizar mascota.", "error");
     }
   } catch (error) {
-    console.error("Error al actualizar mascota:", error);
-    alert('Hubo un error al actualizar la mascota.');
+    mostrarModal("Hubo un error al actualizar la mascota.", "error");
   } 
   setImagenesAEliminar([]);     
   }else{
@@ -234,12 +237,12 @@ const mascotasPaginados = Array.isArray(mascotas) && mascotas ? mascotas.slice(
       ];
 
       if (camposObligatorios.includes('') || imagenes.includes('')) {
-        alert('Por favor, complete todos los campos obligatorios.');
+        mostrarModal("Por favor, complete todos los campos obligatorios.", "info");
         return;
       }
 
       if (gustosSeleccionados.length === 0) {
-        alert('Por favor, seleccione al menos un gusto.');
+        mostrarModal("Por favor, seleccione al menos un gusto.", "info");
         return;
       }
 
@@ -283,7 +286,7 @@ const mascotasPaginados = Array.isArray(mascotas) && mascotas ? mascotas.slice(
       try {
         const response = await registrarMascota(token, formDataToSend); 
         if (response.code === 201) {
-          console.log("Mascota registrada con éxito:", response.data);
+          mostrarModal("Mascota registrada con éxito", "success");
           setFormData({
             masc_nombre: '',
             masc_fecha_nacimiento: '',
@@ -299,12 +302,10 @@ const mascotasPaginados = Array.isArray(mascotas) && mascotas ? mascotas.slice(
           setImagenes([]);
           setGustosSeleccionados([]);
         } else {
-          console.error('Error al registrar mascota:', response);
-          alert('Error al registrar mascota.');
+          mostrarModal("Error al registrar mascota.", "error");
         }
       } catch (error) {
-        console.error("Error al registrar mascota:", error);
-        alert('Hubo un error al registrar la mascota.');
+        mostrarModal("Hubo un error al registrar la mascota.", "error");
       }
     }
     setEditandoId(null);
@@ -333,6 +334,7 @@ const mascotasPaginados = Array.isArray(mascotas) && mascotas ? mascotas.slice(
   imaPublicId: img.imaPublicId ?? img.ima_public_id,
   imaId: img.imaId ?? img.ima_id
 })) : []);
+window.scrollTo({ top: 0, behavior: 'smooth' });
 };
 const handleCancelar = () => {
   setFormData({
@@ -428,6 +430,12 @@ const handleImageRemove = (index) => {
     );
   };
 
+  const mostrarModal = (mensaje, tipo = "success") => {
+  setModalMensaje(mensaje);
+  setModalTipo(tipo);
+  setModalVisible(true);
+};
+
   return (
     <div style={{ backgroundColor: '#F5F5DC' }} className="container mx-auto p-8 bg-gray-50 min-h-screen">
     <h2 className="text-3xl font-bold mb-6 text-center text-[#a68b5b]">Gestión de Mascotas</h2>
@@ -490,8 +498,15 @@ const handleImageRemove = (index) => {
           setMascotaSeleccionada={setMascotaSeleccionada} 
         />
       )}
+      <ModalMensaje
+        visible={modalVisible}
+        tipo={modalTipo}
+        mensaje={modalMensaje}
+        onClose={() => setModalVisible(false)}
+      />
 
     </div>
+    
   );
 };
 export default MascotasAdmin;
