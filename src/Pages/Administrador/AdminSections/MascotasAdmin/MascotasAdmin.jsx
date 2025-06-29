@@ -115,8 +115,6 @@ const MascotasAdmin = () => {
     return;
   }
 
-  console.log('Token:', token); // Registra el token en la consola para asegurarte de que se está obteniendo correctamente.
-
   try {
     const response = await fetch('http://localhost:8080/admin/api/mascota/exportar-excel', {
       method: 'GET',
@@ -389,7 +387,6 @@ const handleCancelar = () => {
       }
 
       setMascotaSeleccionada(mascotaDetails);
-      console.log('Detalles de la mascota:', mascotaDetails); 
     } catch (error) {
       alert('Hubo un error al cargar los detalles del evento.');
     }
