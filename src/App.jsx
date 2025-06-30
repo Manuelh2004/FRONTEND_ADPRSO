@@ -1,6 +1,6 @@
 
 import { React, useState } from "react";
-import { BrowserRouter as Router, Routes, Route, Link, Navigate } from 'react-router-dom';
+import { Router, Routes, Route, Link, Navigate } from 'react-router-dom';
 import Nosotros from './Pages/Nosotros/Nosotros';
 import Adopta from './Pages/Adopta/Adopta';
 import Donaciones from './Pages/Donaciones/Donaciones';
@@ -26,7 +26,7 @@ export const App = () => {
   const { isAuthenticated, role, logout } = useAuth();
 
   return (
-    <Router>
+    <div>
       <div className="flex flex-col min-h-screen">
       <nav className="flex items-center justify-between px-6 py-4 bg-white shadow-lg border-b border-blue-100 transition-all duration-300 sticky top-0 z-50">
         <div className="flex items-center space-x-6">
@@ -115,6 +115,6 @@ export const App = () => {
         <p>© 2025 Albergue San Francisco. Todos los derechos reservados.</p>
       </footer>
       </div>
-    </Router>
+    </div>
   );
 };

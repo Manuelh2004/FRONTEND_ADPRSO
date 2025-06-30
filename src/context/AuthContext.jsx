@@ -1,12 +1,14 @@
 import { createContext, useContext, useState, useEffect } from 'react';
 import { jwtDecode } from 'jwt-decode';
 import { loginRequest } from '../services/auth';
+import { useNavigate } from 'react-router-dom'; // 👈 importar esto
 
 const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
   const [token, setToken] = useState(null);
   const [role, setRole] = useState(null);
+  const navigate = useNavigate(); // 👈 inicializar useNavigate
 
   useEffect(() => {
     const storedToken = localStorage.getItem('token');
@@ -34,6 +36,8 @@ export const AuthProvider = ({ children }) => {
     setToken(null);
     setRole(null);
     localStorage.removeItem('token');
+    navigate('/nosotros'); // 👈 redirige después de cerrar sesión
+
   };
 
   return (
