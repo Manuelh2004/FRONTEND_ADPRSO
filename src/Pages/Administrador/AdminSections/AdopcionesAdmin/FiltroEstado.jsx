@@ -13,19 +13,7 @@ const FiltroEstado = ({ filtroEstado, setFiltroEstado, searchTerm, setSearchTerm
         <option value="pendientes">Pendientes</option>
         <option value="rechazadas">Rechazadas</option>
       </select>
-    </div>
-
-    {/* Buscador */}
-    <div className="w-1/2 pl-2">
-      <label className="block text-gray-700 font-semibold">Buscar por nombre</label>
-      <input
-        type="text"
-        className="w-full px-4 py-2 border-2 border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-bg-[#dda15e]"
-        value={searchTerm}
-        onChange={(e) => setSearchTerm(e.target.value)}
-        placeholder="Buscar por nombre de mascota"
-      />
-    </div>
+    </div>   
   </div>
 );
 
