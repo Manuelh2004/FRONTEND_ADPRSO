@@ -15,7 +15,7 @@ export const Nosotros = () => {
       {/* Nuestra Historia */}
       <div className="bg-gradient-to-r from-[#9A6C3B] via-[#a1774c] to-[#c49b70] px-10 py-12 rounded-xl shadow-md text-white flex flex-col md:flex-row gap-10 items-center transition-all duration-700 ease-in-out transform hover:scale-[1.01]">
         <div className="md:w-1/2">
-          <h2 className="text-3xl font-bold mb-6">Nuestra Historia</h2>
+          <h2 className="text-3xl font-bold mb-6 text-[#F5F5DC]">Nuestra Historia</h2>
           <p className="text-base leading-relaxed text-white/90">
             "Este año 2025 cumplimos 13 años de ayudar a muchas colitas. Varios de nuestros rescatados tienen más de media década con nosotros, algunos nacieron en el albergue porque rescatamos a su mamá preñada y otros llegaron enfermos.
             Actualmente tenemos 50 y 22 refugiados, necesitamos de tu apoyo para seguir velando por ellos, ya que también tienen necesidades como cualquiera. Como todos los años les toca su vacuna de refuerzo, necesitamos pipetas y arena para nuestros.

@@ -76,85 +76,86 @@ const Adopta = () => {
   return (
   <div className="flex flex-col md:flex-row gap-6 p-6 ">
     {/* Filtros */}
-    <aside className="min-w-[220px] md:w-[18%] h-100 space-y-4 md:sticky md:top-4 bg-#a1774c text-white p-3 rounded-lg shadow-md text-sm bg-[#9A6C3B]">
-      <h2 className="text-lg font-semibold mb-2 text-center">Filtrar por</h2>
 
-      {/* Tamaño */}
-      <div>
-        <label className="block font-medium mb-1">Tamaño</label>
-        <div className="flex flex-wrap gap-1">
-          {opciones.tamanios.map(t => (
-            <button
-              key={t.tam_id}
-              onClick={() => handleFiltroChange('tamId', t.tam_id)}
-              className={`px-2 py-1 rounded-full text-xs font-medium transition ${
-                filtros.tamId === t.tam_id ? 'bg-[#dda15e] text-white' : 'bg-white text-black hover:bg-gray-300'
-              }`}
-            >
-              {t.tam_nombre}
-            </button>
-          ))}
-        </div>
-      </div>
+  <aside className="min-w-[220px] max-w-[320px] md:w-[18%] mx-auto space-y-4 md:sticky md:top-4 bg-[#9A6C3B] text-[#F5F5DC] p-3 rounded-lg shadow-md text-sm h-100">
+    <h2 className="text-lg font-semibold mb-2 text-center">Filtrar por</h2>
 
-      {/* Sexo */}
-      <div>
-        <label className="block font-medium mb-1">Sexo</label>
-        <div className="flex flex-col gap-1">
-          {opciones.sexos.map(s => (
-            <label key={s.sex_id} className="flex items-center gap-1 cursor-pointer">
-              <input
-                type="radio"
-                name="sexo"
-                value={s.sex_id}
-                checked={filtros.sexId === s.sex_id}
-                onChange={() => handleFiltroChange('sexId', s.sex_id)}
-                className="accent-[#dda15e]"
-              />
-              <span>{s.sex_nombre}</span>
-            </label>
-          ))}
-        </div>
+    {/* Tamaño */}
+    <div>
+      <label className="block font-medium mb-1">Tamaño</label>
+      <div className="flex flex-wrap gap-1">
+        {opciones.tamanios.map(t => (
+          <button
+            key={t.tam_id}
+            onClick={() => handleFiltroChange('tamId', t.tam_id)}
+            className={`px-2 py-1 rounded-full text-xs font-medium transition ${
+              filtros.tamId === t.tam_id ? 'bg-[#dda15e] text-white' : 'bg-white text-black hover:bg-gray-300'
+            }`}
+          >
+            {t.tam_nombre}
+          </button>
+        ))}
       </div>
+    </div>
 
-      {/* Nivel de energía */}
-      <div>
-        <label className="block font-medium mb-1">Nivel de energía</label>
-        <div className="flex flex-wrap gap-1">
-          {opciones.nivelesEnergia.map(n => (
-            <button
-              key={n.nien_id}
-              onClick={() => handleFiltroChange('nienId', n.nien_id)}
-              className={`px-2 py-1 rounded-full text-xs font-medium transition ${
-                filtros.nienId === n.nien_id ? 'bg-green-500 text-white' : 'bg-white text-black hover:bg-gray-300'
-              }`}
-            >
-              {n.nien_nombre}
-            </button>
-          ))}
-        </div>
+    {/* Sexo */}
+    <div>
+      <label className="block font-medium mb-1">Sexo</label>
+      <div className="flex flex-col gap-1">
+        {opciones.sexos.map(s => (
+          <label key={s.sex_id} className="flex items-center gap-1 cursor-pointer">
+            <input
+              type="radio"
+              name="sexo"
+              value={s.sex_id}
+              checked={filtros.sexId === s.sex_id}
+              onChange={() => handleFiltroChange('sexId', s.sex_id)}
+              className="accent-[#dda15e]"
+            />
+            <span>{s.sex_nombre}</span>
+          </label>
+        ))}
       </div>
+    </div>
 
-      {/* Tipo de mascota */}
-      <div>
-        <label className="block font-medium mb-1">Tipo de mascota</label>
-        <div className="flex flex-wrap gap-1">
-          {opciones.tiposMascota.map(t => (
-            <button
-              key={t.tipma_id}
-              onClick={() => handleFiltroChange('tipmaId', t.tipma_id)}
-              className={`px-2 py-1 rounded-full text-xs font-medium transition border ${
-                filtros.tipmaId === t.tipma_id
-                  ? 'bg-purple-500 text-white border-purple-500'
-                  : 'bg-white text-black border-gray-300 hover:bg-gray-100'
-              }`}
-            >
-              {t.tipma_nombre}
-            </button>
-          ))}
-        </div>
+    {/* Nivel de energía */}
+    <div>
+      <label className="block font-medium mb-1">Nivel de energía</label>
+      <div className="flex flex-wrap gap-1">
+        {opciones.nivelesEnergia.map(n => (
+          <button
+            key={n.nien_id}
+            onClick={() => handleFiltroChange('nienId', n.nien_id)}
+            className={`px-2 py-1 rounded-full text-xs font-medium transition ${
+              filtros.nienId === n.nien_id ? 'bg-green-500 text-white' : 'bg-white text-black hover:bg-gray-300'
+            }`}
+          >
+            {n.nien_nombre}
+          </button>
+        ))}
       </div>
-    </aside>
+    </div>
+
+    {/* Tipo de mascota */}
+    <div>
+      <label className="block font-medium mb-1">Tipo de mascota</label>
+      <div className="flex flex-wrap gap-1">
+        {opciones.tiposMascota.map(t => (
+          <button
+            key={t.tipma_id}
+            onClick={() => handleFiltroChange('tipmaId', t.tipma_id)}
+            className={`px-2 py-1 rounded-full text-xs font-medium transition border ${
+              filtros.tipmaId === t.tipma_id
+                ? 'bg-purple-500 text-white border-purple-500'
+                : 'bg-white text-black border-gray-300 hover:bg-gray-100'
+            }`}
+          >
+            {t.tipma_nombre}
+          </button>
+        ))}
+      </div>
+    </div>
+  </aside>
 
     {/* Galería */}
     <main className="flex-1 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
