@@ -190,7 +190,7 @@ const AdopcionesAdmin = () => {
 
       {/* Modal para confirmar si actualizar también la mascota */}
       {mostrarModalMascota && adopcionParaRevertir && (
-        <div className="fixed inset-0 flex justify-center items-center bg-black bg-opacity-40 z-50">
+        <div className="fixed inset-0 flex justify-center items-center bg-black bg-opacity-40 z-50 bg-transparent">
           <div className="bg-white p-6 rounded-lg shadow-lg max-w-md w-full">
             <h3 className="text-xl font-semibold mb-4 text-center text-gray-800">
               ¿Deseas también cambiar el estado de la mascota?
@@ -201,7 +201,7 @@ const AdopcionesAdmin = () => {
                   volverAPendiente(adopcionParaRevertir.adop_id, true);
                   setMostrarModalMascota(false);
                 }}
-                className="bg-green-500 text-white px-5 py-2 rounded hover:bg-green-600"
+                className="bg-green-500 text-white px-6 py-3 rounded hover:bg-green-600 rounded-lg"
               >
                 Sí
               </button>
@@ -210,13 +210,13 @@ const AdopcionesAdmin = () => {
                   volverAPendiente(adopcionParaRevertir.adop_id, false);
                   setMostrarModalMascota(false);
                 }}
-                className="bg-yellow-500 text-white px-5 py-2 rounded hover:bg-yellow-600"
+                className="bg-yellow-500 text-white  px-6 py-3 rounded hover:bg-yellow-600 rounded-lg"
               >
                 No
               </button>
               <button
                 onClick={() => setMostrarModalMascota(false)}
-                className="bg-gray-400 text-white px-5 py-2 rounded hover:bg-gray-500"
+                className="bg-gray-400 text-white px-5 py-2 rounded hover:bg-gray-500 rounded-lg"
               >
                 Cancelar
               </button>
