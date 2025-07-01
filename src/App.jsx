@@ -20,7 +20,7 @@ import MisAdopciones from './Pages/Usuario/AdopcionesUsuario/MisAdopciones';
 import Perfil from './Pages/Usuario/PerfilUsuario/Perfil';
 import ForgotPassword from './ForgotPassword'; // Asegúrate de que la ruta sea correcta
 import ResetPassword from './ResetPassword';
-
+import VerifyEmail from './VerifyEmail';
 
 export const App = () => {
   const { isAuthenticated, role, logout } = useAuth();
@@ -95,6 +95,7 @@ export const App = () => {
         <Route path="/eventos/:id" element={<EventoDetalle />} />
         <Route path='/eventos' element={<Eventos/>} />
         <Route path="/reset-password" element={<ResetPassword />} />
+        <Route path="/verify-email" element={<VerifyEmail/>} />
 
         {/* RUTA DE LOGIN */}
         <Route path="/login" element={<Login />} />
