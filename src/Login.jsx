@@ -20,7 +20,11 @@ const Login = () => {
       await login(credentials.email, credentials.password);
       navigate('/', { replace: true });
     } catch (err) {
-      setError('Usuario o contraseña incorrecta');
+      if (err.message === "Por favor, verifica tu correo electrónico para activar tu cuenta antes de iniciar sesión.") {
+        setError('Por favor, verifica tu correo electrónico para activar tu cuenta antes de iniciar sesión.');
+      } else {
+        setError('Usuario o contraseña incorrecta.\nRecuerda verificar tu correo electrónico si no puedes iniciar sesión.');
+      }
     }
   }, [credentials, login]);
 

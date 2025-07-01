@@ -19,10 +19,13 @@ import MisAdopciones from './Pages/Usuario/AdopcionesUsuario/MisAdopciones';
 import Perfil from './Pages/Usuario/PerfilUsuario/Perfil';
 import ForgotPassword from './ForgotPassword'; // Asegúrate de que la ruta sea correcta
 import ResetPassword from './ResetPassword';
+import VerifyEmail from './VerifyEmail';
 
 export const App = () => {
   const { isAuthenticated, role, logout } = useAuth();
   const location = useLocation(); // Obtenemos la ruta actual
+  const [isOpen, setIsOpen] = useState(false);
+
 
   return (
     <div>
@@ -77,23 +80,74 @@ export const App = () => {
               </>
             )}
           </div>
+          {/* Ícono Hamburguesa */}
+          <div className="md:hidden flex items-center">
+            <button
+              className="text-[#bc6c25] focus:outline-none"
+              onClick={() => setIsOpen(!isOpen)}
+            >
+              <svg
+                className="w-6 h-6"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                {isOpen ? (
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                ) : (
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
+                )}
+              </svg>
+            </button>
+          </div>
         </nav>
 
-        <div className="flex-1">
-          <Routes>
-            {/* RUTA PÚBLICA */}
-            <Route index element={<Navigate to="/nosotros" replace />} />
+        {/* Menú desplegable para móviles */}
+        {isOpen && (
+          <div className="md:hidden bg-white shadow-lg">
+            <ul className="flex flex-col space-y-4 p-4 text-[#bc6c25] font-semibold">
+              <li className="hover:text-[#dda15e] transition duration-300">
+                <Link to="/eventos" onClick={() => setIsOpen(false)}>Eventos</Link>
+              </li>
+              <li className="hover:text-[#dda15e] transition duration-300">
+                <Link to="/nosotros" onClick={() => setIsOpen(false)}>Nosotros</Link>
+              </li>
+              <li className="hover:text-[#dda15e] transition duration-300">
+                <Link to="/adopta" onClick={() => setIsOpen(false)}>Adopta</Link>
+              </li>
+              <li className="hover:text-[#dda15e] transition duration-300">
+                <Link to="/donaciones" onClick={() => setIsOpen(false)}>Donaciones</Link>
+              </li>
+              <li className="hover:text-[#dda15e] transition duration-300">
+                <Link to="/contacto" onClick={() => setIsOpen(false)}>Contáctanos</Link>
+              </li>
+              {isAuthenticated && role === 'Administrador' && (
+                <li className="hover:text-[#dda15e] transition duration-300">
+                  <Link to="/admin-only" onClick={() => setIsOpen(false)}>Administrador</Link>
+                </li>
+              )}
+              </ul>
+          </div>
+        )}
+        
 
-            {/* RUTAS PÚBLICAS EXTRAS */}
-            <Route path="/nosotros" element={<Nosotros />} />
-            <Route path="/adopta" element={<Adopta />} />
-            <Route path="/adopta/:id" element={<MascotaDetalle />} />
-            <Route path="/donaciones" element={<Donaciones />} />
-            <Route path="/contacto" element={<Contacto />} />
-            <Route path="/eventos/lista" element={<ListaEventos />} />
-            <Route path="/eventos/:id" element={<EventoDetalle />} />
-            <Route path='/eventos' element={<Eventos />} />
-            <Route path="/reset-password" element={<ResetPassword />} />
+      <div className="flex-1">
+      <Routes>
+        {/* RUTA PÚBLICA */}
+        <Route index element={<Navigate to="/nosotros" replace />} />
+
+        {/* RUTAS PÚBLICAS EXTRAS */}
+        <Route path="/nosotros" element={<Nosotros />} />
+        <Route path="/adopta" element={<Adopta />} />
+        <Route path="/adopta/:id" element={<MascotaDetalle />} />
+        <Route path="/donaciones" element={<Donaciones />} />
+        <Route path="/contacto" element={<Contacto />} />
+        <Route path="/eventos/lista" element={<ListaEventos />} />
+        <Route path="/eventos/:id" element={<EventoDetalle />} />
+        <Route path='/eventos' element={<Eventos/>} />
+        <Route path="/reset-password" element={<ResetPassword />} />
+        <Route path="/verify-email" element={<VerifyEmail/>} />
 
             {/* RUTA DE LOGIN */}
             <Route path="/login" element={<Login />} />

@@ -17,9 +17,34 @@ const CarruselEventos = () => {
               showStatus={false}
               showArrows={true}
               className="rounded-none"
-            >
+              renderIndicator={(onClickHandler, isSelected, index, label) => {
+                const style = {
+                  marginLeft: 6,
+                  color: isSelected ? '#F5F5DC' : '#888',
+                  cursor: 'pointer',
+                  fontSize: '2rem',
+                  marginTop: '1rem', 
+                  marginBottom: '1rem' 
+                };
+            return (
+              <span
+                style={style}
+                onClick={onClickHandler}
+                onKeyDown={onClickHandler}
+                value={index}
+                key={index}
+                role="button"
+                tabIndex={0}
+              >
+                •
+              </span>
+            );
+          }}
+          renderItem={(item, options) => <div {...options}>{item}</div>}
+        >
+            
           {/* Slide 1 */}
-          <div className="flex flex-col items-center">
+          <div className="flex flex-col items-center pb-12">
             <div className="w-full h-[400px] bg-beige flex items-center justify-center">
               <img
                 src={Evento1}
@@ -27,13 +52,13 @@ const CarruselEventos = () => {
                 className="max-h-full object-contain"
               />
             </div>
-            <p className="mt-2 text-center text-lg font-semibold" style={{ color: '#F5F5DC' }}>
+            <p className="mt-4 mt-2 text-center text-lg font-semibold" style={{ color: '#F5F5DC' }}>
               Gran Rifa
             </p>
           </div>
 
           {/* Slide 2 */}
-          <div className="flex flex-col items-center">
+          <div className="flex flex-col items-center pb-12">
             <div className="w-full h-[400px] bg-beige flex items-center justify-center">
               <img
                 src={Evento2}
@@ -41,13 +66,13 @@ const CarruselEventos = () => {
                 className="max-h-full object-contain"
               />
             </div>
-            <p className="mt-2 text-center text-lg font-semibold" style={{ color: '#F5F5DC' }}>
+            <p className="mt-4 mt-2 text-center text-lg font-semibold" style={{ color: '#F5F5DC' }}>
               Voluntariado animalista
             </p>
           </div>
 
           {/* Slide 3 */}
-          <div className="flex flex-col items-center">
+          <div className="flex flex-col items-center pb-12">
             <div className="w-full h-[400px] bg-beige flex items-center justify-center">
               <img
                 src={Evento3}
@@ -55,13 +80,13 @@ const CarruselEventos = () => {
                 className="max-h-full object-contain"
               />
             </div>
-            <p className="mt-2 text-center text-lg font-semibold" style={{ color: '#F5F5DC' }}>
+            <p className="mt-4 mt-2 text-center text-lg font-semibold" style={{ color: '#F5F5DC' }}>
               Proyecto Huellitas en Acción
             </p>
           </div>
 
           {/* Slide 4 */}
-          <div className="flex flex-col items-center">
+          <div className="flex flex-col items-center pb-12">
             <div className="w-full h-[400px] bg-beige flex items-center justify-center">
               <img
                 src={Evento4}
@@ -69,13 +94,12 @@ const CarruselEventos = () => {
                 className="max-h-full object-contain"
               />
             </div>
-            <p className="mt-2 text-center text-lg font-semibold" style={{ color: '#F5F5DC' }}>
+            <p className="mt-4 mt-2 text-center text-lg font-semibold" style={{ color: '#F5F5DC' }}>
               Voluntariado animalista
             </p>
           </div>
         </Carousel>
       </div>
-
       </section>
   );
 };

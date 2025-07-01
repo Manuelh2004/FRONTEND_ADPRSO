@@ -4,6 +4,7 @@ import axios from 'axios'; // Usamos axios para las solicitudes HTTP
 import pawPrint from './Imagenes/huella.jpg'; // Imagen de fondo
 import dogSilhouette from './Imagenes/LogoSF.jpg'; // Imagen del logo
 
+
 const ResetPassword = () => {
   const [newPassword, setNewPassword] = useState('');
   const [token, setToken] = useState('');
@@ -48,7 +49,7 @@ const ResetPassword = () => {
   };
 
   return (
-    <div 
+     <div 
       className="flex justify-center items-center min-h-screen bg-amber-50 bg-opacity-50"
       style={{
         backgroundImage: `url(${pawPrint})`,
@@ -112,12 +113,28 @@ const ResetPassword = () => {
           Restablecer contraseña
         </button>
 
+        {/* Mensaje de error */}
         {error && (
-          <div className="mt-3 text-red-500 text-sm text-center">{error}</div>
+          <div className="mt-3 text-red-500 text-sm text-center p-2 bg-red-100 rounded-lg">
+            <span className="flex items-center gap-2">
+              <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" viewBox="0 0 20 20" fill="currentColor">
+                <path fillRule="evenodd" d="M8.293 9.293a1 1 0 011.414 0L9 10.586V3a1 1 0 112 0v7.586l1.293-1.293a1 1 0 111.414 1.414l-3 3a1 1 0 01-1.414 0l-3-3a1 1 0 010-1.414z" clipRule="evenodd" />
+              </svg>
+              {error}
+            </span>
+          </div>
         )}
 
+        {/* Mensaje de éxito */}
         {successMessage && (
-          <div className="mt-3 text-green-500 text-sm text-center">{successMessage}</div>
+          <div className="mt-3 text-green-500 text-sm text-center p-2 bg-green-100 rounded-lg">
+            <span className="flex items-center gap-2">
+              <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" viewBox="0 0 20 20" fill="currentColor">
+                <path fillRule="evenodd" d="M6.293 9.293a1 1 0 011.414 0L10 12.586l2.293-2.293a1 1 0 111.414 1.414L10 15.414l-3.707-3.707a1 1 0 011.414-1.414L10 13.586l2.293-2.293a1 1 0 011.414 1.414L10 15.414l-3.707-3.707a1 1 0 011.414-1.414z" clipRule="evenodd" />
+              </svg>
+              {successMessage}
+            </span>
+          </div>
         )}
       </form>
     </div>
