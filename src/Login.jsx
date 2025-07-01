@@ -1,7 +1,7 @@
 import React, { useState, useCallback } from 'react';
 import { useAuth } from './context/AuthContext'; // Asegúrate de que la ruta sea correcta
 import pawPrint from './Imagenes/huella.jpg'; 
-import dogSilhouette from './Imagenes/perrito-silueta.jpg'; 
+import dogSilhouette from './Imagenes/LogoSF.jpg'; 
 import { useNavigate } from 'react-router-dom';
 
 const Login = () => {

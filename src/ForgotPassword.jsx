@@ -2,7 +2,7 @@ import React, { useState, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';  // Para hacer la solicitud HTTP
 import pawPrint from './Imagenes/huella.jpg';
-import dogSilhouette from './Imagenes/perrito-silueta.jpg';
+import dogSilhouette from './Imagenes/LogoSF.jpg';
 
 const ForgotPassword = () => {
   const [email, setEmail] = useState('');

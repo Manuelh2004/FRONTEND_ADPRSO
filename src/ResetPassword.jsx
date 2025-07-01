@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import axios from 'axios'; // Usamos axios para las solicitudes HTTP
 import pawPrint from './Imagenes/huella.jpg'; // Imagen de fondo
-import dogSilhouette from './Imagenes/perrito-silueta.jpg'; // Imagen del logo
+import dogSilhouette from './Imagenes/LogoSF.jpg'; // Imagen del logo
 
 const ResetPassword = () => {
   const [newPassword, setNewPassword] = useState('');
