@@ -24,61 +24,83 @@ import VerifyEmail from './VerifyEmail';
 
 export const App = () => {
   const { isAuthenticated, role, logout } = useAuth();
+  const [isOpen, setIsOpen] = useState(false);
+
 
   return (
     <div>
       <div className="flex flex-col min-h-screen">
-      <nav className="flex items-center justify-between px-6 py-4 bg-white shadow-lg border-b border-blue-100 transition-all duration-300 sticky top-0 z-50">
-        <div className="flex items-center space-x-6">
-          <div className="bg-[#bc6c25] text-white font-extrabold text-2xl px-6 py-2 rounded-full shadow-md hover:scale-105 transform transition duration-300">
-            <span className="tracking-wider">San Francisco</span>
+        <nav className="flex items-center justify-between px-6 py-4 bg-white shadow-lg border-b border-blue-100 transition-all duration-300 sticky top-0 z-50">
+          <div className="flex items-center space-x-6">
+            <div className="bg-[#bc6c25] text-white font-extrabold text-2xl px-6 py-2 rounded-full shadow-md hover:scale-105 transform transition duration-300">
+              <span className="tracking-wider">San Francisco</span>
+            </div>
+
+            <ul className="hidden md:flex space-x-6 text-[#bc6c25] font-semibold">
+              <li className="hover:text-[#dda15e] transition duration-300">
+                <Link to="/eventos">Eventos</Link>
+              </li>
+              <li className="hover:text-[#dda15e] transition duration-300">
+                <Link to="/nosotros">Nosotros</Link>
+              </li>
+              <li className="hover:text-[#dda15e] transition duration-300">
+                <Link to="/adopta">Adopta</Link>
+              </li>
+              <li className="hover:text-[#dda15e] transition duration-300">
+                <Link to="/donaciones">Donaciones</Link>
+              </li>
+              <li className="hover:text-[#dda15e] transition duration-300">
+                <Link to="/contacto">Contáctanos</Link>
+              </li>
+              {isAuthenticated && role === 'Administrador' && (
+                <li className="hover:text-[#dda15e] transition duration-300">
+                  <Link to="/admin-only">Administrador</Link>
+                </li>
+              )}
+            </ul>
           </div>
 
-          <ul className="hidden md:flex space-x-6 text-[#bc6c25] font-semibold">
-            <li className="hover:text-[#dda15e] transition duration-300">
-              <Link to="/eventos">Eventos</Link>
-            </li>
-            <li className="hover:text-[#dda15e] transition duration-300">
-              <Link to="/nosotros">Nosotros</Link>
-            </li>
-            <li className="hover:text-[#dda15e] transition duration-300">
-              <Link to="/adopta">Adopta</Link>
-            </li>
-            <li className="hover:text-[#dda15e] transition duration-300">
-              <Link to="/donaciones">Donaciones</Link>
-            </li>
-            <li className="hover:text-[#dda15e] transition duration-300">
-              <Link to="/contacto">Contáctanos</Link>
-            </li>
-            {isAuthenticated && role === 'Administrador' && (
-              <li className="hover:text-[#dda15e] transition duration-300">
-                <Link to="/admin-only">Administrador</Link>
-              </li>
+          <div className="flex items-center space-x-4">
+            {isAuthenticated ? (
+              <UsuarioMenu />
+            ) : (
+              <>
+                <Link
+                  to="/login"
+                  className="text-white bg-[#bc6c25] px-4 py-2 rounded-full hover:bg-[#dda15e] transition duration-300 shadow-sm"
+                >
+                  Iniciar sesión
+                </Link>
+                <Link
+                  to="/registro"
+                  className="text-white bg-[#bc6c25] px-4 py-2 rounded-full hover:bg-[#dda15e] transition duration-300 shadow-sm"
+                >
+                  Registrarse
+                </Link>
+              </>
             )}
-          </ul>
-        </div>
-
-        <div className="flex items-center space-x-4">
-          {isAuthenticated ? (
-            <UsuarioMenu />
-          ) : (
-            <>
-              <Link
-                to="/login"
-                className="text-white bg-[#bc6c25] px-4 py-2 rounded-full hover:bg-[#dda15e] transition duration-300 shadow-sm"
-              >
-                Iniciar sesión
-              </Link>
-              <Link
-                to="/registro"
-                className="text-white bg-[#bc6c25] px-4 py-2 rounded-full hover:bg-[#dda15e] transition duration-300 shadow-sm"
-              >
-                Registrarse
-              </Link>
-            </>
-          )}
-        </div>
-      </nav>
+          </div>
+          {/* Ícono Hamburguesa */}
+          <button
+            className="md:hidden text-[#bc6c25] focus:outline-none"
+            onClick={() => setIsOpen(!isOpen)}
+          >
+            <svg
+              className="w-6 h-6"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              {isOpen ? (
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+              ) : (
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
+              )}
+            </svg>
+          </button>
+        </nav>
+        
 
       <div className="flex-1">
       <Routes>
