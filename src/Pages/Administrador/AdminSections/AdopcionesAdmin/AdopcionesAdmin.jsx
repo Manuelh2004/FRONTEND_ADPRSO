@@ -210,13 +210,13 @@ const AdopcionesAdmin = () => {
                   volverAPendiente(adopcionParaRevertir.adop_id, false);
                   setMostrarModalMascota(false);
                 }}
-                className="bg-yellow-500 text-white  px-6 py-3 rounded hover:bg-yellow-600 rounded-lg"
+              className="bg-yellow-500 text-white px-6 py-3 rounded-lg hover:bg-yellow-600"
               >
                 No
               </button>
               <button
                 onClick={() => setMostrarModalMascota(false)}
-                className="bg-gray-400 text-white px-5 py-2 rounded hover:bg-gray-500 rounded-lg"
+              className="bg-gray-400 text-white px-5 py-2 rounded-lg hover:bg-gray-500"
               >
                 Cancelar
               </button>
