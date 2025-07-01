@@ -1,47 +1,52 @@
 import React from "react";
-import facebook from "../../Imagenes/facebook.png";
-import instagram from "../../Imagenes/instagram.jfif";
-import { FaWhatsapp } from 'react-icons/fa'; // Importamos el ícono de WhatsApp
+import { FaFacebookF, FaInstagram, FaWhatsapp, FaTiktok } from 'react-icons/fa';
+import { motion } from 'framer-motion';
 
 const Contacto = () => {
-  // Reemplaza con tu número de WhatsApp y el mensaje que deseas enviar
-  const telefonoWhatsApp = "51922266310";  // Agrega tu número de WhatsApp aquí
-  const mensaje = "¡Hola! Necesito más información sobre el albergue."; // Mensaje predeterminado
-
-  // Enlace a la API de WhatsApp
+  const telefonoWhatsApp = "51922266310";
+  const mensaje = "¡Hola! Necesito más información sobre el albergue.";
   const enlaceWhatsApp = `https://wa.me/${telefonoWhatsApp}?text=${encodeURIComponent(mensaje)}`;
 
   return (
-    <div style={{ backgroundColor: '#F5F5DC' }} className="px-6 py-10 max-w-3xl mx-auto p-6 shadow-lg rounded-lg">
-      <h2 style={{ color: '#9A6C3B' }} className="text-3xl font-bold text-center text-indigo-700 mb-4">Contáctanos</h2>
-      <p className="text-center text-gray-600 mb-6">
-        Estamos aquí para ayudarte. Puedes comunicarte con nosotros a través de los siguientes medios:
-      </p>
+    <>
+      <motion.div
+        initial={{ opacity: 0, y: 50 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.8, ease: "easeOut" }}
+        style={{ backgroundColor: '#F5F5DC' }}
+        className="mt-16 px-6 py-10 max-w-3xl mx-auto p-6 shadow-lg rounded-lg"
+      >
+        <h2 className="text-4xl font-extrabold text-center text-[#9A6C3B] drop-shadow-sm mb-6">Contáctanos</h2>
+        <p className="text-center text-gray-600 mb-6">
+          Estamos aquí para ayudarte. Puedes comunicarte con nosotros a través de los siguientes medios:
+        </p>
 
-      <div className="space-y-4 text-center text-gray-700">
-        <p><strong>📍 Dirección:</strong> Puente Piedra 15122, Lima, Perú</p>
-        <p><strong>📞 Teléfono:</strong> 922 266 310</p>
-      </div>
+        <div className="space-y-3 text-center text-gray-800 font-medium mb-10">
+          <p><strong>📍 Dirección:</strong> Puente Piedra, Lima, Perú</p>
+          <p><strong>📞 Teléfono:</strong> 922 266 310</p>
+        </div>
 
-      <div className="mt-6 flex justify-center gap-6 text-xl text-[#dda15e] font-semibold">
-        <a href="https://www.facebook.com/alberguesanfrancisco/?locale=es_LA" target="_blank" rel="noopener noreferrer" className="flex items-center gap-x-2"><img src={facebook} alt="Facebook" className="w-5 h-5" /> Facebook</a> 
-        <a href="https://www.instagram.com/albergue.sanfrancisco?igsh=NndxY295MjBkNTN3" target="_blank" rel="noopener noreferrer" className="flex items-center "><img src={instagram} alt="Instagram" className="w-10 h-5" />Instagram</a>
-      </div>
+        {/* Redes Sociales con efectos */}
+        <div className="mt-10 flex justify-center gap-14 text-[#dda15e]">
+          <a href="https://www.facebook.com/alberguesanfrancisco/?locale=es_LA" target="_blank" rel="noopener noreferrer"
+            className="flex flex-col items-center hover:text-blue-600 transition transform hover:scale-110 duration-300">
+            <FaFacebookF size={100} className="drop-shadow-lg" />
+            <span className="text-base mt-2">Facebook</span>
+          </a>
+          <a href="https://www.instagram.com/albergue.sanfrancisco?igsh=NndxY295MjBkNTN3" target="_blank" rel="noopener noreferrer"
+            className="flex flex-col items-center hover:text-pink-600 transition transform hover:scale-110 duration-300">
+            <FaInstagram size={100} className="drop-shadow-lg" />
+            <span className="text-base mt-2">Instagram</span>
+          </a>
+          <a href="https://www.tiktok.com/@albergue.sanfrancisco" target="_blank" rel="noopener noreferrer"
+            className="flex flex-col items-center hover:text-black transition transform hover:scale-110 duration-300">
+            <FaTiktok size={100} className="drop-shadow-lg" />
+            <span className="text-base mt-2">TikTok</span>
+          </a>
+        </div>
+      </motion.div>
 
-      <div className="mt-8">
-        <iframe
-          src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3904.960162521917!2d-77.10351242517831!3d-11.838062488382752!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x9105d69e6d058e97%3A0x654a4654714b6155!2sAlbergue%20San%20Francisco!5e0!3m2!1ses-419!2spe!4v1750876031237!5m2!1ses-419!2spe"
-          width="100%"
-          height="300"
-          style={{ border: 0, borderRadius: "12px" }}
-          allowFullScreen=""
-          loading="lazy"
-          referrerPolicy="no-referrer-when-downgrade"
-          title="Mapa Albergue San Francisco"
-        ></iframe>
-      </div>
-
-      {/* Botón flotante de WhatsApp */}
+      {/* Botón flotante de WhatsApp fuera de la animación */}
       <a
         href={enlaceWhatsApp}
         target="_blank"
@@ -51,8 +56,10 @@ const Contacto = () => {
       >
         <FaWhatsapp size={30} />
       </a>
-    </div>
+    </>
   );
 };
 
 export default Contacto;
+
+

@@ -25,10 +25,22 @@ export const Nosotros = () => {
   <div className="md:w-1/2">
     <h2 className="text-5xl font-extrabold mb-6 leading-tight">Nuestra Historia</h2>
 <p className="text-xl leading-relaxed tracking-wide text-white/90">
-      Desde nuestra fundación, hemos trabajado incansablemente para mejorar la vida de miles de animales. <br />
-      Con el apoyo de voluntarios y aliados estratégicos, hemos logrado esterilizar más de <strong>14,000 animales</strong> 
-      y entregar más de <strong>71 toneladas</strong> de comida.
+      "Este año 2025 cumplimos 13 años de ayudar a muchas colitas 
+    Varios de nuestros rescatados tienen más de media década con nosotros, 
+    algunos nacieron en el albergue porque rescatamos a su mamá preñada y otros llegaron enfermos.
+
+    Actualmente tenemos 50 y 22 refugiados, necesitamos de tu apoyo para seguir velando por ellos, ya que también tienen necesidades como cualquiera. 
+    Como todos los años les toca su vacuna de refuerzo, necesitamos pipetas y arena para nuestros.
+
+    Y como sabrán nuestro albergue no fue planeado simplemente se creo por una necesidad que era 
+    ayudar a los perritos que se nos cruzaban en el camino, así que lo hicimos con lo que pudimos que fue madera,
+     pero esa madera en 10 años ya se pudrió xq 2 veces se reventó la matriz de agua cerca al albergue y se apolilla con el tiempo,
+      por más que la hemos parchado o cambiado pedazos ya no da más, así que esperamos juntar para cercar todo de ladrillo."
     </p>
+    <div className="mt-8 bg-white/10 rounded-lg px-4 py-2 w-fit ml-auto">
+  <p className="italic text-white text-sm">Atte. Stephanie Mendoza.</p>
+</div>
+
   </div>
   <div className="md:w-1/2">
     <img 
@@ -66,10 +78,10 @@ export const Nosotros = () => {
   <div className="flex flex-wrap justify-center items-center gap-10">
     {/* CARD CORAZÓN */}
     {[
-  { color: "#2b1701", cantidad: "120", texto: "Perritos albergados" },
+  { color: "#2b1701", cantidad: "70", texto: "Perritos albergados" },
   { color: "#2b1701", cantidad: "3000", texto: "Adoptados" },
-  { color: "#2b1701", cantidad: "16500", texto: "Esterilizaciones" },
-  { color: "#2b1701", cantidad: "2700", texto: "Rescatados" },
+  { color: "#2b1701", cantidad: "4000", texto: "Esterilizaciones" },
+  { color: "#2b1701", cantidad: "4000", texto: "Rescatados" },
 ].map((item, index) => (
   <div key={index} className="relative w-48 h-48">
     <svg
@@ -100,37 +112,37 @@ export const Nosotros = () => {
 
 
       {/* Nuestro Equipo */}
-      <div className="text-center py-12 bg-gray-50" style={{ backgroundColor: '#9A6C3B' }}>
-        <h2 className="text-3xl font-semibold text-blue-800 mb-8" style={{ color: '#F5F5DC' }}>Nuestro Equipo</h2>
-        <div className="flex flex-col md:flex-row items-center justify-center gap-4 md:gap-8">
+      <div className="text-center py-12 bg-[#9A6C3B]">
+  <h2 className="text-3xl font-bold text-[#F5F5DC] mb-10">Nuestro Equipo</h2>
 
-          {/* Miembro 1 */}
-          <div className="w-96 h-[26rem] bg-white rounded-lg flex flex-col items-center justify-center p-6 transition-transform transform hover:scale-105 border-4 border-beige-900">
-            <img 
-              src="https://i.ibb.co/0j40Sdf9/Imagen-1.jpg" 
-              alt="Miembro del equipo 1" 
-              className="w-72 h-72 rounded-lg object-cover mb-4"
-            />
-            <div className="text-center">
-              <p className="text-gray-800 font-semibold text-lg text-[#a68b5b]">Mary Velásquez</p>
-              <p className="text-sm text-beige-500">Coordinadora de Adopciones</p>
-            </div>
-          </div>
-
-          {/* Miembro 2 */}
-          <div className="w-96 h-[26rem] bg-white rounded-lg flex flex-col items-center justify-center p-6 transition-transform transform hover:scale-105 border-4 border-beige-900">
-            <img 
-              src="https://i.ibb.co/23Tp2Xnt/Imagen-2.jpg" 
-              alt="Miembro del equipo 2"
-              className="w-72 h-72 rounded-lg object-cover mb-4"
-            />
-            <div className="text-center">
-              <p className="text-gray-800 font-semibold text-lg text-[#a68b5b]">Stephanie Mendoza</p>
-              <p className="text-sm text-beige-500">Coordinadora de Adopciones</p>
-            </div>
-          </div>
-        </div>
+  <div className="flex flex-col md:flex-row items-center justify-center gap-10 max-w-4xl mx-auto px-4">
+    {/* Tarjeta 1 */}
+    <div className="w-72 bg-white rounded-2xl shadow-lg hover:shadow-2xl transition-transform hover:scale-105">
+      <img 
+        src="https://i.ibb.co/0j40Sdf9/Imagen-1.jpg" 
+        alt="Mary Velásquez" 
+        className="w-full h-80 object-cover rounded-t-2xl"
+      />
+      <div className="py-4">
+        <p className="text-[#9A6C3B] font-bold text-lg">Mary Velásquez</p>
+        <p className="text-sm text-gray-500">Coordinadora de Adopciones</p>
       </div>
+    </div>
+
+    {/* Tarjeta 2 */}
+    <div className="w-72 bg-white rounded-2xl shadow-lg hover:shadow-2xl transition-transform hover:scale-105">
+      <img 
+        src="https://i.ibb.co/23Tp2Xnt/Imagen-2.jpg" 
+        alt="Stephanie Mendoza" 
+        className="w-full h-80 object-cover rounded-t-2xl"
+      />
+      <div className="py-4">
+        <p className="text-[#9A6C3B] font-bold text-lg">Stephanie Mendoza</p>
+        <p className="text-sm text-gray-500">Coordinadora de Adopciones</p>
+      </div>
+    </div>
+  </div>
+</div>
 
       {/* Alianzas Estratégicas */}
       <div className="bg-[#E5D3BA] py-12 px-4">

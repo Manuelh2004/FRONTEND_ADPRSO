@@ -4,7 +4,7 @@ import 'swiper/css';
 import 'swiper/css/navigation';
 import { Navigation, Autoplay } from 'swiper/modules';
 
-import perritoSilueta from "../../Imagenes/perrito-silueta.jpg";
+import perritoSilueta from "../../Imagenes/LogoSF.jpg";
 import yape from "../../Imagenes/yape.png";
 import plin from "../../Imagenes/plin.png";
 import bcp from "../../Imagenes/bcp.jpg";
