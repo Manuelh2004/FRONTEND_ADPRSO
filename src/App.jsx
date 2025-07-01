@@ -81,25 +81,55 @@ export const App = () => {
             )}
           </div>
           {/* Ícono Hamburguesa */}
-          <button
-            className="md:hidden text-[#bc6c25] focus:outline-none"
-            onClick={() => setIsOpen(!isOpen)}
-          >
-            <svg
-              className="w-6 h-6"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-              xmlns="http://www.w3.org/2000/svg"
+          <div className="md:hidden flex items-center">
+            <button
+              className="text-[#bc6c25] focus:outline-none"
+              onClick={() => setIsOpen(!isOpen)}
             >
-              {isOpen ? (
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-              ) : (
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
-              )}
-            </svg>
-          </button>
+              <svg
+                className="w-6 h-6"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                {isOpen ? (
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                ) : (
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
+                )}
+              </svg>
+            </button>
+          </div>
         </nav>
+
+        {/* Menú desplegable para móviles */}
+        {isOpen && (
+          <div className="md:hidden bg-white shadow-lg">
+            <ul className="flex flex-col space-y-4 p-4 text-[#bc6c25] font-semibold">
+              <li className="hover:text-[#dda15e] transition duration-300">
+                <Link to="/eventos" onClick={() => setIsOpen(false)}>Eventos</Link>
+              </li>
+              <li className="hover:text-[#dda15e] transition duration-300">
+                <Link to="/nosotros" onClick={() => setIsOpen(false)}>Nosotros</Link>
+              </li>
+              <li className="hover:text-[#dda15e] transition duration-300">
+                <Link to="/adopta" onClick={() => setIsOpen(false)}>Adopta</Link>
+              </li>
+              <li className="hover:text-[#dda15e] transition duration-300">
+                <Link to="/donaciones" onClick={() => setIsOpen(false)}>Donaciones</Link>
+              </li>
+              <li className="hover:text-[#dda15e] transition duration-300">
+                <Link to="/contacto" onClick={() => setIsOpen(false)}>Contáctanos</Link>
+              </li>
+              {isAuthenticated && role === 'Administrador' && (
+                <li className="hover:text-[#dda15e] transition duration-300">
+                  <Link to="/admin-only" onClick={() => setIsOpen(false)}>Administrador</Link>
+                </li>
+              )}
+              </ul>
+          </div>
+        )}
         
 
       <div className="flex-1">
