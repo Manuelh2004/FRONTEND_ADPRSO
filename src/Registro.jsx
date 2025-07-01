@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import pawPrint from './Imagenes/huella.jpg'; 
-import dogSilhouette from './Imagenes/perrito-silueta.jpg'; 
+import dogSilhouette from './Imagenes/LogoSF.jpg'; 
 import { useNavigate } from 'react-router-dom';
 
 // ... imports sin cambios
