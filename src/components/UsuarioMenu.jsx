@@ -2,7 +2,7 @@ import { useState, useRef, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 
-export default function UsuarioMenu() {
+export default function UsuarioMenu({ isMobile = false }) {
   const { logout } = useAuth();
   const [menuOpen, setMenuOpen] = useState(false);
   const menuRef = useRef();
@@ -18,47 +18,52 @@ export default function UsuarioMenu() {
   }, []);
 
   return (
-    <div className="relative" ref={menuRef}>
-      {/* Botón con icono Font Awesome */}
+    <div className={`relative ${isMobile ? 'w-full' : ''}`} ref={menuRef}>
+      {/* Botón del menú usuario */}
       <button
         onClick={() => setMenuOpen((prev) => !prev)}
-        className="text-3xl text-gray-600 hover:text-[#bc6c25] transition duration-200"
+        className={`text-3xl text-gray-600 hover:text-[#bc6c25] transition duration-200 ${
+          isMobile ? 'w-full text-left px-4 py-2 border border-gray-300 rounded-md text-base' : ''
+        }`}
       >
-        <i className="fa-regular fa-circle-user"></i>
+        <i className="fa-regular fa-circle-user mr-2"></i>
+        {isMobile && 'Mi cuenta'}
       </button>
 
       {/* Menú desplegable */}
       {menuOpen && (
-        <div className="absolute right-0 mt-2 w-52 bg-white rounded-lg shadow-lg border border-gray-200 z-50 overflow-hidden">
+        <div className={`bg-white border rounded-md shadow-md z-50 mt-2 ${
+          isMobile ? 'w-full' : 'absolute right-0 w-52'
+        }`}>
           <Link
             to="/mi-perfil"
-            className="block px-5 py-3 text-sm text-gray-700 hover:bg-gray-100 transition"
+            className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
             onClick={() => setMenuOpen(false)}
           >
-            <i className="fa-solid fa-user"></i> Mi Perfil
+            <i className="fa-solid fa-user mr-2"></i> Mi Perfil
           </Link>
           <Link
             to="/mis-adopciones"
-            className="block px-5 py-3 text-sm text-gray-700 hover:bg-gray-100 transition"
+            className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
             onClick={() => setMenuOpen(false)}
           >
-            <i className="fa-solid fa-paw"></i> Mis Adopciones
+            <i className="fa-solid fa-paw mr-2"></i> Mis Adopciones
           </Link>
           <Link
             to="/mis-eventos"
-            className="block px-5 py-3 text-sm text-gray-700 hover:bg-gray-100 transition"
+            className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
             onClick={() => setMenuOpen(false)}
           >
-            <i className="fa-solid fa-calendar"></i> Mis Eventos
+            <i className="fa-solid fa-calendar mr-2"></i> Mis Eventos
           </Link>
           <button
             onClick={() => {
               logout();
               setMenuOpen(false);
             }}
-            className="w-full text-left px-5 py-3 text-sm text-red-600 hover:bg-red-50 transition"
+            className="block w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-red-50"
           >
-            <i className="fa-solid fa-right-from-bracket"></i> Cerrar sesión
+            <i className="fa-solid fa-right-from-bracket mr-2"></i> Cerrar sesión
           </button>
         </div>
       )}
