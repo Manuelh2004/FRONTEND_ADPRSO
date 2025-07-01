@@ -40,13 +40,16 @@ export const cambiarEstadoAdopcion = async (adop_id, nuevoEstado, token) => {
 
 // Buscar mascotas por nombre
 export const buscarMascotasPorNombre = async (token, nombre) => {
-  const headers = { 'Authorization': `Bearer ${token}` };
   try {
-    const response = await axios.get(`${API_URL}/buscar?nombre=${nombre}`, { headers });
-    
-    // Retorna las mascotas encontradas si existe alguna, o null si no hay coincidencias
-    return response.data.data;
+    const response = await axios.get(`${API_URL}/buscar`, {
+      params: { nombre },
+      headers: {
+        'Authorization': `Bearer ${token}`,
+      }
+    });
+    return response.data;
   } catch (error) {
-    throw new Error('Error al buscar mascotas por nombre');
+    console.error('Error al buscar mascota:', error);
+    throw new Error(error.response ? error.response.data.message : 'Error al buscar mascota.');
   }
 };

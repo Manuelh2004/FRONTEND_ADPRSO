@@ -38,12 +38,12 @@ export const App = () => {
             {/* Logo y enlaces de escritorio */}
             <div className="flex items-center space-x-6">
               <div className="bg-[#bc6c25] text-white font-extrabold 
-                text-base px-4 py-1 
-                sm:text-lg sm:px-5 sm:py-1.5 
-                md:text-xl md:px-6 md:py-2 
-                rounded-full shadow-md hover:scale-105 transform transition duration-300">
-                <span className="tracking-wider">San Francisco</span>
-              </div>
+            text-base px-4 py-1 
+            sm:text-lg sm:px-5 sm:py-1.5 
+            md:text-xl md:px-6 md:py-2 
+            rounded-full shadow-md hover:scale-105 transform transition duration-300">
+            <span className="tracking-wider">San Francisco</span>
+          </div>
 
               <ul className="hidden md:flex space-x-6 text-[#bc6c25] font-semibold">
                 <li className="hover:text-[#dda15e] transition duration-300"><Link to="/eventos">Eventos</Link></li>
@@ -59,18 +59,14 @@ export const App = () => {
               </ul>
             </div>
 
-            {/* Botones de sesión solo visibles en escritorio */}
-            <div className="hidden md:flex items-center space-x-4">
+            {/* Botones de sesión / Usuario */}
+            <div className="flex items-center space-x-4">
               {isAuthenticated ? (
                 <UsuarioMenu />
               ) : (
                 <>
-                  <Link to="/login" className="text-sm text-white bg-[#bc6c25] px-4 py-2 rounded-full hover:bg-[#dda15e] transition duration-300 shadow-sm">
-                    Iniciar sesión
-                  </Link>
-                  <Link to="/registro" className="text-sm text-white bg-[#bc6c25] px-4 py-2 rounded-full hover:bg-[#dda15e] transition duration-300 shadow-sm">
-                    Registrarse
-                  </Link>
+                  <Link to="/login" className="text-white bg-[#bc6c25] px-4 py-2 rounded-full hover:bg-[#dda15e] transition duration-300 shadow-sm">Iniciar sesión</Link>
+                  <Link to="/registro" className="text-white bg-[#bc6c25] px-4 py-2 rounded-full hover:bg-[#dda15e] transition duration-300 shadow-sm">Registrarse</Link>
                 </>
               )}
             </div>
@@ -123,13 +119,6 @@ export const App = () => {
                   </li>
                 )}
               </ul>
-
-                  {isAuthenticated && (
-      <div className="px-4 pb-4">
-        <UsuarioMenu isMobile={true} />
-      </div>
-    )}
-
             </div>
           )}
         </header>

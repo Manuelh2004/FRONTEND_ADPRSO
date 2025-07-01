@@ -37,7 +37,6 @@ export const AuthProvider = ({ children }) => {
     setRole(null);
     localStorage.removeItem('token');
     navigate('/nosotros'); // 👈 redirige después de cerrar sesión
-
   };
 
   return (

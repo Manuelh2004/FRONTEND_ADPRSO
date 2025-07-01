@@ -74,112 +74,114 @@ const Adopta = () => {
   const enlaceWhatsApp = `https://wa.me/${telefonoWhatsApp}?text=${encodeURIComponent(mensaje)}`;
 
   return (
-    <div className="flex p-6">
-      {/* Filtros */}
-      <aside className="w-full md:w-1/4 pr-6 space-y-6 md:sticky md:top-4">
-        <h2 className="text-xl font-semibold mb-2">Filtrar por</h2>
+  <div className="flex flex-col md:flex-row gap-6 p-6 ">
+    {/* Filtros */}
 
-        {/* Tamaño - Botones tipo pill */}
-        <div>
-          <label className="block font-medium mb-1">Tamaño</label>
-          <div className="flex flex-wrap gap-2">
-            {opciones.tamanios.map(t => (
-              <button
-                key={t.tam_id}
-                onClick={() => handleFiltroChange('tamId', t.tam_id)}
-                className={`px-3 py-1 rounded-full text-sm font-medium transition ${
-                  filtros.tamId === t.tam_id ? 'bg-[#dda15e]  text-white' : 'bg-gray-200 hover:bg-gray-300'
-                }`}
-              >
-                {t.tam_nombre}
-              </button>
-            ))}
-          </div>
-        </div>
+  <aside className="min-w-[220px] max-w-[320px] md:w-[18%] mx-auto space-y-4 md:sticky md:top-4 bg-[#9A6C3B] text-[#F5F5DC] p-3 rounded-lg shadow-md text-sm h-100">
+    <h2 className="text-lg font-semibold mb-2 text-center">Filtrar por</h2>
 
-        {/* Sexo - Estilo radio buttons personalizados */}
-        <div>
-          <label className="block font-medium mb-1">Sexo</label>
-          <div className="flex flex-col gap-2">
-            {opciones.sexos.map(s => (
-              <label key={s.sex_id} className="flex items-center gap-2 cursor-pointer">
-                <input
-                  type="radio"
-                  name="sexo"
-                  value={s.sex_id}
-                  checked={filtros.sexId === s.sex_id}
-                  onChange={() => handleFiltroChange('sexId', s.sex_id)}
-                  className="accent-bg-[#dda15e] "
-                />
-                <span className="text-sm">{s.sex_nombre}</span>
-              </label>
-            ))}
-          </div>
-        </div>
-
-        {/* Nivel de energía - Botones tipo pill */}
-        <div>
-          <label className="block font-medium mb-1">Nivel de energía</label>
-          <div className="flex flex-wrap gap-2">
-            {opciones.nivelesEnergia.map(n => (
-              <button
-                key={n.nien_id}
-                onClick={() => handleFiltroChange('nienId', n.nien_id)}
-                className={`px-3 py-1 rounded-full text-sm font-medium transition ${
-                  filtros.nienId === n.nien_id ? 'bg-green-500 text-white' : 'bg-gray-200 hover:bg-gray-300'
-                }`}
-              >
-                {n.nien_nombre}
-              </button>
-            ))}
-          </div>
-        </div>
-
-        {/* Tipo de mascota - Chips clicables */}
-        <div>
-          <label className="block font-medium mb-1">Tipo de mascota</label>
-          <div className="flex flex-wrap gap-2">
-            {opciones.tiposMascota.map(t => (
-              <button
-                key={t.tipma_id}
-                onClick={() => handleFiltroChange('tipmaId', t.tipma_id)}
-                className={`px-3 py-1 rounded-full text-xs font-medium transition border ${
-                  filtros.tipmaId === t.tipma_id
-                    ? 'bg-purple-500 text-white border-purple-500'
-                    : 'bg-white text-gray-700 border-gray-300 hover:bg-gray-100'
-                }`}
-              >
-                {t.tipma_nombre}
-              </button>
-            ))}
-          </div>
-        </div>
-      </aside>
-
-      {/* Galería */}
-      <main className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 w-3/4">
-        {mascotas.length === 0 && (
-          <p className="col-span-full text-center text-gray-500">No se encontraron mascotas</p>
-        )}
-        {mascotas.map((mascota) => (
-          <Link key={mascota.mascotaId} to={`/adopta/${mascota.mascotaId}`}>
-            <MascotaCard mascota={mascota} />
-          </Link>
+    {/* Tamaño */}
+    <div>
+      <label className="block font-medium mb-1">Tamaño</label>
+      <div className="flex flex-wrap gap-1">
+        {opciones.tamanios.map(t => (
+          <button
+            key={t.tam_id}
+            onClick={() => handleFiltroChange('tamId', t.tam_id)}
+            className={`px-2 py-1 rounded-full text-xs font-medium transition ${
+              filtros.tamId === t.tam_id ? 'bg-[#dda15e] text-white' : 'bg-white text-black hover:bg-gray-300'
+            }`}
+          >
+            {t.tam_nombre}
+          </button>
         ))}
-      </main>
-      
-      {/* Botón flotante de WhatsApp */}
-      <a
-        href={enlaceWhatsApp}
-        target="_blank"
-        rel="noopener noreferrer"
-        className="fixed bottom-5 right-5 bg-green-500 hover:bg-green-600 text-white p-4 rounded-full shadow-lg flex items-center justify-center transition z-50"
-        title="Enviar mensaje por WhatsApp"
-      >
-        <FaWhatsapp size={30} />
-      </a>
+      </div>
     </div>
-  );
+
+    {/* Sexo */}
+    <div>
+      <label className="block font-medium mb-1">Sexo</label>
+      <div className="flex flex-col gap-1">
+        {opciones.sexos.map(s => (
+          <label key={s.sex_id} className="flex items-center gap-1 cursor-pointer">
+            <input
+              type="radio"
+              name="sexo"
+              value={s.sex_id}
+              checked={filtros.sexId === s.sex_id}
+              onChange={() => handleFiltroChange('sexId', s.sex_id)}
+              className="accent-[#dda15e]"
+            />
+            <span>{s.sex_nombre}</span>
+          </label>
+        ))}
+      </div>
+    </div>
+
+    {/* Nivel de energía */}
+    <div>
+      <label className="block font-medium mb-1">Nivel de energía</label>
+      <div className="flex flex-wrap gap-1">
+        {opciones.nivelesEnergia.map(n => (
+          <button
+            key={n.nien_id}
+            onClick={() => handleFiltroChange('nienId', n.nien_id)}
+            className={`px-2 py-1 rounded-full text-xs font-medium transition ${
+              filtros.nienId === n.nien_id ? 'bg-green-500 text-white' : 'bg-white text-black hover:bg-gray-300'
+            }`}
+          >
+            {n.nien_nombre}
+          </button>
+        ))}
+      </div>
+    </div>
+
+    {/* Tipo de mascota */}
+    <div>
+      <label className="block font-medium mb-1">Tipo de mascota</label>
+      <div className="flex flex-wrap gap-1">
+        {opciones.tiposMascota.map(t => (
+          <button
+            key={t.tipma_id}
+            onClick={() => handleFiltroChange('tipmaId', t.tipma_id)}
+            className={`px-2 py-1 rounded-full text-xs font-medium transition border ${
+              filtros.tipmaId === t.tipma_id
+                ? 'bg-purple-500 text-white border-purple-500'
+                : 'bg-white text-black border-gray-300 hover:bg-gray-100'
+            }`}
+          >
+            {t.tipma_nombre}
+          </button>
+        ))}
+      </div>
+    </div>
+  </aside>
+
+    {/* Galería */}
+    <main className="flex-1 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+      {mascotas.length === 0 && (
+        <p className="col-span-full text-center text-gray-500">No se encontraron mascotas</p>
+      )}
+      {mascotas.map((mascota) => (
+        <Link key={mascota.mascotaId} to={`/adopta/${mascota.mascotaId}`}>
+          <MascotaCard mascota={mascota} />
+        </Link>
+      ))}
+    </main>
+
+    {/* Botón flotante de WhatsApp */}
+    <a
+      href={enlaceWhatsApp}
+      target="_blank"
+      rel="noopener noreferrer"
+      className="fixed bottom-5 right-5 bg-green-500 hover:bg-green-600 text-white p-4 rounded-full shadow-lg flex items-center justify-center transition z-50"
+      title="Enviar mensaje por WhatsApp"
+    >
+      <FaWhatsapp size={30} />
+    </a>
+  </div>
+);
+
 };
 
 export default Adopta;
