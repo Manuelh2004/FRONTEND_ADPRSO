@@ -39,13 +39,12 @@ export const Nosotros = () => {
         <div className="border-l-8 border-[#9A6C3B] p-6 rounded-xl shadow-md bg-white hover:shadow-xl transition duration-300">
           <h2 className="text-2xl font-bold text-[#9A6C3B]">🐾 Misión</h2>
           <p className="text-base text-gray-700 mt-3 leading-relaxed">
-            Construir un mundo mejor para los perros y gatos a través de iniciativas sostenibles de adopción, salud y educación.
-          </p>
+            Brindar atención integral a perros y gatos en situación de vulnerabilidad, promoviendo su bienestar, fomentando la adopción responsable, impulsando el apadrinamiento y obteniendo recursos mediante donaciones y alianzas estratégicas. Para cumplir su misión, el albergue busca implementar soluciones tecnológicas innovadoras que optimicen sus procesos internos y sirvan como una ventana de atracción y sensibilización para la comunidad.          </p>
         </div>
         <div className="border-l-8 border-[#9A6C3B] p-6 rounded-xl shadow-md bg-white hover:shadow-xl transition duration-300">
           <h2 className="text-2xl font-bold text-[#9A6C3B]">🎯 Visión</h2>
           <p className="text-base text-gray-700 mt-3 leading-relaxed">
-            Ser una organización líder en el bienestar animal, promoviendo la adopción responsable y el respeto por los animales.
+            Convertirse en un referente reconocido en la comunidad de Zapallal y Puente Piedra en la protección y bienestar de animales domésticos, promoviendo una cultura de respeto, protección y adopción responsable. La organización aspira a ser un modelo de gestión digital que facilite la interacción, la colaboración y la difusión de su labor en las plataformas digitales.
           </p>
         </div>
       </div>

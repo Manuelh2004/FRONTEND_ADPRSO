@@ -76,7 +76,7 @@ const Adopta = () => {
   return (
   <div className="flex flex-col md:flex-row gap-6 p-6 ">
     {/* Filtros */}
-    <aside className="min-w-[220px] md:w-[18%] h-100 space-y-4 md:sticky md:top-4 bg-#a1774c text-white p-3 rounded-lg shadow-md text-sm bg-[#bc6c25]">
+    <aside className="min-w-[220px] md:w-[18%] h-100 space-y-4 md:sticky md:top-4 bg-#a1774c text-white p-3 rounded-lg shadow-md text-sm bg-[#9A6C3B]">
       <h2 className="text-lg font-semibold mb-2 text-center">Filtrar por</h2>
 
       {/* Tamaño */}
