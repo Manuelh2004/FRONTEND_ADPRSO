@@ -86,8 +86,9 @@ const Donaciones = () => {
       <div className="fixed top-0 left-0 w-full h-screen bg-black bg-opacity-50 flex items-center justify-center z-50">
         <div className="bg-white rounded-xl p-6 max-w-sm w-full text-center shadow-2xl relative">
           <h3 className="text-xl font-semibold mb-4 text-gray-800">Escanea el código QR con Yape</h3>
+          
           <img
-            src="Imagenes/QR"
+            src="http://imgfz.com/i/8lGCLIB.jpeg"
             alt="QR Yape"
             className="w-48 h-48 mx-auto object-contain rounded-md"
           />
